@@ -2264,8 +2264,11 @@ bool status_check_skilluse(const block_list* src, const block_list* target, uint
 		case BL_ELEM:
 			if( target->type == BL_HOM && skill_id && battle_config.hom_setting&HOMSET_NO_SUPPORT_SKILL && skill_get_inf(skill_id)&INF_SUPPORT_SKILL && battle_get_master(target) != src )
 				return false; // Can't use support skills on Homunculus (only Master/Self)
-			if( target->type == BL_MER && (skill_id == PR_ASPERSIO || (skill_id >= SA_FLAMELAUNCHER && skill_id <= SA_SEISMICWEAPON)) && battle_get_master(target) != src )
-				return false; // Can't use Weapon endow skills on Mercenary (only Master)
+			// [Hardcore] Aspersio pode ser usado em Mercenário por qualquer jogador (não só master)
+			if( target->type == BL_MER && skill_id == PR_ASPERSIO && battle_get_master(target) != src )
+				return false;
+			// [Hardcore] Weapon endow (SA_FLAMELAUNCHER..SA_SEISMICWEAPON) agora funcionam em Mercenários
+			// Removida restrição BL_MER para SA_ skills — permite coating entre jogadores
 			if( skill_id == AM_POTIONPITCHER && ( target->type == BL_MER || target->type == BL_ELEM) )
 				return false; // Can't use Potion Pitcher on Mercenaries
 			if (tsc && tsc->getSCE(SC_ELEMENTAL_VEIL) && !(src && status_get_class_(src) == CLASS_BOSS) && !status_has_mode(status, MD_DETECTOR))
@@ -6811,6 +6814,8 @@ static uint16 status_calc_str(block_list *bl, status_change *sc, int32 str)
 		str += sc->getSCE(SC_UNIVERSESTANCE)->val2;
 	if (sc->getSCE(SC_ALL_STAT_DOWN))
 		str -= sc->getSCE(SC_ALL_STAT_DOWN)->val2;
+	if(sc->getSCE(SC_MERC_SPIRIT_KNIGHT))
+		str += 10; // +10 STR
 
 	//TODO: Stat points should be able to be decreased below 0
 	return (uint16)cap_value(str,0,USHRT_MAX);
@@ -6884,6 +6889,8 @@ static uint16 status_calc_agi(block_list *bl, status_change *sc, int32 agi)
 		agi += sc->getSCE(SC_UNIVERSESTANCE)->val2;
 	if (sc->getSCE(SC_ALL_STAT_DOWN))
 		agi -= sc->getSCE(SC_ALL_STAT_DOWN)->val2;
+	if(sc->getSCE(SC_MERC_SPIRIT_HUNTER))
+		agi += 10; // +10 AGI
 
 	//TODO: Stat points should be able to be decreased below 0
 	return (uint16)cap_value(agi,0,USHRT_MAX);
@@ -6945,6 +6952,8 @@ static uint16 status_calc_vit(block_list *bl, status_change *sc, int32 vit)
 		vit += sc->getSCE(SC_UNIVERSESTANCE)->val2;
 	if (sc->getSCE(SC_ALL_STAT_DOWN))
 		vit -= sc->getSCE(SC_ALL_STAT_DOWN)->val2;
+	if(sc->getSCE(SC_MERC_SPIRIT_CRUSADER))
+		vit += 10; // +10 VIT
 
 	//TODO: Stat points should be able to be decreased below 0
 	return (uint16)cap_value(vit,0,USHRT_MAX);
@@ -7352,6 +7361,8 @@ static uint16 status_calc_watk(block_list *bl, status_change *sc, int32 watk)
 		watk += sc->getSCE(SC_VOLCANO)->val2;
 	if(sc->getSCE(SC_MERC_ATKUP))
 		watk += sc->getSCE(SC_MERC_ATKUP)->val2;
+	if(sc->getSCE(SC_MERC_SPIRIT_KNIGHT))
+		watk += watk * 15 / 100; // +15% ATK
 	if(sc->getSCE(SC_WATER_BARRIER))
 		watk -= sc->getSCE(SC_WATER_BARRIER)->val2;
 #ifndef RENEWAL
@@ -7561,6 +7572,8 @@ static int16 status_calc_hit(block_list *bl, status_change *sc, int32 hit)
 		hit += 20; // RockmanEXE; changed based on updated [Reddozen]
 	if(sc->getSCE(SC_MERC_HITUP))
 		hit += sc->getSCE(SC_MERC_HITUP)->val2;
+	if(sc->getSCE(SC_MERC_SPIRIT_HUNTER))
+		hit += hit * 15 / 100; // +15% HIT
 	if(sc->getSCE(SC_INCHITRATE))
 		hit += hit * sc->getSCE(SC_INCHITRATE)->val1/100;
 	if (sc->getSCE(SC_POWERUP))
@@ -7651,6 +7664,8 @@ static int16 status_calc_flee(block_list *bl, status_change *sc, int32 flee)
 		flee += sc->getSCE(SC_PARTYFLEE)->val1 * 10;
 	if(sc->getSCE(SC_MERC_FLEEUP))
 		flee += sc->getSCE(SC_MERC_FLEEUP)->val2;
+	if(sc->getSCE(SC_MERC_SPIRIT_HUNTER))
+		flee += flee * 15 / 100; // +15% FLEE
 	if( sc->getSCE(SC_HALLUCINATIONWALK) )
 		flee += sc->getSCE(SC_HALLUCINATIONWALK)->val2;
 	if( sc->getSCE(SC_NPC_HALLUCINATIONWALK) )
@@ -7780,6 +7795,8 @@ static defType status_calc_def(block_list *bl, status_change *sc, int32 def)
 		def += sc->getSCE(SC_DEFENCE)->val2;
 	if(sc->getSCE(SC_INCDEFRATE))
 		def += def * sc->getSCE(SC_INCDEFRATE)->val1/100;
+	if(sc->getSCE(SC_MERC_SPIRIT_CRUSADER))
+		def += def * 15 / 100; // +15% DEF
 	if(sc->getSCE(SC_EARTH_INSIGNIA) && sc->getSCE(SC_EARTH_INSIGNIA)->val1 == 2)
 		def += 50;
 	if(sc->getSCE(SC_ODINS_POWER))
@@ -10457,6 +10474,9 @@ static bool status_change_start_post_delay(block_list* src, block_list* bl, sc_t
 		case SC_MERC_HPUP:
 		case SC_MERC_SPUP:
 		case SC_MERC_HITUP:
+		case SC_MERC_SPIRIT_KNIGHT:
+		case SC_MERC_SPIRIT_CRUSADER:
+		case SC_MERC_SPIRIT_HUNTER:
 			if( bl->type != BL_MER )
 				return false; // Stats only for Mercenaries
 			break;
@@ -10752,6 +10772,9 @@ static bool status_change_start_post_delay(block_list* src, block_list* bl, sc_t
 			case SC_MERC_HPUP:
 			case SC_MERC_SPUP:
 			case SC_MERC_HITUP:
+			case SC_MERC_SPIRIT_KNIGHT:
+			case SC_MERC_SPIRIT_CRUSADER:
+			case SC_MERC_SPIRIT_HUNTER:
 				if( sce->val1 > val1 )
 					val1 = sce->val1;
 				break;
@@ -11814,6 +11837,11 @@ static bool status_change_start_post_delay(block_list* src, block_list* bl, sc_t
 		case SC_MERC_SPUP:
 			val2 = 5 * val1;
 			break;
+		// [Hardcore] Spirit buffs para mercenarios
+		case SC_MERC_SPIRIT_KNIGHT:
+		case SC_MERC_SPIRIT_CRUSADER:
+		case SC_MERC_SPIRIT_HUNTER:
+			break; // bônus já codificados nas funções de stat acima
 		case SC_REBIRTH:
 			val2 = 20*val1; // % of life to be revived with
 			break;

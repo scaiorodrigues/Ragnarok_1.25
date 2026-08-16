@@ -517,6 +517,11 @@ enum sc_type : int16 {
 	SC_MERC_HITUP,
 	SC_MERC_QUICKEN,
 
+	// [Hardcore] Spirit buffs para mercenarios
+	SC_MERC_SPIRIT_KNIGHT,  // +15% ATK, +10 STR
+	SC_MERC_SPIRIT_CRUSADER, // +15% DEF, +10 VIT
+	SC_MERC_SPIRIT_HUNTER,  // +15% HIT/FLEE, +10 AGI
+
 	SC_REBIRTH,
 	//SC_SKILLCASTRATE, //285
 	//SC_DEFRATIOATK,

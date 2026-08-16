@@ -1,0 +1,115 @@
+//===== rAthena Script =======================================
+//= [Hardcore] Buffs de Mercenarios — Divina Providencia e Gospel
+//===== Description: =========================================
+//= Permite aplicar CR_PROVIDENCE e PA_GOSPEL em mercenarios
+//= NPCs presentes nos mapas de Prontera, Izlude e Payon (perto dos NPCs de Mercenarios)
+//============================================================
+
+// Prontera - perto do Guildhall
+prontera,165,185,4	script	Divina Providencia Merc#prt	840,{
+	callfunc "F_MercBuffProvider";
+}
+prontera,167,185,4	script	Gospel Merc#prt	840,{
+	callfunc "F_MercBuffGospel";
+}
+
+// Izlude - perto do Guildhall
+izlude,130,90,4	script	Divina Providencia Merc#iz	840,{
+	callfunc "F_MercBuffProvider";
+}
+izlude,132,90,4	script	Gospel Merc#iz	840,{
+	callfunc "F_MercBuffGospel";
+}
+
+// Payon - perto do Guildhall
+payon,160,60,4	script	Divina Providencia Merc#pay	840,{
+	callfunc "F_MercBuffProvider";
+}
+payon,162,60,4	script	Gospel Merc#pay	840,{
+	callfunc "F_MercBuffGospel";
+}
+
+// ============================================================
+// Funcao: CR_PROVIDENCE em Mercenario
+// ============================================================
+function	script	F_MercBuffProvider	{
+	mes "[Divina Providencia]";
+	mes "Deseja aplicar Divina Providencia em seu assistente?";
+	mes "Requer CR_PROVIDENCE Lv5 no seu Crusader/Paladin";
+	mes "Efeito: +25% resistencia a Demonios e Elemento Holy por ~60s";
+	mes "Custo: 1x Blue Gemstone";
+	next;
+
+	if (select("Aplicar buff", "Cancelar") == 2) {
+		mes "Buff cancelado.";
+		close;
+	}
+
+	if (countitem(717) < 1) {
+		mes "Voce precisa de 1x Blue Gemstone.";
+		close;
+	}
+
+	if (getskilllv("CR_PROVIDENCE") < 5) {
+		mes "Voce precisa de CR_PROVIDENCE Lv5 para este buff.";
+		close;
+	}
+
+	// getmercinfo(8) = Game ID do mercenario (0 se nao houver nenhum ativo)
+	.@merc = getmercinfo(8);
+	if (.@merc == 0) {
+		mes "Voce nao tem um assistente ativo.";
+		mes "Recrute um mercenario em Prontera, Izlude ou Payon.";
+		close;
+	}
+
+	delitem 717, 1;
+	// Sem o 4o argumento o skill era lancado no proprio jogador.
+	// getcharid(3) e o GID do player (fonte); o alvo tem que ser o mercenario.
+	unitskilluseid getcharid(3), "CR_PROVIDENCE", 5, .@merc;
+	mes "Buff aplicado com sucesso!";
+	close;
+}
+
+// ============================================================
+// Funcao: PA_GOSPEL em Mercenario
+// ============================================================
+function	script	F_MercBuffGospel	{
+	mes "[Gospel Assistente]";
+	mes "Aplica os efeitos do Gospel em seu assistente.";
+	mes "Requer PA_GOSPEL Lv5 no seu Paladin.";
+	mes "Efeito: +ATK, +HIT, +FLEE, +DEF, +MaxHP, +Regen";
+	mes "Custo: 2x Blue Gemstone";
+	next;
+
+	if (select("Aplicar buff", "Cancelar") == 2) {
+		mes "Buff cancelado.";
+		close;
+	}
+
+	if (countitem(717) < 2) {
+		mes "Voce precisa de 2x Blue Gemstone.";
+		close;
+	}
+
+	if (getskilllv("PA_GOSPEL") < 5) {
+		mes "Voce precisa de PA_GOSPEL Lv5 para este buff.";
+		close;
+	}
+
+	.@merc = getmercinfo(8);
+	if (.@merc == 0) {
+		mes "Voce nao tem um assistente ativo.";
+		mes "Recrute um mercenario em Prontera, Izlude ou Payon.";
+		close;
+	}
+
+	delitem 717, 2;
+	// ATENCAO: PA_GOSPEL nao e um buff de alvo unico — e uma area centrada no
+	// conjurador que sorteia buffs para membros do GRUPO. Mercenario nao entra
+	// no grupo, entao o efeito nao alcanca o assistente. Mantido como area no
+	// jogador ate decidir o desenho (ver nota no relatorio).
+	unitskilluseid getcharid(3), "PA_GOSPEL", 5;
+	mes "Gospel ativado na sua posicao.";
+	close;
+}

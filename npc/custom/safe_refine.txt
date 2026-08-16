@@ -1,0 +1,171 @@
+// [Hardcore] Safe Refine NPC
+// Refinamento garantido ate +7, taxa normal de +8 em diante.
+// Inclui NPC de craft da Pedra de Protecao.
+
+prontera,147,178,5	script	Arcanista de Refinamento	4_M_WIZARD,{
+	mes "[Arcanista de Refinamento]";
+	mes "Posso refinar seus equipamentos com garantia ate ^0055FF+7^000000.";
+	mes "Para ^FF0000+8 em diante^000000, a taxa e normal, mas posso usar";
+	mes "uma ^008800Pedra de Protecao^000000 para evitar a quebra.";
+	next;
+
+	switch(select("Refinar equipamento:Craftar Pedra de Protecao:Sair")) {
+	case 1: goto L_REFINE;
+	case 2: goto L_CRAFT;
+	case 3: close;
+	}
+
+L_REFINE:
+	mes "[Arcanista de Refinamento]";
+	mes "Qual slot de equipamento deseja refinar?";
+	next;
+
+	setarray .@indices[1], EQI_HEAD_TOP, EQI_ARMOR, EQI_HAND_L, EQI_HAND_R, EQI_GARMENT, EQI_SHOES, EQI_ACC_L, EQI_ACC_R, EQI_HEAD_MID, EQI_HEAD_LOW;
+	set .@menu$, "";
+	for (set .@i, 1; .@i <= 10; set .@i, .@i+1) {
+		if (getequipisequiped(.@indices[.@i]))
+			set .@menu$, .@menu$ + F_getpositionname(.@indices[.@i]) + "-[" + getequipname(.@indices[.@i]) + "] +" + getequiprefinerycnt(.@indices[.@i]);
+		set .@menu$, .@menu$ + ":";
+	}
+	set .@part, .@indices[select(.@menu$)];
+
+	if (!getequipisequiped(.@part)) {
+		mes "[Arcanista de Refinamento]";
+		mes "Nenhum equipamento nesse slot.";
+		close;
+	}
+
+	set @refine_lv, getequiprefinerycnt(.@part);
+
+	if (@refine_lv >= 20) {
+		mes "[Arcanista de Refinamento]";
+		mes "Este equipamento ja atingiu o nivel maximo de refinamento.";
+		close;
+	}
+
+	// Determinar material
+	if (getequipweaponlv(.@part) > 0) {
+		set @ore_id, 985; // Oridecon (armas)
+	} else {
+		set @ore_id, 984; // Elunium (armaduras)
+	}
+
+	// Refinamento garantido: +0 ate +7
+	if (@refine_lv < 7) {
+		set @cost, (@refine_lv + 1) * 500;
+		mes "[Arcanista de Refinamento]";
+		mes "Refinar de ^0000FF+" + @refine_lv + "^000000 para ^0000FF+" + (@refine_lv+1) + "^000000.";
+		mes "Custo: 1x " + getitemname(@ore_id) + " + " + @cost + " Zeny.";
+		mes "^008800100% de sucesso garantido.^000000";
+		next;
+		if (select("Refinar!:Cancelar") == 2) close;
+
+		if (countitem(@ore_id) < 1 || Zeny < @cost) {
+			mes "[Arcanista de Refinamento]";
+			mes "Materiais insuficientes.";
+			close;
+		}
+
+		delitem @ore_id, 1;
+		set Zeny, Zeny - @cost;
+		successrefitem .@part;
+
+		mes "[Arcanista de Refinamento]";
+		mes "^008800Sucesso!^000000 Seu equipamento agora e ^0000FF+" + (@refine_lv+1) + "^000000.";
+		close;
+	}
+
+	// Refinamento +7->+8 em diante: taxa normal
+	mes "[Arcanista de Refinamento]";
+	mes "Seu equipamento esta em ^FF0000+" + @refine_lv + "^000000.";
+	mes "A partir daqui a taxa e normal. Falha pode ^FF0000destruir^000000 o item.";
+	mes "Voce tem ^008800" + countitem(50001) + "x Pedra de Protecao^000000.";
+	mes "Com a Pedra: falha nao destroi (fica no nivel atual).";
+	next;
+
+	switch(select("Refinar sem Pedra (risco de quebra):Refinar com Pedra de Protecao:Cancelar")) {
+	case 3: close;
+	case 2:
+		if (countitem(50001) < 1) {
+			mes "[Arcanista de Refinamento]";
+			mes "Voce nao tem Pedra de Protecao. Pode craftar uma comigo.";
+			close;
+		}
+		set @use_stone, 1;
+		break;
+	case 1:
+		set @use_stone, 0;
+		break;
+	}
+
+	set @cost, (@refine_lv + 1) * 2000;
+
+	if (countitem(@ore_id) < 1 || Zeny < @cost) {
+		mes "[Arcanista de Refinamento]";
+		mes "Materiais insuficientes. Precisa: 1x " + getitemname(@ore_id) + " + " + @cost + " Zeny.";
+		close;
+	}
+
+	// Taxas de sucesso Pre-RE (%)
+	set @chance, 100;
+	if (@refine_lv == 7)      set @chance, 49;
+	else if (@refine_lv == 8) set @chance, 40;
+	else if (@refine_lv == 9) set @chance, 34;
+	else if (@refine_lv == 10) set @chance, 25;
+	else if (@refine_lv == 11) set @chance, 20;
+	else if (@refine_lv == 12) set @chance, 14;
+	else if (@refine_lv >= 13) set @chance, 10;
+
+	if (@use_stone) delitem 50001, 1;
+	delitem @ore_id, 1;
+	set Zeny, Zeny - @cost;
+
+	if (rand(100) < @chance) {
+		successrefitem .@part;
+		mes "[Arcanista de Refinamento]";
+		mes "^008800Sucesso!^000000 Seu equipamento agora e ^0000FF+" + (@refine_lv+1) + "^000000.";
+	} else {
+		if (@use_stone) {
+			mes "[Arcanista de Refinamento]";
+			mes "^FF8800Falha.^000000 A Pedra de Protecao salvou o equipamento. Ele permanece ^FF0000+" + @refine_lv + "^000000.";
+		} else {
+			failedrefitem .@part;
+			mes "[Arcanista de Refinamento]";
+			mes "^FF0000Falha! Seu equipamento foi destruido.^000000";
+		}
+	}
+	close;
+
+L_CRAFT:
+	mes "[Arcanista de Refinamento]";
+	mes "Para criar 1x ^008800Pedra de Protecao^000000, voce precisa de:";
+	mes "^0000FF10x Oridecon^000000";
+	mes "^0000FF10x Elunium^000000";
+	mes "^0000FF5x Rough Oridecon^000000";
+	mes "^0000FF5x Rough Elunium^000000";
+	mes "^0000FF1x Gold^000000";
+	mes "^FF8800500.000 Zeny^000000";
+	next;
+
+	if (select("Craftar:Cancelar") == 2) close;
+
+	if (countitem(985) < 10 || countitem(984) < 10 ||
+	    countitem(756) < 5  || countitem(757) < 5  ||
+	    countitem(969) < 1  || Zeny < 500000) {
+		mes "[Arcanista de Refinamento]";
+		mes "Voce nao tem os materiais necessarios.";
+		close;
+	}
+
+	delitem 985, 10;   // Oridecon
+	delitem 984, 10;   // Elunium
+	delitem 756, 5;    // Rough Oridecon
+	delitem 757, 5;    // Rough Elunium
+	delitem 969, 1;    // Gold
+	set Zeny, Zeny - 500000;
+	getitem 50001, 1;
+
+	mes "[Arcanista de Refinamento]";
+	mes "^008800Pedra de Protecao criada com sucesso!^000000";
+	close;
+}

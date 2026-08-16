@@ -1155,3 +1155,13 @@ CREATE TABLE IF NOT EXISTS `vendings` (
   `autotrade` tinyint(4) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM;
+
+-- Criacao do usuario do banco.
+-- A senha NAO fica versionada: troque o placeholder abaixo pela senha real
+-- (a mesma de conf/import/inter_conf.txt, que esta no .gitignore) antes de
+-- rodar este script, ou execute o CREATE USER manualmente.
+--
+-- DROP USER IF EXISTS 'ragnarok'@'localhost';
+-- CREATE USER 'ragnarok'@'localhost' IDENTIFIED WITH mysql_native_password BY 'TROQUE_AQUI';
+-- GRANT ALL PRIVILEGES ON *.* TO 'ragnarok'@'localhost';
+-- FLUSH PRIVILEGES;

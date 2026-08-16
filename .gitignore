@@ -64,7 +64,12 @@ Thumbs.db
 /3rdparty/httplib/obj
 
 # /db/
-/db/import
+# [Hardcore] /db/import NAO e mais ignorado: e onde vivem as
+# customizacoes do servidor (cartas custom, drops da Folha de
+# Yggdrasil, skill tree, refine). O upstream ignora por tratar como
+# config local de cada servidor, mas aqui e conteudo do projeto.
+# Nao ha credencial nesses arquivos — sao dados de jogo.
+# /conf/import continua ignorado: la ficam as senhas do banco.
 
 # /conf/
 /conf/import

@@ -1,0 +1,88 @@
+// [Hardcore] Thanatos Tower - Acesso Alternativo
+// Remove necessidade de multiplos jogadores nos andares.
+// Substituido por Chave de Thanatos (ID 50002) craftavel.
+//
+// IDs dos fragmentos originais:
+//   Fragment of Misery  = 7437
+//   Fragment of Agony   = 7436
+//   Fragment of Hatred  = 7438
+//   Fragment of Despair = 7439
+//   Coagulated Spell    = 7433
+//   Cursed Water        = 12020
+
+// NPC de craft da Chave (no ultimo andar tha_t12)
+tha_t12,130,100,5	script	Altar de Thanatos	910,{
+	mes "[Altar de Thanatos]";
+	mes "A energia das memorias de Thanatos ecoa aqui.";
+	mes "Com os fragmentos certos, posso criar uma ^0055FFChave de Thanatos^000000";
+	mes "que abre o caminho para a sala final.";
+	next;
+
+	if (select("Criar Chave de Thanatos:Ver receita:Sair") == 3) close;
+	if (@menu == 2) {
+		mes "[Altar de Thanatos]";
+		mes "^FF0000Receita da Chave de Thanatos:^000000";
+		mes "^0000FF1x Fragment of Misery^000000 (7437)";
+		mes "^0000FF1x Fragment of Agony^000000 (7436)";
+		mes "^0000FF1x Fragment of Hatred^000000 (7438)";
+		mes "^0000FF1x Fragment of Despair^000000 (7439)";
+		mes "^0000FF50x Coagulated Spell^000000 (7433)";
+		mes "^0000FF10x Cursed Water^000000 (12020)";
+		mes "^FF88001.000.000 Zeny^000000";
+		close;
+	}
+
+	// Verificar materiais
+	if (countitem(7437) < 1 || countitem(7436) < 1 ||
+	    countitem(7438) < 1 || countitem(7439) < 1 ||
+	    countitem(7433) < 50 || countitem(12020) < 10 ||
+	    Zeny < 1000000) {
+		mes "[Altar de Thanatos]";
+		mes "Voce nao tem os materiais necessarios.";
+		mes "Use ^008800Ver receita^000000 para conferir a lista.";
+		close;
+	}
+
+	mes "[Altar de Thanatos]";
+	mes "Voce tem todos os materiais. Deseja criar a Chave de Thanatos?";
+	mes "^FF0000Os fragmentos serao consumidos permanentemente.^000000";
+	next;
+
+	if (select("Criar!:Cancelar") == 2) close;
+
+	delitem 7437, 1;   // Fragment of Misery
+	delitem 7436, 1;   // Fragment of Agony
+	delitem 7438, 1;   // Fragment of Hatred
+	delitem 7439, 1;   // Fragment of Despair
+	delitem 7433, 50;  // Coagulated Spell
+	delitem 12020, 10; // Cursed Water
+	set Zeny, Zeny - 1000000;
+	getitem 50002, 1;  // Chave de Thanatos
+
+	mes "[Altar de Thanatos]";
+	mes "^008800A Chave de Thanatos foi criada!^000000";
+	mes "Agora voce pode abrir a porta da sala final sem precisar de aliados nos outros andares.";
+	close;
+}
+
+// Portal alternativo: aceita a Chave de Thanatos para entrar na sala do boss
+tha_t12,130,90,5	script	Porta de Thanatos	45,3,3,{
+	mes "[Porta de Thanatos]";
+	mes "Uma porta que irradia energia das memorias de Thanatos.";
+	next;
+
+	if (countitem(50002) < 1) {
+		mes "[Porta de Thanatos]";
+		mes "Voce precisa de uma ^0055FFChave de Thanatos^000000 para abrir esta porta.";
+		mes "Crie uma no ^008800Altar de Thanatos^000000 acima.";
+		close;
+	}
+
+	if (select("Usar Chave de Thanatos:Cancelar") == 2) close;
+
+	delitem 50002, 1;
+	mes "[Porta de Thanatos]";
+	mes "^008800A porta se abre!^000000 O caminho para Thanatos esta livre.";
+	close2;
+	warp "thana_boss", 136, 116;
+}

@@ -5193,6 +5193,7 @@ Body:
     Knockback: 5
     Requires:
       SpCost: 7
+    Cooldown: 5000
   - Id: 151
     Name: TF_PICKSTONE
     Description: Find Stone
@@ -6255,6 +6256,7 @@ Body:
     Hit: Single
     HitCount: 1
     Element: Weapon
+    Cooldown: 10000
     Requires:
       SpCost:
         - Level: 1

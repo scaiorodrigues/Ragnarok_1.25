@@ -1,0 +1,56 @@
+# This file is a part of rAthena.
+#   Copyright(C) 2021 rAthena Development Team
+#   https://rathena.org - https://github.com/rAthena
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+###########################################################################
+# Skill Tree Database - HARDCORE OVERRIDES
+###########################################################################
+#
+# Regra do servidor: NENHUMA classe ressuscita por skill. A unica forma de
+# reviver e a Folha de Yggdrasil, que so dropa de 7 MVPs a 0,01%.
+#
+# MaxLevel: 0 remove a skill da arvore (ver doc/yaml/db/skill_tree.yml).
+###########################################################################
+
+Header:
+  Type: SKILL_TREE_DB
+  Version: 1
+
+Body:
+  # ALL_RESURRECTION Lv4 era concedida a Alchemist/Creator por este proprio
+  # arquivo (exigia AM_RESURRECTHOMUN 5). Removida.
+  - Job: Alchemist
+    Tree:
+      - Name: ALL_RESURRECTION
+        MaxLevel: 0
+
+  - Job: Creator
+    Tree:
+      - Name: ALL_RESURRECTION
+        MaxLevel: 0
+
+  # Redemptio revive o grupo inteiro ao custo da vida do Priest — e
+  # ressurreicao por skill, entao sai tambem. (ALL_RESURRECTION ja havia
+  # sido removida da arvore de Priest no db/pre-re/skill_tree.yml.)
+  - Job: Priest
+    Tree:
+      - Name: PR_REDEMPTIO
+        MaxLevel: 0
+
+  - Job: High_Priest
+    Tree:
+      - Name: PR_REDEMPTIO
+        MaxLevel: 0

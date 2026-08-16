@@ -1,0 +1,1 @@
+ALTER TABLE `char` ADD COLUMN `hardcore_dead` TINYINT NOT NULL DEFAULT 0;

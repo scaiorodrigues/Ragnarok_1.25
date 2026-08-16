@@ -631,6 +631,11 @@ struct mmo_charstatus {
 	unsigned char hotkey_rowshift2;
 	unsigned long title_id;
 	uint16 inventory_slots;
+
+	// [Hardcore] Death system fields
+	bool     hardcore_dead;           ///< true = personagem morreu permanentemente
+	bool     guardian_angel_used;     ///< true = Super Novice já usou o Guardian Angel
+	int64    osiris_resurrect_time;   ///< timestamp Unix de quando o Limbo de Osiris termina (0 = sem limbo)
 };
 
 typedef enum mail_status {

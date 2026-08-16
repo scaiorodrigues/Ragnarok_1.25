@@ -4374,7 +4374,6 @@ Body:
     Flags:
       BuyingStore: true
     Script: |
-      bonus bRestartFullRecover;
   - Id: 4145
     AegisName: Berzebub_Card
     Name: Berzebub Card

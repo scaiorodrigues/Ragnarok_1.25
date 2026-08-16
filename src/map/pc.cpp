@@ -2613,6 +2613,20 @@ void pc_calc_skilltree(map_session_data *sd)
 	uint16 job_id = class_;
 	class_ = pc_class2idx(class_);
 
+	// [Hardcore] Auto-grant NV_BASIC at max for non-Novice when skillup_limit is disabled.
+	// The client checks NV_BASIC's upFlag to decide whether to show + buttons for 1st-class skills.
+	// Must run before the clearing loop so PERM_GRANTED flag prevents id from being cleared.
+	if (!battle_config.skillup_limit && (sd->class_ & MAPID_SECONDMASK) != MAPID_NOVICE) {
+		uint16 nv_idx = skill_get_index(NV_BASIC);
+		if (sd->status.skill[nv_idx].flag == SKILL_FLAG_PERMANENT) {
+			if (sd->status.skill[nv_idx].lv > 0)
+				sd->status.skill_point += sd->status.skill[nv_idx].lv;
+			sd->status.skill[nv_idx].lv = 9;
+			sd->status.skill[nv_idx].flag = SKILL_FLAG_PERM_GRANTED;
+			sd->status.skill[nv_idx].id = NV_BASIC;
+		}
+	}
+
 	for (const auto &skill : skill_db) {
 		uint16 skill_id = skill.second->nameid;
 		uint16 idx = skill_get_index(skill_id);
@@ -2672,6 +2686,18 @@ void pc_calc_skilltree(map_session_data *sd)
 
 	int32 flag;
 	std::shared_ptr<s_skill_tree> tree = skill_tree_db.find(job_id);
+
+	// [Hardcore DEBUG] Log skill tree lookup result
+	{
+		FILE* dbgf = fopen("C:/rAthena/skill_debug.txt", "a");
+		if (dbgf) {
+			fprintf(dbgf, "[TREEDG] char=%s class_=%d sd->class_=%d job_id=%d tree=%s skills=%zu\n",
+				sd->status.name, sd->status.class_, (int)sd->class_, (int)job_id,
+				tree ? "FOUND" : "NULL",
+				tree ? tree->skills.size() : 0);
+			fclose(dbgf);
+		}
+	}
 
 	do {
 		flag = 0;
@@ -10099,6 +10125,44 @@ int32 pc_dead(map_session_data *sd,block_list *src)
 	//Reset "can log out" tick.
 	if( battle_config.prevent_logout )
 		sd->canlog_tick = gettick() - battle_config.prevent_logout;
+
+	// [Hardcore] Sistema de morte permanente
+	// Nao aplica em PvP/GvG (esses ja retornaram 1|8 acima)
+	if( !mapdata->getMapFlag(MF_PVP) && !mapdata_flag_gvg2(mapdata) ) {
+		// Verificar Osiris Card equipada (ID 4144)
+		bool has_osiris_card = false;
+		for( int32 idx = 0; idx < EQI_MAX; idx++ ) {
+			int32 ep = sd->equip_index[idx];
+			if( ep < 0 ) continue;
+			struct item *it = &sd->inventory.u.items_inventory[ep];
+			if( it->nameid == 0 ) continue;
+			for( int32 ci = 0; ci < MAX_SLOTS; ci++ ) {
+				if( it->card[ci] == 4144 ) {
+					has_osiris_card = true;
+					it->card[ci] = 0;
+					status_calc_pc(sd, SCO_FORCE); // recalcular bônus sem a carta
+					break;
+				}
+			}
+			if( has_osiris_card ) break;
+		}
+
+		if( has_osiris_card ) {
+			// Limbo de Osiris: bloquear por 24h, nao e morte permanente
+			sd->status.hardcore_dead = true;
+			sd->status.osiris_resurrect_time = (int64)time(nullptr) + 86400; // 24h
+			clif_displaymessage( sd->fd, "Voce entrou no estado de Limbo pela Carta Osiris. Voce podera voltar em 24 horas." );
+		} else {
+			// Morte permanente
+			sd->status.hardcore_dead = true;
+			sd->status.osiris_resurrect_time = 0;
+			clif_displaymessage( sd->fd, "MORTE PERMANENTE. Este personagem nao pode mais ser jogado." );
+		}
+		// Salvar imediatamente e desconectar
+		chrif_save(sd, CSAVE_QUIT|CSAVE_INVENTORY|CSAVE_CART);
+		set_eof(sd->fd);
+	}
+
 	return 1;
 }
 
@@ -10959,6 +11023,20 @@ bool pc_jobchange(map_session_data *sd,int32 job, char upper)
 	clif_changelook( sd, LOOK_CLOTHES_COLOR, sd->vd.look[LOOK_CLOTHES_COLOR] );
 	clif_changelook( sd, LOOK_BODY2, sd->vd.look[LOOK_BODY2] );
 	
+	// [Hardcore] When changing from Novice to 1st-class with skillup_limit disabled,
+	// always grant NV_BASIC at max level (client requires NV_BASIC=9 to show + buttons for 1st-class skills).
+	// Return points only if they were manually spent on NV_BASIC.
+	if (!battle_config.skillup_limit && previous_class == MAPID_NOVICE && b_class != MAPID_NOVICE) {
+		uint16 nv_basic_idx = skill_get_index(NV_BASIC);
+		if (sd->status.skill[nv_basic_idx].lv > 0 &&
+		    sd->status.skill[nv_basic_idx].flag == SKILL_FLAG_PERMANENT) {
+			sd->status.skill_point += sd->status.skill[nv_basic_idx].lv;
+			clif_updatestatus(*sd, SP_SKILLPOINT);
+		}
+		sd->status.skill[nv_basic_idx].lv = 9;
+		sd->status.skill[nv_basic_idx].flag = SKILL_FLAG_PERM_GRANTED;
+	}
+
 	//Update skill tree.
 	pc_calc_skilltree(sd);
 	clif_skillinfoblock(*sd);

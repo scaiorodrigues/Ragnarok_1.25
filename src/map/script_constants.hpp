@@ -1246,6 +1246,9 @@
 	export_constant(SC_MERC_SPUP);
 	export_constant(SC_MERC_HITUP);
 	export_constant(SC_MERC_QUICKEN);
+	export_constant(SC_MERC_SPIRIT_KNIGHT);
+	export_constant(SC_MERC_SPIRIT_CRUSADER);
+	export_constant(SC_MERC_SPIRIT_HUNTER);
 	export_constant(SC_REBIRTH);
 	//export_constant(SC_SKILLCASTRATE);
 	//export_constant(SC_DEFRATIOATK);

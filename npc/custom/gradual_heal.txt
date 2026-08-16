@@ -1,0 +1,84 @@
+//===== rAthena Script =======================================
+//= Gradual Healing System
+//===== Description: =========================================
+//= Makes all healing items apply HP/SP gradually over time
+//= instead of instantly. Items use F_StartHeal to queue heal.
+//=
+//= Usage (in item scripts):
+//=   callfunc("F_StartHeal", hp_amount, sp_amount, ticks, interval_ms);
+//=
+//= Example:
+//=   callfunc("F_StartHeal", rand(45,65), 0, 3, 1500);
+//=   -> Heals 45-65 HP split over 3 ticks, one every 1500ms
+//============================================================
+
+- script GradualHealNPC -1,{
+	end;
+
+OnHealTick:
+	if (@ghl_ticks <= 0) {
+		@ghl_active = 0;
+		@ghl_hp = 0;
+		@ghl_sp = 0;
+		end;
+	}
+
+	.@hp_now = @ghl_hp / @ghl_ticks;
+	.@sp_now = @ghl_sp / @ghl_ticks;
+
+	@ghl_hp -= .@hp_now;
+	@ghl_sp -= .@sp_now;
+	@ghl_ticks--;
+
+	if (.@hp_now > 0 || .@sp_now > 0)
+		heal .@hp_now, .@sp_now;
+
+	if (@ghl_ticks > 0)
+		addtimer @ghl_interval, "GradualHealNPC::OnHealTick";
+	else {
+		@ghl_active = 0;
+		@ghl_hp = 0;
+		@ghl_sp = 0;
+	}
+	end;
+}
+
+function	script	F_StartHeal	{
+	.@hp       = getarg(0, 0);
+	.@sp       = getarg(1, 0);
+	.@ticks    = getarg(2, 5);
+	.@interval = getarg(3, 1500);
+
+	if (.@hp <= 0 && .@sp <= 0) return;
+	if (.@ticks <= 0) .@ticks = 1;
+
+	@ghl_hp += .@hp;
+	@ghl_sp += .@sp;
+
+	if (.@ticks > @ghl_ticks)
+		@ghl_ticks = .@ticks;
+
+	// If no timer running, apply first tick now then queue the rest
+	if (!@ghl_active) {
+		@ghl_active   = 1;
+		@ghl_interval = .@interval;
+
+		.@hp_now = @ghl_hp / @ghl_ticks;
+		.@sp_now = @ghl_sp / @ghl_ticks;
+		@ghl_hp -= .@hp_now;
+		@ghl_sp -= .@sp_now;
+		@ghl_ticks--;
+
+		if (.@hp_now > 0 || .@sp_now > 0)
+			heal .@hp_now, .@sp_now;
+
+		if (@ghl_ticks > 0)
+			addtimer .@interval, "GradualHealNPC::OnHealTick";
+		else {
+			@ghl_active = 0;
+			@ghl_hp = 0;
+			@ghl_sp = 0;
+		}
+	}
+	return;
+}

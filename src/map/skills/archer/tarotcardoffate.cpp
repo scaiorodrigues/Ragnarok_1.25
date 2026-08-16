@@ -143,9 +143,8 @@ int32 skill_tarotcard(block_list* src, block_list *target, uint16 skill_id, uint
 			sc_start(src, target, sc[rand_eff], 100, skill_lv, time);
 		break;
 	}
-	case 9: // DEATH - curse, coma and poison
+	case 9: // DEATH - curse and poison (COMA removido: mata permanentemente em servidor Hardcore)
 	{
-		status_change_start(src, target, SC_COMA, 10000, skill_lv, 0, src->id, 0, 0, SCSTART_NONE);
 		sc_start(src, target, SC_CURSE, 100, skill_lv, skill_get_time2(status_db.getSkill(SC_CURSE), 1));
 		sc_start2(src, target, SC_POISON, 100, skill_lv, src->id, skill_get_time2(status_db.getSkill(SC_POISON), 1));
 		break;

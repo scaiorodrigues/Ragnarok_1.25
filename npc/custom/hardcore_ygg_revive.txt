@@ -1,0 +1,129 @@
+//===== rAthena Script =======================================
+//= [Hardcore] Folha de Yggdrasil — Ressurreicao de Conta
+//===== Descricao: ===========================================
+//= Unica forma de reviver no servidor. Ao usar a Folha, o jogador ve a
+//= lista de personagens da PROPRIA CONTA que morreram permanentemente e
+//= escolhe um para voltar a vida. O personagem escolhido volta a poder
+//= logar normalmente.
+//=
+//= Substitui dois sistemas anteriores, ambos desligados:
+//=   1. ALL_RESURRECTION padrao (reviver um corpo no mapa)
+//=   2. Ritual de sacrificio do Alquimista (hardcore_resurrection.txt)
+//=
+//= A Folha e Delayconsume + NoConsume: NAO e consumida automaticamente.
+//= Este script a consome explicitamente, e so quando a ressurreicao
+//= acontece de fato. Cancelar ou nao ter mortos nao gasta o item.
+//=
+//= O UPDATE espelha o que o Limbo de Osiris faz em char.cpp:1011 —
+//= limpar hardcore_dead nao basta, o personagem morreu com HP 0 e
+//= entraria sem vida.
+//============================================================
+
+function	script	F_YggdrasilRevive	{
+	.@aid = getcharid(3);
+
+	mes "^228B22[ Folha de Yggdrasil ]^000000";
+	mes "A folha pulsa em sua mao, procurando por almas ligadas a sua linhagem...";
+	next;
+
+	// Apenas mortos PERMANENTES. Quem esta no Limbo de Osiris
+	// (osiris_resurrect_time > 0) volta sozinho em 24h — gastar a folha
+	// mais rara do servidor nisso seria desperdicio.
+	.@total = query_sql(
+		"SELECT `char_id`, `name`, `base_level`, `class` "+
+		"FROM `char` "+
+		"WHERE `account_id` = "+ .@aid +" "+
+		"  AND `hardcore_dead` = 1 "+
+		"  AND `osiris_resurrect_time` = 0 "+
+		"ORDER BY `base_level` DESC",
+		.@cid, .@cname$, .@clvl, .@cclass);
+
+	if (.@total == 0) {
+		mes "^228B22[ Folha de Yggdrasil ]^000000";
+		mes "Nenhuma alma responde.";
+		mes " ";
+		mes "Nao ha personagens mortos permanentemente nesta conta.";
+
+		// Avisa sobre Limbo para o jogador nao achar que e bug
+		.@limbo = query_sql(
+			"SELECT COUNT(*) FROM `char` WHERE `account_id` = "+ .@aid +
+			" AND `hardcore_dead` = 1 AND `osiris_resurrect_time` > 0", .@nlimbo);
+		if (.@nlimbo > 0 && .@limbo > 0) {
+			mes " ";
+			mes "^888888(Voce tem "+ .@nlimbo +" personagem(ns) no Limbo de Osiris.";
+			mes "Eles retornam sozinhos quando o prazo terminar — a Folha";
+			mes "nao e necessaria.)^000000";
+		}
+		mes " ";
+		mes "^0055FFA folha nao foi consumida.^000000";
+		close;
+	}
+
+	mes "^228B22[ Folha de Yggdrasil ]^000000";
+	mes "A folha reconhece ^FF0000"+ .@total +"^000000 alma(s) perdida(s).";
+	mes "Escolha quem deve retornar:";
+	next;
+
+	.@menu$ = "";
+	for (.@i = 0; .@i < .@total; .@i++)
+		.@menu$ += .@cname$[.@i] +" - "+ jobname(.@cclass[.@i]) +" Nv."+ .@clvl[.@i] +":";
+	.@menu$ += "Guardar a folha";
+
+	.@pick = select(.@menu$) - 1;
+	if (.@pick >= .@total) {
+		mes "^228B22[ Folha de Yggdrasil ]^000000";
+		mes "A folha permanece intacta.";
+		close;
+	}
+
+	mes "^228B22[ Folha de Yggdrasil ]^000000";
+	mes "Trazer de volta ^0055FF"+ .@cname$[.@pick] +"^000000?";
+	mes "^888888"+ jobname(.@cclass[.@pick]) +" - Nivel "+ .@clvl[.@pick] +"^000000";
+	mes " ";
+	mes "^FF0000A folha sera consumida. Esta acao nao pode ser desfeita.^000000";
+	next;
+	if (select("Confirmar a ressurreicao", "Desistir") == 2) {
+		mes "^228B22[ Folha de Yggdrasil ]^000000";
+		mes "A folha permanece intacta.";
+		close;
+	}
+
+	// Recheca antes de gravar: entre a listagem e a confirmacao o estado
+	// pode ter mudado (outra folha usada em outra sessao da mesma conta).
+	.@ok = query_sql(
+		"SELECT `char_id` FROM `char` WHERE `char_id` = "+ .@cid[.@pick] +
+		" AND `account_id` = "+ .@aid +
+		" AND `hardcore_dead` = 1 AND `osiris_resurrect_time` = 0", .@check);
+	if (.@ok == 0) {
+		mes "^228B22[ Folha de Yggdrasil ]^000000";
+		mes "Esta alma ja retornou por outro meio.";
+		mes "^0055FFA folha nao foi consumida.^000000";
+		close;
+	}
+
+	if (countitem(610) < 1) {
+		mes "^228B22[ Folha de Yggdrasil ]^000000";
+		mes "A folha escapou de suas maos.";
+		close;
+	}
+	delitem 610, 1;
+
+	// hardcore_dead sozinho nao basta: o personagem morreu com HP 0 e
+	// voltaria sem vida. Mesmo tratamento do auto-revive do Osiris.
+	query_sql(
+		"UPDATE `char` SET "+
+		"  `hardcore_dead` = 0, "+
+		"  `osiris_resurrect_time` = 0, "+
+		"  `hp` = GREATEST(`hp`, CAST(`max_hp` / 2 AS UNSIGNED)), "+
+		"  `sp` = GREATEST(`sp`, CAST(`max_sp` / 2 AS UNSIGNED)) "+
+		"WHERE `char_id` = "+ .@cid[.@pick] +" AND `account_id` = "+ .@aid);
+
+	logmes "[Yggdrasil] Reviveu char_id "+ .@cid[.@pick] +" ("+ .@cname$[.@pick] +")";
+
+	mes "^228B22[ Folha de Yggdrasil ]^000000";
+	mes "A folha se desfaz em luz.";
+	mes " ";
+	mes "^0055FF"+ .@cname$[.@pick] +"^000000 respira novamente.";
+	mes "Ele ja pode ser selecionado na tela de personagens.";
+	close;
+}

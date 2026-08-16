@@ -1,0 +1,127 @@
+Header:
+  Type: RANDOM_OPTION_GROUP
+  Version: 1
+
+Body:
+  - Id: 1
+    Group: Group_1
+    Slots:
+      - Slot: 1
+        Options:
+          - Option: VAR_STRAMOUNT
+            MinValue: 1
+            MaxValue: 5
+            Chance: 1000
+          - Option: VAR_AGIAMOUNT
+            MinValue: 1
+            MaxValue: 5
+            Chance: 1000
+          - Option: VAR_VITAMOUNT
+            MinValue: 1
+            MaxValue: 5
+            Chance: 1000
+          - Option: VAR_INTAMOUNT
+            MinValue: 1
+            MaxValue: 5
+            Chance: 1000
+          - Option: VAR_DEXAMOUNT
+            MinValue: 1
+            MaxValue: 5
+            Chance: 1000
+          - Option: VAR_LUKAMOUNT
+            MinValue: 1
+            MaxValue: 5
+            Chance: 1000
+          - Option: VAR_MAXHPAMOUNT
+            MinValue: 50
+            MaxValue: 200
+            Chance: 1000
+          - Option: VAR_MAXSPAMOUNT
+            MinValue: 10
+            MaxValue: 50
+            Chance: 1000
+          - Option: VAR_ATTPOWER
+            MinValue: 1
+            MaxValue: 10
+            Chance: 1000
+          - Option: VAR_HITSUCCESSVALUE
+            MinValue: 1
+            MaxValue: 10
+            Chance: 1000
+  - Id: 2
+    Group: Group_2
+    Slots:
+      - Slot: 1
+        Options:
+          - Option: VAR_STRAMOUNT
+            MinValue: 1
+            MaxValue: 5
+            Chance: 1000
+          - Option: VAR_AGIAMOUNT
+            MinValue: 1
+            MaxValue: 5
+            Chance: 1000
+          - Option: VAR_VITAMOUNT
+            MinValue: 1
+            MaxValue: 5
+            Chance: 1000
+          - Option: VAR_INTAMOUNT
+            MinValue: 1
+            MaxValue: 5
+            Chance: 1000
+          - Option: VAR_DEXAMOUNT
+            MinValue: 1
+            MaxValue: 5
+            Chance: 1000
+          - Option: VAR_LUKAMOUNT
+            MinValue: 1
+            MaxValue: 5
+            Chance: 1000
+          - Option: VAR_MAXHPAMOUNT
+            MinValue: 100
+            MaxValue: 500
+            Chance: 1000
+          - Option: VAR_MAXSPAMOUNT
+            MinValue: 20
+            MaxValue: 100
+            Chance: 1000
+          - Option: VAR_ITEMDEFPOWER
+            MinValue: 1
+            MaxValue: 5
+            Chance: 1000
+          - Option: VAR_AVOIDSUCCESSVALUE
+            MinValue: 1
+            MaxValue: 10
+            Chance: 1000
+          - Option: ATTR_TOLERACE_FIRE
+            MinValue: 3
+            MaxValue: 10
+            Chance: 500
+          - Option: ATTR_TOLERACE_WATER
+            MinValue: 3
+            MaxValue: 10
+            Chance: 500
+          - Option: ATTR_TOLERACE_WIND
+            MinValue: 3
+            MaxValue: 10
+            Chance: 500
+          - Option: ATTR_TOLERACE_GROUND
+            MinValue: 3
+            MaxValue: 10
+            Chance: 500
+          - Option: ATTR_TOLERACE_POISON
+            MinValue: 3
+            MaxValue: 10
+            Chance: 500
+          - Option: ATTR_TOLERACE_SAINT
+            MinValue: 3
+            MaxValue: 10
+            Chance: 500
+          - Option: ATTR_TOLERACE_DARKNESS
+            MinValue: 3
+            MaxValue: 10
+            Chance: 500
+          - Option: ATTR_TOLERACE_UNDEAD
+            MinValue: 3
+            MaxValue: 10
+            Chance: 500

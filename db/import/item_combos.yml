@@ -1,0 +1,130 @@
+# This file is a part of rAthena.
+#   Copyright(C) 2022 rAthena Development Team
+#   https://rathena.org - https://github.com/rathena
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+###########################################################################
+# Item Combo Database
+###########################################################################
+#
+# Settings
+#
+###########################################################################
+# - Combos:                 List of combo sets.
+#    - Combo:               Sequence of items to define a combo (minimum of 2 items).
+#       - <item name>       AEGIS name of the item
+#   Script                  Script to execute when one of the combos is equipped. (Default: null)
+#   Clear                   Remove the defined combos from database. (Default: false)
+###########################################################################
+
+Header:
+  Type: COMBO_DB
+  Version: 1
+
+# [Hardcore] Card Set Bonuses — Pre-Renewal
+# Equipar todas as cartas do combo simultaneamente ativa o bonus.
+Body:
+  # --- Conjunto 1: Sombras da Noite (Trevas + Esqueleto) ---
+  # Bathory_Card + Soldier_Skeleton_Card
+  # Bonus: Dark resist +10%, Undead resist +10%, MaxHP +500
+  - Combo:
+      - Bathory_Card
+      - Soldier_Skeleton_Card
+    Script: |
+      bonus2 bSubEle,Ele_Dark,10;
+      bonus2 bSubEle,Ele_Undead,10;
+      bonus bMaxHP,500;
+
+  # --- Conjunto 2: Cla Orc (Guerreiro + Heroi) ---
+  # Orc_Warrior_Card + Orc_Hero_Card
+  # Bonus: ATK +15, VIT +5, DEF +10
+  - Combo:
+      - Orc_Warrior_Card
+      - Orc_Hero_Card
+    Script: |
+      bonus bAtk,15;
+      bonus bVit,5;
+      bonus bDef,10;
+
+  # --- Conjunto 3: Trindade Inseto (3 cartas) ---
+  # Mantis_Card + Rocker_Card + Metaller_Card
+  # Bonus: STR +5, CRIT +5, ATK +10
+  - Combo:
+      - Mantis_Card
+      - Rocker_Card
+      - Metaller_Card
+    Script: |
+      bonus bStr,5;
+      bonus bCritical,5;
+      bonus bAtk,10;
+
+  # --- Conjunto 4: Senhores do Oceano (3 cartas) ---
+  # Marc_Card + Vadon_Card + Marin_Card
+  # Bonus: Water resist +20%, MaxHP +800, DEF +5
+  - Combo:
+      - Marc_Card
+      - Vadon_Card
+      - Marin_Card
+    Script: |
+      bonus2 bSubEle,Ele_Water,20;
+      bonus bMaxHP,800;
+      bonus bDef,5;
+
+  # --- Conjunto 5: Cacadores Implacaveis ---
+  # Hydra_Card + Phreeoni_Card
+  # Bonus: ATK +20 vs Demi-Human, HIT +15
+  - Combo:
+      - Hydra_Card
+      - Phreeoni_Card
+    Script: |
+      bonus2 bAtkEle,Ele_Neutral,20;
+      bonus bHit,15;
+
+  # --- Conjunto 6: Mente e Espirito (Magico) ---
+  # Horong_Card + Marduk_Card + Pasana_Card
+  # Bonus: INT +5, MaxSP +100, Ghost resist +10%, Fire resist +5%
+  - Combo:
+      - Horong_Card
+      - Marduk_Card
+      - Pasana_Card
+    Script: |
+      bonus bInt,5;
+      bonus bMaxSP,100;
+      bonus2 bSubEle,Ele_Ghost,10;
+      bonus2 bSubEle,Ele_Fire,5;
+
+  # --- Conjunto 7: Veneno e Fuga ---
+  # Poporing_Card + Magnolia_Card
+  # Bonus: Poison resist +20%, Flee +10, AGI +3
+  - Combo:
+      - Poporing_Card
+      - Magnolia_Card
+    Script: |
+      bonus2 bSubEle,Ele_Poison,20;
+      bonus bFlee,10;
+      bonus bAgi,3;
+
+  # --- Conjunto 8: Familia Poring (3 cartas) ---
+  # Poring_Card + Drops_Card + Poporing_Card
+  # Bonus: MaxHP +500, MaxSP +100, LUK +5, item drop rate +5%
+  - Combo:
+      - Poring_Card
+      - Drops_Card
+      - Poporing_Card
+    Script: |
+      bonus bMaxHP,500;
+      bonus bMaxSP,100;
+      bonus bLuk,5;
+      bonus bItemDropRatio,5;

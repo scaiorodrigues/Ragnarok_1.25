@@ -8608,6 +8608,76 @@ ACMD_FUNC(homshuffle)
 	return 0;
 }
 
+// [Hardcore] Set homunculus behavior mode: passivo/guardiao/agressivo
+ACMD_FUNC(hommode)
+{
+	nullpo_retr(-1, sd);
+
+	if (!sd->hd) {
+		clif_displaymessage(fd, "Voce nao possui um homunculus invocado.");
+		return -1;
+	}
+
+	static const char* mode_names[] = { "passivo", "guardiao", "agressivo" };
+
+	if (!message || !*message) {
+		sprintf(atcmd_output, "Modo atual do homunculus: %s. Uso: @hommode [agressivo|guardiao|passivo]", mode_names[sd->hd->hom_behavior]);
+		clif_displaymessage(fd, atcmd_output);
+		return -1;
+	}
+
+	if (strcmpi(message, "passivo") == 0) {
+		sd->hd->hom_behavior = 0;
+		clif_displaymessage(fd, "Homunculus: modo PASSIVO ativado (segue apenas comandos do cliente).");
+	} else if (strcmpi(message, "guardiao") == 0) {
+		sd->hd->hom_behavior = 1;
+		clif_displaymessage(fd, "Homunculus: modo GUARDIAO ativado (contra-ataca quando voce ou ele for atacado).");
+	} else if (strcmpi(message, "agressivo") == 0) {
+		sd->hd->hom_behavior = 2;
+		clif_displaymessage(fd, "Homunculus: modo AGRESSIVO ativado (contra-ataca e persegue o inimigo).");
+	} else {
+		clif_displaymessage(fd, "Uso: @hommode [agressivo|guardiao|passivo]");
+		return -1;
+	}
+
+	return 0;
+}
+
+// [Hardcore] Set mercenary behavior mode: passivo/guardiao/agressivo
+ACMD_FUNC(mermode)
+{
+	nullpo_retr(-1, sd);
+
+	if (!sd->md) {
+		clif_displaymessage(fd, "Voce nao possui um mercenario contratado.");
+		return -1;
+	}
+
+	static const char* mode_names[] = { "passivo", "guardiao", "agressivo" };
+
+	if (!message || !*message) {
+		sprintf(atcmd_output, "Modo atual do mercenario: %s. Uso: @mermode [agressivo|guardiao|passivo]", mode_names[sd->md->merc_behavior]);
+		clif_displaymessage(fd, atcmd_output);
+		return -1;
+	}
+
+	if (strcmpi(message, "passivo") == 0) {
+		sd->md->merc_behavior = 0;
+		clif_displaymessage(fd, "Mercenario: modo PASSIVO ativado (segue apenas comandos do cliente).");
+	} else if (strcmpi(message, "guardiao") == 0) {
+		sd->md->merc_behavior = 1;
+		clif_displaymessage(fd, "Mercenario: modo GUARDIAO ativado (contra-ataca quando voce ou ele for atacado).");
+	} else if (strcmpi(message, "agressivo") == 0) {
+		sd->md->merc_behavior = 2;
+		clif_displaymessage(fd, "Mercenario: modo AGRESSIVO ativado (contra-ataca e persegue o inimigo).");
+	} else {
+		clif_displaymessage(fd, "Uso: @mermode [agressivo|guardiao|passivo]");
+		return -1;
+	}
+
+	return 0;
+}
+
 /*==========================================
  * Show Items DB Info   v 1.0
  * originally by [Lupus]
@@ -9648,6 +9718,44 @@ ACMD_FUNC(resetskill)
 
 	pc_resetskill(sd,1);
 	sprintf(atcmd_output, msg_txt(sd,206), sd->status.name); // '%s' skill points reset.
+	clif_displaymessage(fd, atcmd_output);
+	return 0;
+}
+
+/*==========================================
+ * @fixbasicskill [Hardcore]
+ * Returns skill points spent on NV_BASIC for non-Novice characters.
+ * Use this for characters who changed jobs before player_skillup_limit: no was set.
+ *------------------------------------------*/
+ACMD_FUNC(fixbasicskill)
+{
+	nullpo_retr(-1, sd);
+
+	if ((sd->class_ & MAPID_SECONDMASK) == MAPID_NOVICE) {
+		clif_displaymessage(fd, "Use este comando apenas apos mudar de classe (nao em Novices).");
+		return -1;
+	}
+
+	uint16 nv_basic_idx = skill_get_index(NV_BASIC);
+
+	uint8 nv_lv = sd->status.skill[nv_basic_idx].lv;
+	uint8 nv_flag = sd->status.skill[nv_basic_idx].flag;
+
+	// Return points only if NV_BASIC was manually spent
+	if (nv_lv > 0 && nv_flag == SKILL_FLAG_PERMANENT) {
+		sd->status.skill_point += nv_lv;
+		clif_updatestatus(*sd, SP_SKILLPOINT);
+	}
+
+	// Always grant NV_BASIC=9 PERM_GRANTED so client shows + buttons for 1st-class skills
+	sd->status.skill[nv_basic_idx].lv = 9;
+	sd->status.skill[nv_basic_idx].flag = SKILL_FLAG_PERM_GRANTED;
+	clif_skillinfoblock(*sd);
+
+	if (nv_lv > 0 && nv_flag == SKILL_FLAG_PERMANENT)
+		sprintf(atcmd_output, "Retornados %d pontos de skill (NV_BASIC) e habilidade concedida automaticamente.", nv_lv);
+	else
+		sprintf(atcmd_output, "NV_BASIC concedida automaticamente (nivel maximo). Skills de 1a classe desbloqueadas.");
 	clif_displaymessage(fd, atcmd_output);
 	return 0;
 }
@@ -11734,6 +11842,8 @@ void atcommand_basecommands(void) {
 		ACMD_DEF(hominfo),
 		ACMD_DEF(homstats),
 		ACMD_DEF(homshuffle),
+		ACMD_DEF(hommode),
+		ACMD_DEF(mermode),
 		ACMD_DEF(showmobs),
 		ACMD_DEF(feelreset),
 		ACMD_DEF(hatereset),
@@ -11747,6 +11857,7 @@ void atcommand_basecommands(void) {
 		ACMD_DEF(agitend2),
 		ACMD_DEF(resetskill),
 		ACMD_DEF(resetstat),
+		ACMD_DEF(fixbasicskill),
 		ACMD_DEF2("storagelist", itemlist),
 		ACMD_DEF2("cartlist", itemlist),
 		ACMD_DEF(itemlist),

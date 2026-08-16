@@ -34,16 +34,6 @@ function	script	F_CoolEventCorp	{
 	switch(select(getarg(0))) {
 	case 1:
 		mes "[Cool Event Corp. Staff]";
-		mes "Your Respawn Point";
-		mes "has been saved here";
-		mes getarg(1)+".";
-		mes "Thank you for using the";
-		mes "Cool Event Corp. service~";
-		savepoint getarg(2),getarg(3),getarg(4),1,1;
-		close2;
-		break;
-	case 2:
-		mes "[Cool Event Corp. Staff]";
 		if(!callfunc("F_CanOpenStorage")){
 			mes "I'm sorry, but you";
 			mes "need the Novice's";
@@ -70,39 +60,7 @@ function	script	F_CoolEventCorp	{
 		close2;
 		openstorage;
 		break;
-	case 3:
-		mes "Please choose";
-		mes "your destination.";
-		next;
-		if (VIP_SCRIPT && !vip_status(VIP_STATUS_ACTIVE))
-			set .@cost,4400;
-		else
-			set .@cost,2200;
-		.@destination$ = getarg(5);
-		if (select(.@destination$ +" -> "+ .@cost +" z:Cancel") == 1) {
-			if ((countitem(7060) != 0) || (Zeny >= .@cost)) {
-				if (countitem(7060) != 0) {
-					delitem 7060,1; //Warp_Free_Ticket
-				}
-				else {
-					set Zeny,Zeny-.@cost;
-				}
-				if (.@destination$ == "Veins") warp "veins",205,101;
-				else if (.@destination$ == "Rachel") warp "rachel",115,125;
-				cutin "",255;
-				end;
-			}
-			else {
-				mes "[Cool Event Corp. Staff]";
-				mes "I'm sorry, but you don't have";
-				mes "enough zeny for the Teleport";
-				mes "Service. The fee to teleport";
-				mes "to "+ .@destination$ +" is "+.@cost+" zeny.";
-			}
-		}
-		close2;
-		break;
-	case 4:
+	case 2:
 		mes "[Cool Event Corp. Staff]";
 		if(BaseClass != Job_Merchant){
 			mes "I'm sorry, but the";
@@ -156,10 +114,10 @@ function	script	F_CoolEventCorp	{
 		}
 		close2;
 		break;
-	case 5:
+	case 3:
 		callfunc("F_SetKafCode","[Cool Event Corp. Staff]","Cool Event Corp.");
 		//the function closes msg and removes cutins
-	case 6:
+	case 4:
 	default:
 		mes "[Cool Event Corp. Staff]";
 		mes "Cool Event Corp. is always";
@@ -176,28 +134,28 @@ function	script	F_CoolEventCorp	{
 
 lighthalzen,94,248,3	script	Cool Event Corp Staff::CoolEventCorpStaffLighthalzen	4_M_ZONDAMAN,{
 	callfunc "F_CoolEventCorp",
-		"Save:Use Storage::Rent a Pushcart:Storage Password Service:Cancel",
+		"Use Storage:Rent a Pushcart:Storage Password Service:Cancel",
 		"in the town of Lighthalzen","lighthalzen",95,240;
 	end;
 }
 
 hugel,88,168,4	script	Cool Event Corp. Staff::CoolEventCorpStaffHugel	4_M_ZONDAMAN,{
 	callfunc "F_CoolEventCorp",
-		"Save:Use Storage::Rent a Pushcart:Storage Password Service:Cancel",
+		"Use Storage:Rent a Pushcart:Storage Password Service:Cancel",
 		"in the village of Hugel","hugel",96,155;
 	end;
 }
 
 rachel,109,138,5	script	Cool Event Corp. Staff::CoolEventCorpStaffRachel	4_M_ZONDAMAN,{
 	callfunc "F_CoolEventCorp",
-		"Save:Use Storage:Teleport Service:Rent a Pushcart:Storage Password Service:Cancel",
-		"in the town of Rachel","rachel",113,137,"Veins";
+		"Use Storage:Rent a Pushcart:Storage Password Service:Cancel",
+		"in the town of Rachel","rachel",113,137;
 	end;
 }
 
 veins,208,128,5	script	Cool Event Corp. Staff::CoolEventCorpStaffVeins	4_M_ZONDAMAN,{
 	callfunc "F_CoolEventCorp",
-		"Save:Use Storage:Teleport Service:Rent a Pushcart:Storage Password Service:Cancel",
-		"in the town of Veins","veins",204,103,"Rachel";
+		"Use Storage:Rent a Pushcart:Storage Password Service:Cancel",
+		"in the town of Veins","veins",204,103;
 	end;
 }

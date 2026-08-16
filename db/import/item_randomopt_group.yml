@@ -1,0 +1,154 @@
+# This file is a part of rAthena.
+#   Copyright(C) 2021 rAthena Development Team
+#   https://rathena.org - https://github.com/rathena
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+###########################################################################
+# Item Random Option Group Database
+###########################################################################
+#
+# Item Random Option Group Settings
+#
+###########################################################################
+
+Header:
+  Type: RANDOM_OPTION_GROUP
+  Version: 1
+
+# [Hardcore] Pre-Renewal Random Option Groups
+# Assign these groups to items via mob_db drop entries (RandomOptionGroup field)
+# or via NPC scripts using setoption/setrandomoption functions.
+Body:
+  - Id: 1
+    Group: Group_1
+    MaxRandom: 1
+    Random:
+      - Option: VAR_STRAMOUNT
+        MinValue: 1
+        MaxValue: 5
+        Chance: 1000
+      - Option: VAR_AGIAMOUNT
+        MinValue: 1
+        MaxValue: 5
+        Chance: 1000
+      - Option: VAR_VITAMOUNT
+        MinValue: 1
+        MaxValue: 5
+        Chance: 1000
+      - Option: VAR_INTAMOUNT
+        MinValue: 1
+        MaxValue: 5
+        Chance: 1000
+      - Option: VAR_DEXAMOUNT
+        MinValue: 1
+        MaxValue: 5
+        Chance: 1000
+      - Option: VAR_LUKAMOUNT
+        MinValue: 1
+        MaxValue: 5
+        Chance: 1000
+      - Option: VAR_MAXHPAMOUNT
+        MinValue: 50
+        MaxValue: 200
+        Chance: 1000
+      - Option: VAR_MAXSPAMOUNT
+        MinValue: 10
+        MaxValue: 50
+        Chance: 1000
+      - Option: VAR_ATTPOWER
+        MinValue: 1
+        MaxValue: 10
+        Chance: 1000
+      - Option: VAR_HITSUCCESSVALUE
+        MinValue: 1
+        MaxValue: 10
+        Chance: 1000
+
+  - Id: 2
+    Group: Group_2
+    MaxRandom: 1
+    Random:
+      - Option: VAR_STRAMOUNT
+        MinValue: 1
+        MaxValue: 5
+        Chance: 1000
+      - Option: VAR_AGIAMOUNT
+        MinValue: 1
+        MaxValue: 5
+        Chance: 1000
+      - Option: VAR_VITAMOUNT
+        MinValue: 1
+        MaxValue: 5
+        Chance: 1000
+      - Option: VAR_INTAMOUNT
+        MinValue: 1
+        MaxValue: 5
+        Chance: 1000
+      - Option: VAR_DEXAMOUNT
+        MinValue: 1
+        MaxValue: 5
+        Chance: 1000
+      - Option: VAR_LUKAMOUNT
+        MinValue: 1
+        MaxValue: 5
+        Chance: 1000
+      - Option: VAR_MAXHPAMOUNT
+        MinValue: 100
+        MaxValue: 500
+        Chance: 1000
+      - Option: VAR_MAXSPAMOUNT
+        MinValue: 20
+        MaxValue: 100
+        Chance: 1000
+      - Option: VAR_ITEMDEFPOWER
+        MinValue: 1
+        MaxValue: 5
+        Chance: 1000
+      - Option: VAR_AVOIDSUCCESSVALUE
+        MinValue: 1
+        MaxValue: 10
+        Chance: 1000
+      - Option: ATTR_TOLERACE_FIRE
+        MinValue: 3
+        MaxValue: 10
+        Chance: 500
+      - Option: ATTR_TOLERACE_WATER
+        MinValue: 3
+        MaxValue: 10
+        Chance: 500
+      - Option: ATTR_TOLERACE_WIND
+        MinValue: 3
+        MaxValue: 10
+        Chance: 500
+      - Option: ATTR_TOLERACE_GROUND
+        MinValue: 3
+        MaxValue: 10
+        Chance: 500
+      - Option: ATTR_TOLERACE_POISON
+        MinValue: 3
+        MaxValue: 10
+        Chance: 500
+      - Option: ATTR_TOLERACE_SAINT
+        MinValue: 3
+        MaxValue: 10
+        Chance: 500
+      - Option: ATTR_TOLERACE_DARKNESS
+        MinValue: 3
+        MaxValue: 10
+        Chance: 500
+      - Option: ATTR_TOLERACE_UNDEAD
+        MinValue: 3
+        MaxValue: 10
+        Chance: 500

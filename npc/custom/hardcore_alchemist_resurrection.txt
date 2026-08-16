@@ -1,0 +1,186 @@
+//===== rAthena Script =======================================
+//= Alquimista - Ressurreicao Hardcore (Fase 4)
+//===== Description: =========================================
+//= Permite Alquimistas Level 70+ ressuscitarem personagens
+//= mortos permanentemente do Hardcore.
+//= Fluxo: Alquimista fala com o NPC -> seleciona alvo vivo ->
+//= consome materiais -> mostra menu de mortos -> ressuscita
+//===== Requisitos: =========================================
+//= Alquimista level 70+, lista completa de materiais conforme
+//= tabela da DOCUMENTO DE DESIGN v2 secao 2
+//============================================================
+
+prontera,150,180,4	script	Ressurreicao Alquimica	89,{
+	mes "[Ressurreicao Alquimica]";
+
+	// Verificar se o jogador e um Alquimista
+	if (BaseClass != Job_Alchemist) {
+		mes "Apenas Alquimistas podem realizar este ritual.";
+		close;
+	}
+
+	// Verificar level minimo (70)
+	if (BaseLevel < 70) {
+		mes "Voce precisa ser level 70 ou superior para realizar a ressurreicao.";
+		close;
+	}
+
+	mes "Saudacoes, Alquimista. Este ritual permite ressuscitar um personagem que morreu no modo Hardcore.";
+	mes "O processo tem 3 etapas:";
+	mes "1. Escolher o alvo (jogador vivo da sua conta)";
+	mes "2. Consumir os materiais necessarios";
+	mes "3. Selecionar o personagem a ser ressuscitado";
+	next;
+
+	mes "IMPORTANTE:";
+	mes "- O ritual so pode ser realizado a cada 24 horas";
+	mes "- Todos os 20 materiais serao consumidos";
+	mes "- Personagens Transclasse so podem ser ressuscitados se o alvo tambem for Transclasse";
+	mes "- Apenas personagens com nivel menor ou igual ao alvo serao elegiveis";
+	next;
+
+	// Verificar cooldown de 24h
+	if (gettimetick(2) < #resurrection_cooldown) {
+		.@remaining = #resurrection_cooldown - gettimetick(2);
+		.@hours = .@remaining / 3600;
+		.@mins = (.@remaining % 3600) / 60;
+		mes "O ritual foi realizado recentemente. Aguarde mais " + .@hours + "h " + .@mins + "m.";
+		close;
+	}
+
+	// Verificar materiais e listar faltantes
+	mes "[Verificando materiais...]";
+
+	// Tabela de materiais conforme DOCUMENTO v2 secao 2
+	if (countitem(1192) < 35)  { @missing = @missing + 1; @missing$ = @missing$ + "~ Bottle of Water x35^FF0000;^000000 "; }
+	if (countitem(7042) < 2000) { @missing = @missing + 1; @missing$ = @missing$ + "~ Coal x2000^FF0000;^000000 "; }
+	if (countitem(713) < 40)   { @missing = @missing + 1; @missing$ = @missing$ + "~ Empty Bottle x40^FF0000;^000000 "; }
+	if (countitem(7184) < 400)  { @missing = @missing + 1; @missing$ = @missing$ + "~ Poisonous Toad Skin x400^FF0000;^000000 "; }
+	if (countitem(509) < 150)  { @missing = @missing + 1; @missing$ = @missing$ + "~ White Herb x150^FF0000;^000000 "; }
+	if (countitem(7208) < 800)  { @missing = @missing + 1; @missing$ = @missing$ + "~ Burnt Bone Fragment x800^FF0000;^000000 "; }
+	if (countitem(7200) < 25)  { @missing = @missing + 1; @missing$ = @missing$ + "~ Rock Salt x25^FF0000;^000000 "; }
+	if (countitem(501) < 100)  { @missing = @missing + 1; @missing$ = @missing$ + "~ Red Herb x100^FF0000;^000000 "; }
+	if (countitem(757) < 80)   { @missing = @missing + 1; @missing$ = @missing$ + "~ Pyroxene x80^FF0000;^000000 "; }
+	if (countitem(948) < 15)   { @missing = @missing + 1; @missing$ = @missing$ + "~ Crystal Fragment x15^FF0000;^000000 "; }
+	if (countitem(1002) < 50)  { @missing = @missing + 1; @missing$ = @missing$ + "~ Iron Ore x50^FF0000;^000000 "; }
+	if (countitem(1000) < 30)  { @missing = @missing + 1; @missing$ = @missing$ + "~ Star Dust x30^FF0000;^000000 "; }
+	if (countitem(1003) < 5)   { @missing = @missing + 1; @missing$ = @missing$ + "~ Copper Ore x5^FF0000;^000000 "; }
+	if (countitem(704) < 3)    { @missing = @missing + 1; @missing$ = @missing$ + "~ Burning Coal x3^FF0000;^000000 "; }
+	if (countitem(604) < 20)   { @missing = @missing + 1; @missing$ = @missing$ + "~ Banana x20^FF0000;^000000 "; }
+	if (countitem(985) < 2)    { @missing = @missing + 1; @missing$ = @missing$ + "~ Elunium x2^FF0000;^000000 "; }
+	if (countitem(1246) < 10)  { @missing = @missing + 1; @missing$ = @missing$ + "~ Seaweed x10^FF0000;^000000 "; }
+	if (countitem(756) < 1)    { @missing = @missing + 1; @missing$ = @missing$ + "~ Rough Oridecon x1^FF0000;^000000 "; }
+	if (countitem(969) < 1)    { @missing = @missing + 1; @missing$ = @missing$ + "~ Gold x1^FF0000;^000000 "; }
+
+	if (@missing > 0) {
+		next;
+		mes "Faltam " + @missing + " item(s):";
+		mes @missing$;
+		mes "";
+		mes "Colete todos os materiais e volte.";
+		close;
+	}
+
+	next;
+	mes "Todos os materiais foram encontrados!";
+	mes "";
+	mes "Materiais que serao consumidos:";
+	mes "- Bottle of Water x35, Coal x2000, Empty Bottle x40";
+	mes "- Poisonous Toad Skin x400, White Herb x150";
+	mes "- Burnt Bone Fragment x800, Rock Salt x25, Red Herb x100";
+	mes "- Pyroxene x80, Crystal Fragment x15, Iron Ore x50";
+	mes "- Star Dust x30, Copper Ore x5, Burning Coal x3";
+	mes "- Banana x20, Elunium x2, Seaweed x10";
+	mes "- Rough Oridecon x1, Gold x1";
+	next;
+
+	if (select("Prosseguir com a ressurreicao", "Cancelar") == 2) {
+		mes "Ritual cancelado.";
+		close;
+	}
+
+	// Consumir todos os materiais
+	delitem 1192, 35;   // Bottle of Water
+	delitem 7042, 2000; // Coal
+	delitem 713, 40;    // Empty Bottle
+	delitem 7184, 400;  // Poisonous Toad Skin
+	delitem 509, 150;   // White Herb
+	delitem 7208, 800;  // Burnt Bone Fragment
+	delitem 7200, 25;   // Rock Salt
+	delitem 501, 100;   // Red Herb
+	delitem 757, 80;    // Pyroxene
+	delitem 948, 15;    // Crystal Fragment
+	delitem 1002, 50;   // Iron Ore
+	delitem 1000, 30;   // Star Dust
+	delitem 1003, 5;    // Copper Ore
+	delitem 704, 3;     // Burning Coal
+	delitem 604, 20;    // Banana
+	delitem 985, 2;     // Elunium
+	delitem 1246, 10;   // Seaweed
+	delitem 756, 1;     // Rough Oridecon
+	delitem 969, 1;     // Gold
+
+	mes "Materiais consumidos. Conectando com a energia vital...";
+	next;
+
+	// Buscar personagens mortos da mesma conta
+	// Nota: Isso requer acesso a tabela `char` via query SQL
+	query_sql "SELECT `char_id`, `name`, `class`, `base_level` FROM `char` WHERE `account_id` = " + getcharid(3) + " AND `hardcore_dead` = 1 AND `osiris_resurrect_time` = 0 ORDER BY `base_level` DESC", .@cid, .@name$, .@class_, .@level;
+
+	.@dead_count = getarraysize(.@cid);
+
+	if (.@dead_count == 0) {
+		mes "Nenhum personagem morto encontrado nesta conta.";
+		close;
+	}
+
+	// Montar menu de selecao
+	.@menu$ = "";
+	.@valid = 0;
+
+	for (.@i = 0; .@i < .@dead_count; .@i++) {
+		// Verificar se personagem e elegivel (nivel e transclasse)
+		.@is_trans = 0;
+		if (.@class_[.@i] >= 4001 && .@class_[.@i] <= 4053) // Jobs transclasse (High)
+			.@is_trans = 1;
+
+		// Se o alvo nao e transclasse, pular transclasse mortos
+		if (.@is_trans == 1) {
+			if (Upper != 1) continue; // Alvo nao e transclasse
+		}
+
+		// Verificar nivel
+		if (.@level[.@i] > BaseLevel) continue; // Morto e nivel maior que alvo
+
+		.@menu$ = .@menu$ + .@name$[.@i] + " (Lv." + .@level[.@i] + ")";
+		.@menu$ = .@menu$ + ":";
+		.@valid++;
+	}
+
+	if (.@valid == 0) {
+		mes "Nenhum personagem elegivel para ressurreicao.";
+		mes "Os requisitos sao:";
+		mes "- Niveis menor ou igual ao seu (Lv." + BaseLevel + ")";
+		if (Upper != 1)
+			mes "- Voce precisa ser Transclasse para ressuscitar Transclasses";
+		close;
+	}
+
+	.@selected = select(.@menu$) - 1;
+
+	// Executar ressurreicao
+	.@charid = .@cid[.@selected];
+
+	mes "Ressuscitando " + .@name$[.@selected] + "...";
+	mes "A energia vital esta sendo restaurada.";
+
+	// Atualizar no banco
+	query_sql "UPDATE `char` SET `hardcore_dead` = 0, `hp` = `max_hp` / 2, `sp` = `max_sp` / 2, `osiris_resurrect_time` = 0 WHERE `char_id` = " + .@charid;
+
+	// Aplicar cooldown de 24 horas
+	#resurrection_cooldown = gettimetick(2) + 86400;
+
+	mes "O personagem " + .@name$[.@selected] + " foi ressuscitado com sucesso!";
+	mes "O ritual nao pode ser realizado novamente por 24 horas.";
+	close;
+}

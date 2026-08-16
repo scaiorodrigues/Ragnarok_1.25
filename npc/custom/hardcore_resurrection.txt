@@ -1,0 +1,84 @@
+// Hardcore Server - Sistema de Ressurreição por Sacrifício
+// Acionado via C++ quando ALL_RESURRECTION é usada em um jogador vivo.
+// O jogador alvo (sacrifício) recebe um diálogo para escolher qual personagem
+// morto de sua conta será ressuscitado às custas de sua própria vida.
+
+-	script	HardcoreResurrection	FAKE_NPC,{
+	end;
+
+OnResurrectionRequest:
+	.@caster_id = hc_res_caster_id;
+	set hc_res_caster_id, 0;
+	if (.@caster_id <= 0) end;
+
+	.@crows = query_sql("SELECT `name` FROM `char` WHERE `char_id` = " + .@caster_id, .@caster_name$);
+	if (.@crows == 0) end;
+
+	mes "[Ressurreição Alquímica]";
+	mes "O Alquimista ^0055FF" + .@caster_name$ + "^000000 quer usá-lo como sacrifício para ressuscitar um de seus personagens mortos.";
+	mes " ";
+	mes "Se aceitar, você morrerá e poderá escolher um personagem morto de sua conta para voltar à vida.";
+	next;
+
+	if (select("Aceitar o sacrifício", "Recusar") == 2) {
+		mes "Você recusou o sacrifício.";
+		close;
+	}
+
+	.@account_id = getcharid(3);
+	.@sac_level = BaseLevel;
+	.@sac_class = Class;
+	.@sac_is_trans = (.@sac_class >= 4001) ? 1 : 0;
+	.@sac_char_id = getcharid(0);
+
+	.@total = query_sql("SELECT `char_id`, `name`, `base_level`, `class` FROM `char` WHERE `account_id` = " + .@account_id + " AND `hardcore_dead` = 1", .@dead_id, .@dead_name$, .@dead_lvl, .@dead_class);
+
+	.@valid = 0;
+	for (.@i = 0; .@i < .@total; .@i++) {
+		// Nível do sacrifício deve ser >= nível do personagem morto
+		if (.@sac_level < .@dead_lvl[.@i]) continue;
+		// Transclasse só pode ser ressuscitado por sacrifício transclasse
+		if (.@dead_class[.@i] >= 4001 && !.@sac_is_trans) continue;
+		.@vid[.@valid] = .@dead_id[.@i];
+		.@vname$[.@valid] = .@dead_name$[.@i] + " (Nv." + .@dead_lvl[.@i] + ")";
+		.@valid++;
+	}
+
+	if (.@valid == 0) {
+		mes "Nenhum personagem morto em sua conta atende os requisitos.";
+		mes "(Requisito de nivel: seu nivel >= nivel do morto)";
+		mes "(Transclasse: exige sacrificio tambem transclasse)";
+		close;
+	}
+
+	mes "Escolha o personagem a ser ressuscitado:";
+	next;
+
+	.@menu$ = "";
+	for (.@i = 0; .@i < .@valid; .@i++) {
+		if (.@i > 0) .@menu$ = .@menu$ + ":";
+		.@menu$ = .@menu$ + .@vname$[.@i];
+	}
+	.@menu$ = .@menu$ + ":Cancelar";
+
+	.@choice = select(.@menu$);
+
+	if (.@choice > .@valid) {
+		mes "Ressurreição cancelada.";
+		close;
+	}
+
+	.@chosen_id = .@vid[.@choice - 1];
+	.@chosen_name$ = .@vname$[.@choice - 1];
+
+	// Revive o personagem morto e marca o sacrifício como morto
+	query_sql "UPDATE `char` SET `hardcore_dead` = 0 WHERE `char_id` = " + .@chosen_id;
+	query_sql "UPDATE `char` SET `hardcore_dead` = 1 WHERE `char_id` = " + .@sac_char_id;
+
+	announce strcharinfo(0) + " se sacrificou para ressuscitar " + .@chosen_name$ + "!", bc_all|bc_yellow;
+	close2;
+	message strcharinfo(0), "Voce se sacrificou! " + .@chosen_name$ + " voltou a vida.";
+	sleep 3000;
+	charselect;
+	end;
+}

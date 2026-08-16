@@ -1,0 +1,6 @@
+// [Hardcore] Items with blocked functionality - remove from all monster drops
+// Format: ItemID,Ratio[,MobID1,MobID2,...]  (Ratio 0 = disabled)
+601,0
+602,0
+12323,0
+7060,0

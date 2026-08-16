@@ -54,6 +54,8 @@ struct s_mercenary_data : public block_list {
 	int32 contract_timer;
 
 	unsigned devotion_flag : 1;
+	uint8 merc_behavior; // [Hardcore] 0=passivo, 1=guardiao, 2=agressivo
+	uint8 ai_mode;       // [Hardcore] reservado para sistema de automação por cartas
 };
 
 struct view_data * mercenary_get_viewdata(uint16 class_);

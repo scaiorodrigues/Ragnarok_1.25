@@ -361,6 +361,38 @@ int32 battle_damage(block_list *src, block_list *target, int64 damage, int16 div
 			add_timer(tick + delay, mob_attacked, target->id, src->id);
 		}
 	}
+
+	// [Hardcore] Homunculus/Mercenary auto-counterattack based on behavior mode
+	if (src != nullptr && damage > 0 && dmg_lv > ATK_BLOCK) {
+		if (target->type == BL_PC) {
+			map_session_data* tsd = BL_CAST(BL_PC, target);
+			// Homunculus counterattack
+			if (tsd && tsd->hd) {
+				homun_data* hd = tsd->hd;
+				if (hd->hom_behavior > 0 && !status_isdead(*hd) &&
+				    battle_check_target(hd, src, BCT_ENEMY) > 0)
+					unit_attack(hd, src->id, hd->hom_behavior >= 2 ? 1 : 0);
+			}
+			// Mercenary counterattack
+			if (tsd && tsd->md) {
+				s_mercenary_data* merc = tsd->md;
+				if (merc->merc_behavior > 0 && !status_isdead(*merc) &&
+				    battle_check_target(merc, src, BCT_ENEMY) > 0)
+					unit_attack(merc, src->id, merc->merc_behavior >= 2 ? 1 : 0);
+			}
+		} else if (target->type == BL_HOM) {
+			homun_data* hd = BL_CAST(BL_HOM, target);
+			if (hd && hd->hom_behavior > 0 && !status_isdead(*hd) &&
+			    battle_check_target(hd, src, BCT_ENEMY) > 0)
+				unit_attack(hd, src->id, hd->hom_behavior >= 2 ? 1 : 0);
+		} else if (target->type == BL_MER) {
+			s_mercenary_data* merc = BL_CAST(BL_MER, target);
+			if (merc && merc->merc_behavior > 0 && !status_isdead(*merc) &&
+			    battle_check_target(merc, src, BCT_ENEMY) > 0)
+				unit_attack(merc, src->id, merc->merc_behavior >= 2 ? 1 : 0);
+		}
+	}
+
 	return dmg_change;
 }
 
@@ -891,6 +923,9 @@ int32 battle_calc_cardfix(int32 attack_type, block_list *src, block_list *target
 					if (tsc != nullptr)
 						ele_fix += battle_calc_cardfix_debuff( *tsc, rh_ele );
 #endif
+					// [Hardcore] CR_PROVIDENCE em Mercenarios — resistencia elemental
+					if( target->type == BL_MER && tsc != nullptr && tsc->getSCE(SC_PROVIDENCE) )
+						ele_fix += tsc->getSCE(SC_PROVIDENCE)->val2;
 					cardfix = cardfix * (100 - ele_fix) / 100;
 				}
 				cardfix = cardfix * (100 - tsd->indexed_bonus.subsize[sstatus->size] - tsd->indexed_bonus.subsize[SZ_ALL]) / 100;
@@ -902,6 +937,9 @@ int32 battle_calc_cardfix(int32 attack_type, block_list *src, block_list *target
 					race_fix += tsd->indexed_bonus.subrace2[raceit];
 				cardfix = cardfix * (100 - race_fix) / 100;
 				race_fix = tsd->indexed_bonus.subrace[sstatus->race] + tsd->indexed_bonus.subrace[RC_ALL];
+				// [Hardcore] CR_PROVIDENCE em Mercenarios — resistencia racial
+				if( target->type == BL_MER && tsc != nullptr && tsc->getSCE(SC_PROVIDENCE) )
+					race_fix += tsc->getSCE(SC_PROVIDENCE)->val2;
 				for (const auto &it : tsd->subrace3) {
 					if (it.race != RC_ALL && it.race != sstatus->race)
 						continue;
@@ -1127,6 +1165,9 @@ int32 battle_calc_cardfix(int32 attack_type, block_list *src, block_list *target
 					race_fix += tsd->indexed_bonus.subrace2[raceit];
 				cardfix = cardfix * (100 - race_fix) / 100;
 				race_fix = tsd->indexed_bonus.subrace[sstatus->race] + tsd->indexed_bonus.subrace[RC_ALL];
+				// [Hardcore] CR_PROVIDENCE em Mercenarios — resistencia racial (2o bloco)
+				if( target->type == BL_MER && tsc != nullptr && tsc->getSCE(SC_PROVIDENCE) )
+					race_fix += tsc->getSCE(SC_PROVIDENCE)->val2;
 				for (const auto &it : tsd->subrace3) {
 					if (it.race != RC_ALL && it.race != sstatus->race)
 						continue;

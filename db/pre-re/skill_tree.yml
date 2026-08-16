@@ -181,19 +181,6 @@ Body:
         MaxLevel: 1
       - Name: AL_PNEUMA
         MaxLevel: 1
-        Requires:
-          - Name: AL_WARP
-            Level: 4
-      - Name: AL_TELEPORT
-        MaxLevel: 2
-        Requires:
-          - Name: AL_RUWACH
-            Level: 1
-      - Name: AL_WARP
-        MaxLevel: 4
-        Requires:
-          - Name: AL_TELEPORT
-            Level: 2
       - Name: AL_HEAL
         MaxLevel: 10
       - Name: AL_INCAGI
@@ -265,13 +252,6 @@ Body:
       - Name: MC_CHANGECART
         MaxLevel: 1
       - Name: MC_LOUD
-        MaxLevel: 1
-      - Name: ALL_BUYING_STORE
-        MaxLevel: 1
-        Requires:
-          - Name: MC_VENDING
-            Level: 1
-      - Name: MC_CARTDECORATE
         MaxLevel: 1
   - Job: Thief
     Inherit:
@@ -386,13 +366,6 @@ Body:
             Level: 4
           - Name: PR_SANCTUARY
             Level: 3
-      - Name: ALL_RESURRECTION
-        MaxLevel: 4
-        Requires:
-          - Name: PR_STRECOVERY
-            Level: 1
-          - Name: MG_SRECOVERY
-            Level: 4
       - Name: PR_MACEMASTERY
         MaxLevel: 10
       - Name: PR_IMPOSITIO
@@ -447,8 +420,6 @@ Body:
       - Name: PR_TURNUNDEAD
         MaxLevel: 10
         Requires:
-          - Name: ALL_RESURRECTION
-            Level: 1
           - Name: PR_LEXDIVINA
             Level: 3
       - Name: PR_LEXAETERNA
@@ -1614,19 +1585,6 @@ Body:
         MaxLevel: 1
       - Name: AL_PNEUMA
         MaxLevel: 1
-        Requires:
-          - Name: AL_WARP
-            Level: 4
-      - Name: AL_TELEPORT
-        MaxLevel: 2
-        Requires:
-          - Name: AL_RUWACH
-            Level: 1
-      - Name: AL_WARP
-        MaxLevel: 4
-        Requires:
-          - Name: AL_TELEPORT
-            Level: 2
       - Name: AL_HEAL
         MaxLevel: 10
       - Name: AL_INCAGI
@@ -1717,13 +1675,6 @@ Body:
         Requires:
           - Name: TF_POISON
             Level: 3
-      - Name: ALL_BUYING_STORE
-        MaxLevel: 1
-        Requires:
-          - Name: MC_VENDING
-            Level: 1
-      - Name: MC_CARTDECORATE
-        MaxLevel: 1
   - Job: Gunslinger
     Inherit:
       Novice: true
@@ -2862,19 +2813,6 @@ Body:
         MaxLevel: 1
       - Name: AL_PNEUMA
         MaxLevel: 1
-        Requires:
-          - Name: AL_WARP
-            Level: 4
-      - Name: AL_TELEPORT
-        MaxLevel: 2
-        Requires:
-          - Name: AL_RUWACH
-            Level: 1
-      - Name: AL_WARP
-        MaxLevel: 4
-        Requires:
-          - Name: AL_TELEPORT
-            Level: 2
       - Name: AL_HEAL
         MaxLevel: 10
       - Name: AL_INCAGI
@@ -2962,13 +2900,6 @@ Body:
         Requires:
           - Name: TF_POISON
             Level: 3
-      - Name: ALL_BUYING_STORE
-        MaxLevel: 1
-        Requires:
-          - Name: MC_VENDING
-            Level: 1
-      - Name: MC_CARTDECORATE
-        MaxLevel: 1
   - Job: Taekwon
     Inherit:
       Novice: true

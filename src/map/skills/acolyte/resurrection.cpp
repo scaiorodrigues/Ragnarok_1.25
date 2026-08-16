@@ -6,6 +6,7 @@
 #include "map/battle.hpp"
 #include "map/clif.hpp"
 #include "map/map.hpp"
+#include "map/npc.hpp"
 #include "map/pc.hpp"
 #include "map/status.hpp"
 
@@ -32,8 +33,19 @@ void SkillResurrection::castendNoDamageId(block_list* src, block_list* target, u
 		}
 		return;
 	}
-	if (!status_isdead(*target))
+	// [Hardcore] Ritual de sacrificio DESLIGADO. Este bloco disparava o NPC
+	// HardcoreResurrection quando ALL_RESURRECTION era usada em um jogador
+	// VIVO, permitindo sacrificar um personagem para reviver outro.
+	//
+	// A ressurreicao agora passa exclusivamente pela Folha de Yggdrasil, que
+	// lista os mortos da conta (npc/custom/hardcore_ygg_revive.txt).
+	//
+	// Sem isto o ritual continuaria alcancavel: a Folha usava
+	// `itemskill "ALL_RESURRECTION"`, entao usa-la em outro jogador vivo
+	// abria o dialogo do sacrificio.
+	if (!status_isdead(*target)) {
 		return;
+	}
 
 	int32 per = 0, sper = 0;
 	if (tsc && tsc->getSCE(SC_HELLPOWER)) {

@@ -965,6 +965,13 @@ bool chclif_parse_select_accessible_map( int32 fd, struct char_session_data& sd 
 		return 1;
 	}
 
+	// [Hardcore] Bloquear login de personagem morto permanentemente
+	if( char_dat.hardcore_dead && char_dat.osiris_resurrect_time == 0 ) {
+		char_set_char_offline( char_id, sd.account_id );
+		chclif_reject( fd, 0 ); // personagem hardcore morto - nao pode logar
+		return 1;
+	}
+
 	// Have to switch over to the DB instance otherwise data won't propagate [Kevin]
 	std::shared_ptr<struct mmo_charstatus> cd = util::umap_find( char_get_chardb(), char_id );
 

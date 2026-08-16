@@ -1,0 +1,4 @@
+char_ip: 127.0.0.1
+login_ip: 127.0.0.1
+server_name: MeuServidor
+msg_conf: conf/msg_conf/char_msg_por.conf

@@ -1,0 +1,132 @@
+# This file is a part of rAthena.
+#   Copyright(C) 2021 rAthena Development Team
+#   https://rathena.org - https://github.com/rathena
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+###########################################################################
+# Item Random Option Database
+###########################################################################
+#
+# Item Random Option Settings
+#
+###########################################################################
+# - Id          Item Random Option ID matching the ID defined in enumvar.lub in the client.
+#   Option      Item Random Option constant.
+#   Script      Bonus script used for option.
+###########################################################################
+
+Header:
+  Type: RANDOM_OPTION_DB
+  Version: 1
+
+# [Hardcore] Pre-Renewal Random Options
+# IDs match the client's enumvar.lub definitions (same as Renewal)
+Body:
+  - Id: 1
+    Option: VAR_MAXHPAMOUNT
+    Script: |
+      bonus bMaxHP,getrandomoptinfo(ROA_VALUE);
+  - Id: 2
+    Option: VAR_MAXSPAMOUNT
+    Script: |
+      bonus bMaxSP,getrandomoptinfo(ROA_VALUE);
+  - Id: 3
+    Option: VAR_STRAMOUNT
+    Script: |
+      bonus bStr,getrandomoptinfo(ROA_VALUE);
+  - Id: 4
+    Option: VAR_AGIAMOUNT
+    Script: |
+      bonus bAgi,getrandomoptinfo(ROA_VALUE);
+  - Id: 5
+    Option: VAR_VITAMOUNT
+    Script: |
+      bonus bVit,getrandomoptinfo(ROA_VALUE);
+  - Id: 6
+    Option: VAR_INTAMOUNT
+    Script: |
+      bonus bInt,getrandomoptinfo(ROA_VALUE);
+  - Id: 7
+    Option: VAR_DEXAMOUNT
+    Script: |
+      bonus bDex,getrandomoptinfo(ROA_VALUE);
+  - Id: 8
+    Option: VAR_LUKAMOUNT
+    Script: |
+      bonus bLuk,getrandomoptinfo(ROA_VALUE);
+  - Id: 17
+    Option: VAR_ATTPOWER
+    Script: |
+      bonus bAtk,getrandomoptinfo(ROA_VALUE);
+  - Id: 18
+    Option: VAR_HITSUCCESSVALUE
+    Script: |
+      bonus bHit,getrandomoptinfo(ROA_VALUE);
+  - Id: 20
+    Option: VAR_ITEMDEFPOWER
+    Script: |
+      bonus bDef,getrandomoptinfo(ROA_VALUE);
+  - Id: 22
+    Option: VAR_AVOIDSUCCESSVALUE
+    Script: |
+      bonus bFlee,getrandomoptinfo(ROA_VALUE);
+  - Id: 24
+    Option: VAR_CRITICALSUCCESSVALUE
+    Script: |
+      bonus bCritical,getrandomoptinfo(ROA_VALUE);
+  - Id: 25
+    Option: ATTR_TOLERACE_NOTHING
+    Script: |
+      bonus2 bSubEle,Ele_Neutral,getrandomoptinfo(ROA_VALUE);
+  - Id: 26
+    Option: ATTR_TOLERACE_WATER
+    Script: |
+      bonus2 bSubEle,Ele_Water,getrandomoptinfo(ROA_VALUE);
+  - Id: 27
+    Option: ATTR_TOLERACE_GROUND
+    Script: |
+      bonus2 bSubEle,Ele_Earth,getrandomoptinfo(ROA_VALUE);
+  - Id: 28
+    Option: ATTR_TOLERACE_FIRE
+    Script: |
+      bonus2 bSubEle,Ele_Fire,getrandomoptinfo(ROA_VALUE);
+  - Id: 29
+    Option: ATTR_TOLERACE_WIND
+    Script: |
+      bonus2 bSubEle,Ele_Wind,getrandomoptinfo(ROA_VALUE);
+  - Id: 30
+    Option: ATTR_TOLERACE_POISON
+    Script: |
+      bonus2 bSubEle,Ele_Poison,getrandomoptinfo(ROA_VALUE);
+  - Id: 31
+    Option: ATTR_TOLERACE_SAINT
+    Script: |
+      bonus2 bSubEle,Ele_Holy,getrandomoptinfo(ROA_VALUE);
+  - Id: 32
+    Option: ATTR_TOLERACE_DARKNESS
+    Script: |
+      bonus2 bSubEle,Ele_Dark,getrandomoptinfo(ROA_VALUE);
+  - Id: 33
+    Option: ATTR_TOLERACE_TELEKINESIS
+    Script: |
+      bonus2 bSubEle,Ele_Ghost,getrandomoptinfo(ROA_VALUE);
+  - Id: 34
+    Option: ATTR_TOLERACE_UNDEAD
+    Script: |
+      bonus2 bSubEle,Ele_Undead,getrandomoptinfo(ROA_VALUE);
+  - Id: 19
+    Option: VAR_MATKPOWER
+    Script: |
+      bonus bMatk,getrandomoptinfo(ROA_VALUE);

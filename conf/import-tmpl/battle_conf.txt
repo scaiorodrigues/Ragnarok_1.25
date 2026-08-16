@@ -1,0 +1,16 @@
+// Rates de EXP (100 = 1x, 500 = 5x, 1000 = 10x)
+base_exp_rate: 100
+job_exp_rate: 100
+
+// Rates de drop (100 = 1x, 500 = 5x)
+item_rate_common: 100
+item_rate_equip: 100
+item_rate_card: 100
+item_rate_mvp: 100
+
+// Velocidade max de ASPD Pre-Renewal
+max_aspd: 190
+
+// Max level
+max_base_level: 99
+max_job_level: 50

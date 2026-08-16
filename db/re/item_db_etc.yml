@@ -3208,7 +3208,8 @@ Body:
       BuyingStore: true
       DropEffect: CLIENT
     Script: |
-      skill "AL_TELEPORT",1;
+      bonus bSpeedUpPercent,25;
+      if(getskilllv(TF_BACKSLIDING)==0) bonus2 bAddSkill,TF_BACKSLIDING,1;
   - Id: 4041
     AegisName: Coco_Card
     Name: Coco Card
@@ -4645,7 +4646,7 @@ Body:
       BuyingStore: true
       DropEffect: CLIENT
     Script: |
-      bonus bRestartFullRecover;
+      "";
   - Id: 4145
     AegisName: Berzebub_Card
     Name: Berzebub Card

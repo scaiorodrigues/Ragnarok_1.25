@@ -3684,7 +3684,7 @@ TIMER_FUNC(skill_timerskill){
 			break; // Source not on Map
 		if(skl->target_id) {
 			target = map_id2bl(skl->target_id);
-			if( ( skl->skill_id == RG_INTIMIDATE || skl->skill_id == NPC_FATALMENACE ) && (!target || target->prev == nullptr || !check_distance_bl(src,target,AREA_SIZE)) )
+			if( skl->skill_id == NPC_FATALMENACE && (!target || target->prev == nullptr || !check_distance_bl(src,target,AREA_SIZE)) )
 				target = src; //Required since it has to warp.
 
 			if (skl->skill_id == SR_SKYNETBLOW) {
@@ -3721,7 +3721,7 @@ TIMER_FUNC(skill_timerskill){
 						continue; // Caster is Dead
 				}
 			}
-			if(status_isdead(*target) && skl->skill_id != RG_INTIMIDATE && skl->skill_id != WZ_WATERBALL)
+			if(status_isdead(*target) && skl->skill_id != WZ_WATERBALL)
 				break;
 
 			switch(skl->skill_id) {
@@ -3729,12 +3729,9 @@ TIMER_FUNC(skill_timerskill){
 					clif_skill_nodamage(src,*target,skl->skill_id,skl->skill_lv);
 					break;
 				case RG_INTIMIDATE:
-					if (unit_warp(src,-1,-1,-1,CLR_TELEPORT) == 0) {
-						int16 x,y;
-						map_search_freecell(src, 0, &x, &y, 1, 1, 0);
-						if (target != src && !status_isdead(*target))
-							unit_warp(target, -1, x, y, CLR_TELEPORT);
-					}
+					// [Hardcore] Removido warp; aplica knockback de 3 celulas no alvo
+					if (target != src && !status_isdead(*target))
+						skill_blown(src, target, 3, -1, BLOWN_NONE);
 					break;
 				case BA_FROSTJOKER:
 				case DC_SCREAM:
@@ -15508,8 +15505,8 @@ uint64 SkillDatabase::parseBodyNode(const ryml::NodeRef& node) {
 				std::shared_ptr<item_data> item = item_db.search_aegisname( item_name.c_str() );
 
 				if (item == nullptr) {
-					this->invalidWarning(it["Item"], "Requires ItemCost Item %s does not exist.\n", item_name.c_str());
-					return 0;
+					this->invalidWarning(it["Item"], "Requires ItemCost Item %s does not exist, skipping cost.\n", item_name.c_str());
+					continue;
 				}
 
 				int32 amount;

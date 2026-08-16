@@ -1031,26 +1031,6 @@ Body:
     Weight: 10
     Script: |
       itemheal rand(105,145),0;
-  - Id: 601
-    AegisName: Wing_Of_Fly
-    Name: Fly Wing
-    Type: Delayconsume
-    Buy: 60
-    Weight: 50
-    Flags:
-      BuyingStore: true
-    Script: |
-      itemskill "AL_TELEPORT",1;
-  - Id: 602
-    AegisName: Wing_Of_Butterfly
-    Name: Butterfly Wing
-    Type: Delayconsume
-    Buy: 300
-    Weight: 50
-    Flags:
-      BuyingStore: true
-    Script: |
-      itemskill "AL_TELEPORT",3;
   - Id: 603
     AegisName: Old_Blue_Box
     Name: Old Blue Box
@@ -1062,17 +1042,6 @@ Body:
       Container: true
     Script: |
       getgroupitem(IG_BLUEBOX);
-  - Id: 604
-    AegisName: Branch_Of_Dead_Tree
-    Name: Dead Branch
-    Type: Usable
-    Buy: 50
-    Weight: 50
-    Flags:
-      BuyingStore: true
-      DeadBranch: true
-    Script: |
-      monster "this",-1,-1,"--ja--",-1-MOBG_BRANCH_OF_DEAD_TREE,1,"";
   - Id: 605
     AegisName: Anodyne
     Name: Anodyne
@@ -2464,16 +2433,6 @@ Body:
       Sitting: true
     Script: |
       itemskill "AL_HEAL",5;
-  - Id: 12003
-    AegisName: Holy_Scroll_2_1
-    Name: Level 1 Teleport
-    Type: Delayconsume
-    Buy: 1000
-    Weight: 10
-    Flags:
-      BuyingStore: true
-    Script: |
-      itemskill "AL_TELEPORT",1;
   - Id: 12004
     AegisName: Arrow_Container
     Name: Quiver
@@ -3515,17 +3474,6 @@ Body:
     Weight: 300
     Flags:
       BuyingStore: true
-  - Id: 12103
-    AegisName: Bloody_Dead_Branch
-    Name: Bloody Branch
-    Type: Usable
-    Buy: 10000
-    Weight: 200
-    Flags:
-      BuyingStore: true
-      DeadBranch: true
-    Script: |
-      monster "this",-1,-1,"--ja--",-1-MOBG_BLOODY_DEAD_BRANCH,1,"";
   - Id: 12104
     AegisName: Random_Quiver
     Name: Random Quiver
@@ -4821,22 +4769,6 @@ Body:
       NoAuction: true
     Script: |
       callfunc "F_CashStore";
-  - Id: 12212
-    AegisName: Giant_Fly_Wing
-    Name: Giant Fly Wing
-    Type: Usable
-    Buy: 2
-    Weight: 10
-    Trade:
-      NoDrop: true
-      NoTrade: true
-      NoSell: true
-      NoCart: true
-      NoGuildStorage: true
-      NoMail: true
-      NoAuction: true
-    Script: |
-      callfunc "F_CashPartyCall";
   - Id: 12213
     AegisName: Neuralizer
     Name: Neuralizer
@@ -6193,40 +6125,6 @@ Body:
     Weight: 50
     Script: |
       percentheal 5,5;
-  - Id: 12323
-    AegisName: N_Fly_Wing
-    Name: Novice Fly Wing
-    Type: Delayconsume
-    NoUse:
-      Sitting: true
-    Trade:
-      NoDrop: true
-      NoTrade: true
-      NoSell: true
-      NoCart: true
-      NoStorage: true
-      NoGuildStorage: true
-      NoMail: true
-      NoAuction: true
-    Script: |
-      itemskill "AL_TELEPORT",1;
-  - Id: 12324
-    AegisName: N_Butterfly_Wing
-    Name: Novice Butterfly Wing
-    Type: Delayconsume
-    NoUse:
-      Sitting: true
-    Trade:
-      NoDrop: true
-      NoTrade: true
-      NoSell: true
-      NoCart: true
-      NoStorage: true
-      NoGuildStorage: true
-      NoMail: true
-      NoAuction: true
-    Script: |
-      itemskill "AL_TELEPORT",3;
   - Id: 12325
     AegisName: N_Magnifier
     Name: Novice Magnifier
@@ -6582,13 +6480,6 @@ Body:
       NoAuction: true
     Script: |
       itemskill "MC_LOUD",1;
-  - Id: 12352
-    AegisName: Dun_Tele_Scroll3
-    Name: Dungeon Teleport Scroll 3
-    Type: Usable
-    Weight: 10
-    Script: |
-      callfunc "F_CashDungeon",3;
   - Id: 12353
     AegisName: Tiny_Waterbottle
     Name: Small Bottle
@@ -7609,12 +7500,6 @@ Body:
       BuyingStore: true
     Script: |
       sc_start SC_EXTRACT_SALAMINE_JUICE,500000,10;
-  - Id: 12438
-    AegisName: F_Giant_Fly_Wing
-    Name: F Giant Fly Wing
-    Type: Usable
-    Buy: 2
-    Weight: 10
   - Id: 12439
     AegisName: F_Battle_Manual
     Name: F Battle Manual
@@ -8038,12 +7923,6 @@ Body:
       NoGuildStorage: true
       NoMail: true
       NoAuction: true
-  - Id: 12494
-    AegisName: E_Giant_Fly_Wing
-    Name: E Giant Fly Wing
-    Type: Usable
-    Buy: 2
-    Weight: 10
   - Id: 12495
     AegisName: E_Battle_Manual
     Name: E Battle Manual
@@ -8113,39 +7992,6 @@ Body:
     Name: E Vit Dish10
     Type: Usable
     Buy: 2
-    Weight: 10
-  - Id: 12507
-    AegisName: E_WOB_Rune
-    Name: Yellow Butterfly Wing
-    Type: Usable
-    Weight: 10
-    Script: |
-      callfunc "F_CashCity",1;
-  - Id: 12508
-    AegisName: E_WOB_Schwaltz
-    Name: Green Butterfly Wing
-    Type: Usable
-    Weight: 10
-    Script: |
-      callfunc "F_CashCity",2;
-  - Id: 12509
-    AegisName: E_WOB_Rachel
-    Name: Red Butterfly Wing
-    Type: Usable
-    Weight: 10
-    Script: |
-      callfunc "F_CashCity",3;
-  - Id: 12510
-    AegisName: E_WOB_Local
-    Name: Blue Butterfly Wing
-    Type: Usable
-    Weight: 10
-    Script: |
-      callfunc "F_CashCity",5;
-  - Id: 12511
-    AegisName: E_Siege_Teleport_Scroll
-    Name: E Siege Teleport Scroll
-    Type: Usable
     Weight: 10
   - Id: 12512
     AegisName: E_Greed_Scroll
@@ -9625,20 +9471,6 @@ Body:
       NoAuction: true
     Script: |
       getitem 12211,10;
-  - Id: 12910
-    AegisName: Giant_Fly_Wing_Box
-    Name: Giant Fly Wing Box
-    Type: Cash
-    Buy: 20
-    Weight: 10
-    Trade:
-      NoDrop: true
-      NoSell: true
-      NoGuildStorage: true
-      NoMail: true
-      NoAuction: true
-    Script: |
-      getitem 12212,10;
   - Id: 12911
     AegisName: Neuralizer_Box
     Name: Neuralizer Box
@@ -10768,14 +10600,6 @@ Body:
     Weight: 10
     Script: |
       getitem 984,5;
-  - Id: 12999
-    AegisName: Branch_Of_Dead_Tree_Box
-    Name: Dead Branch Box
-    Type: Cash
-    Buy: 20
-    Weight: 10
-    Script: |
-      getitem 604,3;
   - Id: 13500
     AegisName: Insurance60_Package
     Name: Life Insurrance Box
@@ -11324,30 +11148,6 @@ Body:
     Type: Usable
     Buy: 20
     Weight: 10
-  - Id: 13569
-    AegisName: PVP_Tele_Scroll_Box
-    Name: PVP Teleport Scroll Box
-    Type: Cash
-    Buy: 20
-    Weight: 10
-    Script: |
-      getitem 14528,10;
-  - Id: 13570
-    AegisName: Giant_Fly_Wing_Box50
-    Name: Giant Fly Wing 50 Box
-    Type: Cash
-    Buy: 20
-    Weight: 10
-    Script: |
-      getitem 12212,50;
-  - Id: 13571
-    AegisName: Giant_Fly_Wing_Box100
-    Name: Giant Fly Wing 100 Box
-    Type: Cash
-    Buy: 20
-    Weight: 10
-    Script: |
-      getitem 12212,100;
   - Id: 13572
     AegisName: Dex_Dish_Box30
     Name: Hwergelmir's Tonic 30 Box
@@ -13801,70 +13601,6 @@ Body:
     Type: Cash
     Buy: 20
     Weight: 10
-  - Id: 13849
-    AegisName: WOB_Box_Rune5
-    Name: Yellow Butterfly Wing 5 Box
-    Type: Cash
-    Buy: 20
-    Weight: 10
-    Script: |
-      getitem 14582,5;
-  - Id: 13850
-    AegisName: WOB_Box_Rune10
-    Name: Yellow Butterfly Wing Box
-    Type: Cash
-    Buy: 20
-    Weight: 10
-    Script: |
-      getitem 14582,10;
-  - Id: 13851
-    AegisName: WOB_Box_Schawaltz5
-    Name: Green Butterfly Wing 5 Box
-    Type: Cash
-    Buy: 20
-    Weight: 10
-    Script: |
-      getitem 14583,5;
-  - Id: 13852
-    AegisName: WOB_Box_Schawaltz10
-    Name: Green Butterfly Wing Box
-    Type: Cash
-    Buy: 20
-    Weight: 10
-    Script: |
-      getitem 14583,10;
-  - Id: 13853
-    AegisName: WOB_Box_Rachel5
-    Name: Red Butterfly Wing 5 Box
-    Type: Cash
-    Buy: 20
-    Weight: 10
-    Script: |
-      getitem 14584,5;
-  - Id: 13854
-    AegisName: WOB_Box_Rachel10
-    Name: Red Butterfly Wing Box
-    Type: Cash
-    Buy: 20
-    Weight: 10
-    Script: |
-      getitem 14584,10;
-  - Id: 13855
-    AegisName: WOB_Box_Local5
-    Name: Blue Butterfly Wing 5 Box
-    Type: Cash
-    Buy: 20
-    Weight: 10
-    Script: |
-      getitem 14585,5;
-  - Id: 13856
-    AegisName: WOB_Box_Local10
-    Name: Blue Butterfly Wing Box
-    Type: Cash
-    Buy: 20
-    Weight: 10
-    Script: |
-      getitem 14585,10;
   - Id: 13857
     AegisName: Spark_Candy_Box5
     Name: Candy 5 Box
@@ -15970,22 +15706,6 @@ Body:
       NoAuction: true
     Script: |
       getitem 14522,500;
-  - Id: 13998
-    AegisName: Giant_Fly_Wing_Box500
-    Name: Giant Fly Wing 500 Box
-    Type: Cash
-    Buy: 20
-    Weight: 10
-    Trade:
-      NoDrop: true
-      NoTrade: true
-      NoSell: true
-      NoCart: true
-      NoGuildStorage: true
-      NoMail: true
-      NoAuction: true
-    Script: |
-      getitem 12212,500;
   - Id: 13999
     AegisName: Pill__Box100
     Name: Pill 100 Box
@@ -16621,134 +16341,6 @@ Body:
       getitem 998,10;
       getitem 756,10;
       getitem 999,10;
-  - Id: 14041
-    AegisName: F_WOB_Rune_Box5
-    Name: Yellow Butterfly Wing 5 Box
-    Type: Cash
-    Buy: 20
-    Weight: 10
-    Trade:
-      NoDrop: true
-      NoTrade: true
-      NoSell: true
-      NoCart: true
-      NoGuildStorage: true
-      NoMail: true
-      NoAuction: true
-    Script: |
-      getitem 14582,5;
-  - Id: 14042
-    AegisName: F_WOB_Rune_Box10
-    Name: Yellow Butterfly Wing Box
-    Type: Cash
-    Buy: 20
-    Weight: 10
-    Trade:
-      NoDrop: true
-      NoTrade: true
-      NoSell: true
-      NoCart: true
-      NoGuildStorage: true
-      NoMail: true
-      NoAuction: true
-    Script: |
-      getitem 14582,10;
-  - Id: 14043
-    AegisName: F_WOB_Schwaltz_Box5
-    Name: Green Butterfly Wing 5 Box
-    Type: Cash
-    Buy: 20
-    Weight: 10
-    Trade:
-      NoDrop: true
-      NoTrade: true
-      NoSell: true
-      NoCart: true
-      NoGuildStorage: true
-      NoMail: true
-      NoAuction: true
-    Script: |
-      getitem 14583,5;
-  - Id: 14044
-    AegisName: F_WOB_Schwaltz_Box10
-    Name: Green Butterfly Wing Box
-    Type: Cash
-    Buy: 20
-    Weight: 10
-    Trade:
-      NoDrop: true
-      NoTrade: true
-      NoSell: true
-      NoCart: true
-      NoGuildStorage: true
-      NoMail: true
-      NoAuction: true
-    Script: |
-      getitem 14583,10;
-  - Id: 14045
-    AegisName: F_WOB_Rachel_Box5
-    Name: Red Butterfly Wing 5 Box
-    Type: Cash
-    Buy: 20
-    Weight: 10
-    Trade:
-      NoDrop: true
-      NoTrade: true
-      NoSell: true
-      NoCart: true
-      NoGuildStorage: true
-      NoMail: true
-      NoAuction: true
-    Script: |
-      getitem 14584,5;
-  - Id: 14046
-    AegisName: F_WOB_Rachel_Box10
-    Name: Red Butterfly Wing Box
-    Type: Cash
-    Buy: 20
-    Weight: 10
-    Trade:
-      NoDrop: true
-      NoTrade: true
-      NoSell: true
-      NoCart: true
-      NoGuildStorage: true
-      NoMail: true
-      NoAuction: true
-    Script: |
-      getitem 14584,10;
-  - Id: 14047
-    AegisName: F_WOB_Local_Box5
-    Name: Blue Butterfly Wing 5 Box
-    Type: Cash
-    Buy: 20
-    Weight: 10
-    Trade:
-      NoDrop: true
-      NoTrade: true
-      NoSell: true
-      NoCart: true
-      NoGuildStorage: true
-      NoMail: true
-      NoAuction: true
-    Script: |
-      getitem 14585,5;
-  - Id: 14048
-    AegisName: F_WOB_Local_Box10
-    Name: Blue Butterfly Wing Box
-    Type: Cash
-    Buy: 20
-    Weight: 10
-    Trade:
-      NoDrop: true
-      NoTrade: true
-      NoSell: true
-      NoCart: true
-      NoGuildStorage: true
-      NoMail: true
-      NoAuction: true
-    Script: |
-      getitem 14585,10;
   - Id: 14049
     AegisName: F_Spark_Candy_Box5
     Name: Candy 5 Box
@@ -17597,22 +17189,6 @@ Body:
       NoAuction: true
     Script: |
       rentitem 5293,1209600;
-  - Id: 14102
-    AegisName: F_Dun_Tele_Scroll1_Box
-    Name: Dungeon Teleport Scroll 5 Box
-    Type: Cash
-    Buy: 20
-    Weight: 10
-    Trade:
-      NoDrop: true
-      NoTrade: true
-      NoSell: true
-      NoCart: true
-      NoGuildStorage: true
-      NoMail: true
-      NoAuction: true
-    Script: |
-      getitem 14527,5;
   - Id: 14103
     AegisName: F_Max_Weight_Up_Box
     Name: Gym Membership Card Box
@@ -17789,22 +17365,6 @@ Body:
       NoAuction: true
     Script: |
       getitem 14537,10;
-  - Id: 14114
-    AegisName: F_Dun_Tele_Scroll_Box10
-    Name: Dungeon Teleport Scroll 10 Box
-    Type: Cash
-    Buy: 20
-    Weight: 10
-    Trade:
-      NoDrop: true
-      NoTrade: true
-      NoSell: true
-      NoCart: true
-      NoGuildStorage: true
-      NoMail: true
-      NoAuction: true
-    Script: |
-      getitem 14527,10;
   - Id: 14115
     AegisName: F_Infiltrator_Box
     Name: Refined Infiltrator Box
@@ -18693,22 +18253,6 @@ Body:
       NoAuction: true
     Script: |
       getitem 12211,10;
-  - Id: 14166
-    AegisName: F_Giant_Fly_Wing_Box
-    Name: Giant Fly Wing Box
-    Type: Cash
-    Buy: 20
-    Weight: 10
-    Trade:
-      NoDrop: true
-      NoTrade: true
-      NoSell: true
-      NoCart: true
-      NoGuildStorage: true
-      NoMail: true
-      NoAuction: true
-    Script: |
-      getitem 12212,10;
   - Id: 14167
     AegisName: F_Neuralizer_Box
     Name: Neuralizer Box
@@ -18902,38 +18446,6 @@ Body:
       NoAuction: true
     Script: |
       getitem 7621,10;
-  - Id: 14179
-    AegisName: F_Giant_Fly_Wing_Box50
-    Name: Giant Fly Wing 50 Box
-    Type: Cash
-    Buy: 20
-    Weight: 10
-    Trade:
-      NoDrop: true
-      NoTrade: true
-      NoSell: true
-      NoCart: true
-      NoGuildStorage: true
-      NoMail: true
-      NoAuction: true
-    Script: |
-      getitem 12212,50;
-  - Id: 14180
-    AegisName: F_Giant_Fly_Wing_Box100
-    Name: Giant Fly Wing 100 Box
-    Type: Cash
-    Buy: 20
-    Weight: 10
-    Trade:
-      NoDrop: true
-      NoTrade: true
-      NoSell: true
-      NoCart: true
-      NoGuildStorage: true
-      NoMail: true
-      NoAuction: true
-    Script: |
-      getitem 12212,100;
   - Id: 14181
     AegisName: F_Dex_Dish_Box30
     Name: Hwergelmir's Tonic 30 Box
@@ -19696,26 +19208,6 @@ Body:
     Weight: 10
     Script: |
       getitem 607,10;
-  - Id: 14233
-    AegisName: Dead_Tree_Branch_Box1
-    Name: Dead Branch 10 Box
-    Type: Cash
-    Buy: 20
-    Weight: 10
-    Script: |
-      getitem 604,10;
-  - Id: 14234
-    AegisName: Dead_Tree_Branch_Box2
-    Name: Dead Branch 25 Box
-    Type: Cash
-    Buy: 20
-    Weight: 10
-    Trade:
-      NoDrop: true
-      NoSell: true
-      NoGuildStorage: true
-    Script: |
-      getitem 604,25;
   - Id: 14235
     AegisName: Field_Manual_Box_2
     Name: Field Manual 2 Box
@@ -20846,26 +20338,6 @@ Body:
     Weight: 10
     Script: |
       sc_start SC_MATKPOTION,1800000,10;
-  - Id: 14527
-    AegisName: Dun_Tele_Scroll1
-    Name: Dungeon Teleport Scroll
-    Type: Usable
-    Weight: 10
-    Trade:
-      NoDrop: true
-      NoTrade: true
-      NoSell: true
-      NoCart: true
-      NoGuildStorage: true
-      NoMail: true
-      NoAuction: true
-    Script: |
-      callfunc "F_CashDungeon",1;
-  - Id: 14528
-    AegisName: PVP_Tele_Scroll
-    Name: PVP Teleport Scroll
-    Type: Usable
-    Weight: 10
   - Id: 14529
     AegisName: Greed_Scroll
     Name: Greed Scroll
@@ -21437,41 +20909,6 @@ Body:
     Script: |
       sc_start SC_LUKFOOD,1200000,5;
       percentheal 5,2;
-  - Id: 14581
-    AegisName: Dun_Tele_Scroll2
-    Name: Dungeon Teleport Scroll II
-    Type: Usable
-    Weight: 10
-    Script: |
-      callfunc "F_CashDungeon",2;
-  - Id: 14582
-    AegisName: WOB_Rune
-    Name: Yellow Butterfly Wing
-    Type: Usable
-    Weight: 10
-    Script: |
-      callfunc "F_CashCity",1;
-  - Id: 14583
-    AegisName: WOB_Schwaltz
-    Name: Green Butterfly Wing
-    Type: Usable
-    Weight: 10
-    Script: |
-      callfunc "F_CashCity",2;
-  - Id: 14584
-    AegisName: WOB_Rachel
-    Name: Red Butterfly Wing
-    Type: Usable
-    Weight: 10
-    Script: |
-      callfunc "F_CashCity",3;
-  - Id: 14585
-    AegisName: WOB_Local
-    Name: Blue Butterfly Wing
-    Type: Usable
-    Weight: 10
-    Script: |
-      callfunc "F_CashCity",4;
   - Id: 14586
     AegisName: Spark_Candy
     Name: Jumping Candy
@@ -21540,23 +20977,6 @@ Body:
       NoGuildStorage: true
     Script: |
       itemskill "CASH_ASSUMPTIO",5;
-  - Id: 14591
-    AegisName: Siege_Teleport_Scroll
-    Name: WoE Teleport Scroll
-    Type: Usable
-    Weight: 10
-    NoUse:
-      Sitting: true
-    Trade:
-      NoDrop: true
-      NoTrade: true
-      NoSell: true
-      NoCart: true
-      NoGuildStorage: true
-      NoMail: true
-      NoAuction: true
-    Script: |
-      callfunc "F_CashSiegeTele";
   - Id: 14592
     AegisName: Job_Manual50
     Name: JOB Battle Manual

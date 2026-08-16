@@ -5740,6 +5740,17 @@ void clif_skillinfoblock( const map_session_data& sd ){
 			else
 				data.upFlag = 0;
 
+			// [Hardcore DEBUG] Write upFlag info to log file
+			{
+				FILE* dbgf = fopen("C:/rAthena/skill_debug.txt", "a");
+				if (dbgf) {
+					fprintf(dbgf, "[SKILLDBG] char=%s class=%d skill=%d(%s) lv=%d flag=%d maxlv=%d upFlag=%d\n",
+						sd.status.name, sd.status.class_, skill.id, skill_get_name(skill.id),
+						skill.lv, (int)skill.flag, skill_tree_get_max(skill.id, sd.status.class_), (int)data.upFlag);
+					fclose(dbgf);
+				}
+			}
+
 			p->packetLength += static_cast<decltype(p->packetLength)>(sizeof(data));
 			c++;
 		}

@@ -1162,6 +1162,9 @@ bool hom_call(map_session_data *sd)
 	sc_start(sd, sd, SC_HOMUN_TIME, 100, 1, skill_get_time(AM_CALLHOMUN, 1));
 #endif
 
+	// [Hardcore] Inform player about @hommode: passivo(padrao), guardiao(contra-ataca), agressivo(persegue)
+	clif_displaymessage( sd->fd, "Homunculus invocado. Use @hommode [passivo|guardiao|agressivo] para configurar o comportamento." );
+
 	return true;
 }
 

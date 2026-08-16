@@ -6426,6 +6426,7 @@ Body:
     Hit: Single
     HitCount: 1
     Element: Weapon
+    Cooldown: 10000
     Requires:
       SpCost:
         - Level: 1

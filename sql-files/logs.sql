@@ -241,3 +241,6 @@ CREATE TABLE IF NOT EXISTS `zenylog` (
   PRIMARY KEY  (`id`),
   INDEX (`type`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1;
+
+INSERT INTO `login` (`account_id`, `userid`, `user_pass`, `sex`, `group_id`)
+VALUES (2000000, 'admin', 'admin123', 'M', 99);

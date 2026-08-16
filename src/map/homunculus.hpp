@@ -98,6 +98,7 @@ struct homun_data : public block_list {
 	int32 hungry_timer;	//[orn]
 	t_exp exp_next;
 	std::unordered_map<uint16, int32> scd;
+	uint8 hom_behavior; // [Hardcore] 0=passivo, 1=guardiao, 2=agressivo
 };
 
 #define HOM_EVO 0x100 //256

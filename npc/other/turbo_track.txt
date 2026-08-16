@@ -3659,7 +3659,7 @@ turbo_room,130,92,3	script	Kafra Staff#tt	115,{
 
 }
 
-turbo_room,124,86,0	shop	Turbo Track Merchant	90,501:-1,502:-1,503:-1,504:-1,645:-1,656:-1,1065:-1,1750:-1
+turbo_room,124,86,0	shop	Turbo Track Merchant	90,1065:-1,1750:-1
 
 // Official name: "TBT_Guide#Broadcast"
 turbo_room,99,120,4	script	Turbo Track Guide	124,{

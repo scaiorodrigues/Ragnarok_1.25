@@ -1,0 +1,3 @@
+char_ip: 127.0.0.1
+map_ip: 127.0.0.1
+msg_conf: conf/msg_conf/map_msg_por.conf
