@@ -2061,7 +2061,10 @@ mjolnir_01,35,136,7	script	Dwarf Blacksmith#west	826,{
 				else {
 					mes "[Vestri]";
 					mes "^3355FF*Clang Clang!*^000000";
-					failedrefitem .@part;
+					// [Hardcore] failedrefitem DESTRUIA o equipamento. Trocado por
+					// downrefitem: o material ja foi consumido acima, e a falha apenas
+					// devolve um nivel de refino — o item nunca e perdido.
+					downrefitem .@part,1;
 					next;
 					emotion ET_HUK;
 					mes "[Vestri]";
@@ -2280,7 +2283,10 @@ mjolnir_01,35,136,7	script	Dwarf Blacksmith#west	826,{
 				else {
 					mes "[Vestri]";
 					mes "^3355FF*Clang Clang!*^000000";
-					failedrefitem .@part;
+					// [Hardcore] failedrefitem DESTRUIA o equipamento. Trocado por
+					// downrefitem: o material ja foi consumido acima, e a falha apenas
+					// devolve um nivel de refino — o item nunca e perdido.
+					downrefitem .@part,1;
 					next;
 					emotion ET_HUK;
 					mes "[Vestri]";

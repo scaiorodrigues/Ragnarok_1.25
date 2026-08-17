@@ -264,7 +264,7 @@ function	script	Func_Socket	{
 		mes "Por isso, preciso lhe avisar com antecedência...";
 		next;
 		mes "[Seiyablem]";
-		mes "Se esta tentativa de adicionar um Slot à sua Arma falhar, a ^FF0000Arma^000000 ^FF0000e quaisquer Cartas nela encaixadas serão destruídas^000000.";
+		mes "Se falhar, você perde apenas os ^FF0000materiais e o zeny^000000 — a Arma e suas Cartas ficam intactas.";
 	}
 	else // armor
 	{
@@ -272,7 +272,7 @@ function	script	Func_Socket	{
 		mes "Mas antes, devo avisá-lo sobre o risco.";
 		next;
 		mes "[Seiyablem]";
-		mes "Se esta tentativa de adicionar um Slot à sua Armadura falhar, a ^FF0000Armadura^000000, ^FF0000suas melhorias^000000 ^FF0000e quaisquer Cartas nela encaixadas serão destruídas^000000.";
+		mes "Se falhar, você perde apenas os ^FF0000materiais e o zeny^000000 — a Armadura, o refino e as Cartas ficam intactos.";
 	}
 	mes "Você ainda quer tentar adicionar um Slot?";
 	next;
@@ -311,13 +311,15 @@ function	script	Func_Socket	{
 					mes "No entanto, não foi culpa minha.";
 					mes "É uma questão de sorte, determinada pelos deuses.";
 					mes "Não fique tão desanimado, tente novamente.";
-					delitem .@item_id,1;
+					// [Hardcore] A falha destruia o equipamento, o refino e as
+					// cartas. Agora so os materiais e o zeny sao consumidos.
 					delitem .@item_req[0],.@req_amount[0];
 					if (.@item_req[1] != 0 && .@req_amount[1] != 0)
 						delitem .@item_req[1],.@req_amount[1];
 					Zeny = Zeny - .@zeny_req *1000;
 					next;
 					mes "[Seiyablem]";
+					mes "Seu equipamento esta intacto — perdemos apenas os materiais.";
 					mes "Boa sorte na próxima vez!";
 					close;
 				}

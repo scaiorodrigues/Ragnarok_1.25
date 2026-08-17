@@ -1,0 +1,146 @@
+//===== rAthena Script =======================================
+//= [Hardcore] Sistema de Titulos por Maestria de Raca
+//===== Descricao: ===========================================
+//= A cada 10.000 monstros abatidos de uma raca, o personagem ganha
+//= permanentemente +1% de dano contra ela e +1% de reducao de dano
+//= vindo dela. Nao ha teto por padrao (ver .maxtier).
+//=
+//= Recompensa especializacao em vez de acumulo generico: quem passou a
+//= vida cacando Mortos-vivos fica de fato melhor contra Mortos-vivos.
+//=
+//= COMO FUNCIONA
+//= 1. OnNPCKillEvent dispara a cada monstro morto e incrementa o
+//=    contador da raca daquele monstro.
+//= 2. Ao cruzar um marco de 10.000, reaplica o bonus e avisa o jogador.
+//= 3. OnPCLoginEvent reaplica tudo ao entrar.
+//=
+//= Este servidor nao tem OnPCStatCalcEvent, entao o bonus e aplicado via
+//= bonus_script com BSF_PERMANENT — ele persiste na tabela `bonus_script`
+//= e sobrevive a relog. BSF_FORCE_REPLACE garante que reaplicar substitui
+//= em vez de empilhar.
+//=
+//= Contadores sao variaveis de PERSONAGEM (sem prefixo). Num servidor de
+//= morte permanente isso significa que a maestria morre junto — trocar
+//= por # (variaveis de conta) faz a maestria virar progresso de conta.
+//============================================================
+
+-	script	HardcoreTitulos	FAKE_NPC,{
+	end;
+
+OnInit:
+	.marco    = 10000;   // abates por tier
+	.pct      = 1;       // % de dano e de reducao por tier
+	.maxtier  = 0;       // 0 = sem teto
+	// Indice = constante RC_ do rAthena; ordem importa para o array de nomes
+	setarray .rc[0],  RC_FORMLESS, RC_UNDEAD, RC_BRUTE, RC_PLANT, RC_INSECT,
+	                  RC_FISH, RC_DEMON, RC_DEMIHUMAN, RC_ANGEL, RC_DRAGON;
+	setarray .nome$[0], "Amorfos", "Mortos-vivos", "Brutos", "Plantas", "Insetos",
+	                    "Peixes", "Demonios", "Demi-humanos", "Anjos", "Dragoes";
+	// Titulo exibido conforme o tier alcancado
+	setarray .titulo$[0], "Cacador", "Algoz", "Carrasco", "Flagelo", "Nemesis";
+	end;
+
+// ---------------------------------------------------------------------------
+// A cada monstro morto
+// ---------------------------------------------------------------------------
+OnNPCKillEvent:
+	.@raca = getmonsterinfo(killedrid, MOB_RACE);
+	if (.@raca < 0) end;
+
+	.@i = inarray(.rc[0], .@raca);
+	if (.@i < 0) end;                       // raca fora da lista (Player_*)
+
+	.@antes = getd("maestria_" + .@i);
+	.@agora = .@antes + 1;
+	setd "maestria_" + .@i, .@agora;
+
+	// Só faz trabalho quando cruza um marco
+	if (.@agora / .marco == .@antes / .marco) end;
+
+	.@tier = .@agora / .marco;
+	if (.maxtier > 0 && .@tier > .maxtier) end;
+
+	callfunc "F_AplicaMaestria";
+
+	.@t$ = .titulo$[(.@tier - 1 > 4) ? 4 : .@tier - 1];
+	dispbottom "[Maestria] " + .@t$ + " de " + .nome$[.@i] + " — tier " + .@tier +
+	           " (+" + (.@tier * .pct) + "% de dano e reducao).";
+	specialeffect2 EF_ANGELUS;
+	end;
+
+// ---------------------------------------------------------------------------
+// Reaplicar ao logar
+// ---------------------------------------------------------------------------
+OnPCLoginEvent:
+	callfunc "F_AplicaMaestria";
+	end;
+}
+
+// ---------------------------------------------------------------------------
+// Monta um unico bonus_script com todas as maestrias ativas.
+//
+// Um script so, em vez de um por raca: bonus_script identicos podem colidir,
+// e reconstruir tudo de uma vez mantem o estado sempre coerente com os
+// contadores — sem risco de sobrar bonus de um tier antigo.
+// ---------------------------------------------------------------------------
+function	script	F_AplicaMaestria	{
+	.@marco   = getvariableofnpc(.marco,   "HardcoreTitulos");
+	.@pct     = getvariableofnpc(.pct,     "HardcoreTitulos");
+	.@maxtier = getvariableofnpc(.maxtier, "HardcoreTitulos");
+
+	.@s$ = "";
+	for (.@i = 0; .@i < 10; .@i++) {
+		.@tier = getd("maestria_" + .@i) / .@marco;
+		if (.@tier <= 0) continue;
+		if (.@maxtier > 0 && .@tier > .@maxtier) .@tier = .@maxtier;
+
+		.@rc = getelementofarray(getvariableofnpc(.rc[0], "HardcoreTitulos"), .@i);
+		.@v  = .@tier * .@pct;
+		.@s$ += "bonus2 bAddRace," + .@rc + "," + .@v + ";";
+		.@s$ += "bonus2 bSubRace," + .@rc + "," + .@v + ";";
+	}
+
+	if (.@s$ == "") return;
+
+	// 86400*365 s: duracao longa o bastante para nao expirar na pratica.
+	// BSF_PERMANENT sobrevive a relog; BSF_FORCE_REPLACE substitui a versao
+	// anterior em vez de empilhar.
+	bonus_script "{" + .@s$ + "}", 86400 * 365, BSF_PERMANENT | BSF_FORCE_REPLACE;
+	return;
+}
+
+// ---------------------------------------------------------------------------
+// NPC de consulta — mostra o progresso em cada raca
+// ---------------------------------------------------------------------------
+prontera,155,183,4	script	Mestre das Cronicas	4_M_SAGE_C,{
+	.@marco = getvariableofnpc(.marco, "HardcoreTitulos");
+	.@pct   = getvariableofnpc(.pct,   "HardcoreTitulos");
+
+	mes "[Mestre das Cronicas]";
+	mes "Registro cada criatura que voce derruba.";
+	mes "A cada ^0055FF" + .@marco + "^000000 abates de uma mesma raca,";
+	mes "voce ganha ^008800+" + .@pct + "% de dano^000000 contra ela";
+	mes "e ^008800+" + .@pct + "% de resistencia^000000 ao dano dela.";
+	next;
+
+	.@tem = 0;
+	for (.@i = 0; .@i < 10; .@i++) {
+		.@n = getd("maestria_" + .@i);
+		if (.@n <= 0) continue;
+		.@tem = 1;
+		.@tier = .@n / .@marco;
+		.@nome$ = getelementofarray(getvariableofnpc(.nome$[0], "HardcoreTitulos"), .@i);
+		if (.@tier > 0) {
+			.@t$ = getelementofarray(getvariableofnpc(.titulo$[0], "HardcoreTitulos"),
+			                         (.@tier - 1 > 4) ? 4 : .@tier - 1);
+			mes "^008800" + .@t$ + " de " + .@nome$ + "^000000 — tier " + .@tier +
+			    " (+" + (.@tier * .@pct) + "%)";
+			mes "  ^888888" + .@n + " abates · faltam " +
+			    (.@marco - (.@n % .@marco)) + " para o proximo^000000";
+		} else {
+			mes "" + .@nome$ + ": ^888888" + .@n + " / " + .@marco + "^000000";
+		}
+	}
+	if (!.@tem) mes "Voce ainda nao derrubou nada digno de registro.";
+	close;
+}

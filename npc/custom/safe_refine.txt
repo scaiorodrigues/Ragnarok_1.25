@@ -129,7 +129,10 @@ L_REFINE:
 			mes "[Arcanista de Refinamento]";
 			mes "^FF8800Falha.^000000 A Pedra de Protecao salvou o equipamento. Ele permanece ^FF0000+" + @refine_lv + "^000000.";
 		} else {
-			failedrefitem .@part;
+			// [Hardcore] failedrefitem DESTRUIA o equipamento. Trocado por
+			// downrefitem: o material ja foi consumido acima, e a falha apenas
+			// devolve um nivel de refino — o item nunca e perdido.
+			downrefitem .@part,1;
 			mes "[Arcanista de Refinamento]";
 			mes "^FF0000Falha! Seu equipamento foi destruido.^000000";
 		}

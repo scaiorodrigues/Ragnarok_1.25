@@ -10686,13 +10686,22 @@ void skill_weaponrefine( map_session_data& sd, int32 idx ){
 					}
 				}
 			} else {
-				item->refine = 0;
+				// [Hardcore] A falha zerava o refino e DELETAVA o equipamento.
+				// Agora so devolve um nivel — o material acima ja foi consumido,
+				// e o item nunca e perdido. Mesma regra dos NPCs refinadores,
+				// que passaram de failedrefitem para downrefitem.
+				log_pick_pc(&sd, LOG_TYPE_OTHER, -1, item);
+				if( item->refine > 0 )
+					item->refine--;
+				log_pick_pc(&sd, LOG_TYPE_OTHER,  1, item);
 				if(item->equip)
 					pc_unequipitem(&sd,idx,3);
 				clif_upgrademessage(&sd, 1, item->nameid);
-				clif_refine( sd, idx, ITEMREFINING_FAILURE );
+				// o item continua no inventario, entao o cliente precisa
+				// receber o refino atualizado
+				clif_inventorylist(&sd);
+				clif_refine( sd, idx, ITEMREFINING_DOWNGRADE );
 				achievement_update_objective(&sd, AG_ENCHANT_FAIL, 1, 1);
-				pc_delitem(&sd,idx,1,0,2, LOG_TYPE_OTHER);
 				clif_misceffect( sd, NOTIFYEFFECT_REFINE_FAILURE );
 				clif_emotion( sd, ET_HUK );
 			}

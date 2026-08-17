@@ -408,7 +408,7 @@ function	script	Func_Socket2	{
 	mes "[Leablem]";
 	mes "Já trouxe tudo?";
 	mes "Para sua informação, se falhar ao criar um slot,";
-	mes "você perderá todos os itens requisitados e o "+ ((getiteminfo(.@item_id, ITEMINFO_LOCATIONS)&EQP_HAND_R) ? "weapon" : "armor") +".";
+	mes "você perderá apenas os materiais e o zeny — o equipamento fica intacto.";
 	mes "Also remember, if the "+ ((getiteminfo(.@item_id, ITEMINFO_LOCATIONS)&EQP_HAND_R) ? "weapon" : "armor") +" has been upgraded, and has been inserted with a card,";
 	mes "you will lose them even if you succeed in creating a slot.";
 	next;
@@ -448,13 +448,16 @@ function	script	Func_Socket2	{
 					mes "É uma questão de sorte, determinada pelos deuses.";
 					mes "Não fique tão desanimado,";
 					mes "e tente novamente.";
-					delitem .@item_id,1;
+					// [Hardcore] A falha destruia o equipamento junto com os
+					// materiais. Agora so os materiais e o zeny sao consumidos —
+					// o equipamento volta intacto para o inventario.
 					delitem .@item_req[0],.@req_amount[0];
 					if (.@item_req[1] != 0 && .@req_amount[1] != 0)
 						delitem .@item_req[1],.@req_amount[1];
 					Zeny = Zeny - .@zeny_req *1000;
 					next;
 					mes "[Leablem]";
+					mes "Seu equipamento esta intacto — perdemos apenas os materiais.";
 					mes "Até a próxima, amigo!";
 					close;
 				}

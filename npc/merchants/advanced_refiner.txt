@@ -76,7 +76,10 @@ payon,157,146,6	script	Suhnbi#cash	85,{
 		mes "It's been a while since I've made such a fine "+((.@itemtype == IT_WEAPON)?"weapon":"armor")+". You must be happy because it has become stronger!";
 		close;
 	}
-	failedrefitem .@part;
+	// [Hardcore] failedrefitem DESTRUIA o equipamento. Trocado por
+	// downrefitem: o material ja foi consumido acima, e a falha apenas
+	// devolve um nivel de refino — o item nunca e perdido.
+	downrefitem .@part,1;
 	next;
 	emotion (!rand(5))?ET_MONEY:ET_HUK;
 	mes "[Suhnbi]";

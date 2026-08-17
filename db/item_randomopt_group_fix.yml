@@ -1,3 +1,21 @@
+###########################################################################
+# Random Option Group — [Hardcore]
+###########################################################################
+#
+# Todo equipamento que dropa de mob vem encantado. MAX_ITEM_RDM_OPT e 5,
+# entao os grupos preenchem os 5 slots — o "maximo de encantamento possivel".
+#
+# Cada slot tem um tema proprio em vez de repetir o mesmo pool cinco vezes.
+# Isso evita sair cinco vezes o mesmo bonus e faz cada drop parecer composto:
+#   1. atributo base    2. vitalidade    3. ofensivo
+#   4. defensivo        5. resistencia elemental
+#
+# As chances dentro de um slot somam 10000, entao o slot SEMPRE e preenchido.
+#
+# Group_1  drop comum   — usado nos 1.246 drops de equipamento do mob_db
+# Group_2  MVP/elite    — mesmos temas, faixas maiores
+###########################################################################
+
 Header:
   Type: RANDOM_OPTION_GROUP
   Version: 1
@@ -6,122 +24,77 @@ Body:
   - Id: 1
     Group: Group_1
     Slots:
+      # ── 1. atributo base ────────────────────────────────────────────
       - Slot: 1
         Options:
-          - Option: VAR_STRAMOUNT
-            MinValue: 1
-            MaxValue: 5
-            Chance: 1000
-          - Option: VAR_AGIAMOUNT
-            MinValue: 1
-            MaxValue: 5
-            Chance: 1000
-          - Option: VAR_VITAMOUNT
-            MinValue: 1
-            MaxValue: 5
-            Chance: 1000
-          - Option: VAR_INTAMOUNT
-            MinValue: 1
-            MaxValue: 5
-            Chance: 1000
-          - Option: VAR_DEXAMOUNT
-            MinValue: 1
-            MaxValue: 5
-            Chance: 1000
-          - Option: VAR_LUKAMOUNT
-            MinValue: 1
-            MaxValue: 5
-            Chance: 1000
-          - Option: VAR_MAXHPAMOUNT
-            MinValue: 50
-            MaxValue: 200
-            Chance: 1000
-          - Option: VAR_MAXSPAMOUNT
-            MinValue: 10
-            MaxValue: 50
-            Chance: 1000
-          - Option: VAR_ATTPOWER
-            MinValue: 1
-            MaxValue: 10
-            Chance: 1000
-          - Option: VAR_HITSUCCESSVALUE
-            MinValue: 1
-            MaxValue: 10
-            Chance: 1000
+          - { Option: VAR_STRAMOUNT, MinValue: 1, MaxValue: 5, Chance: 1666 }
+          - { Option: VAR_AGIAMOUNT, MinValue: 1, MaxValue: 5, Chance: 1666 }
+          - { Option: VAR_VITAMOUNT, MinValue: 1, MaxValue: 5, Chance: 1667 }
+          - { Option: VAR_INTAMOUNT, MinValue: 1, MaxValue: 5, Chance: 1667 }
+          - { Option: VAR_DEXAMOUNT, MinValue: 1, MaxValue: 5, Chance: 1667 }
+          - { Option: VAR_LUKAMOUNT, MinValue: 1, MaxValue: 5, Chance: 1667 }
+      # ── 2. vitalidade ───────────────────────────────────────────────
+      - Slot: 2
+        Options:
+          - { Option: VAR_MAXHPAMOUNT, MinValue: 50, MaxValue: 200, Chance: 6000 }
+          - { Option: VAR_MAXSPAMOUNT, MinValue: 10, MaxValue: 50,  Chance: 4000 }
+      # ── 3. ofensivo ─────────────────────────────────────────────────
+      - Slot: 3
+        Options:
+          - { Option: VAR_ATTPOWER,              MinValue: 1, MaxValue: 10, Chance: 4000 }
+          - { Option: VAR_HITSUCCESSVALUE,       MinValue: 1, MaxValue: 10, Chance: 3000 }
+          - { Option: VAR_CRITICALSUCCESSVALUE,  MinValue: 1, MaxValue: 5,  Chance: 3000 }
+      # ── 4. defensivo ────────────────────────────────────────────────
+      - Slot: 4
+        Options:
+          - { Option: VAR_ITEMDEFPOWER,       MinValue: 1, MaxValue: 5,  Chance: 5000 }
+          - { Option: VAR_AVOIDSUCCESSVALUE,  MinValue: 1, MaxValue: 10, Chance: 5000 }
+      # ── 5. resistencia elemental ────────────────────────────────────
+      - Slot: 5
+        Options:
+          - { Option: ATTR_TOLERACE_NOTHING,   MinValue: 3, MaxValue: 8, Chance: 1250 }
+          - { Option: ATTR_TOLERACE_WATER,     MinValue: 3, MaxValue: 8, Chance: 1250 }
+          - { Option: ATTR_TOLERACE_GROUND,    MinValue: 3, MaxValue: 8, Chance: 1250 }
+          - { Option: ATTR_TOLERACE_FIRE,      MinValue: 3, MaxValue: 8, Chance: 1250 }
+          - { Option: ATTR_TOLERACE_WIND,      MinValue: 3, MaxValue: 8, Chance: 1250 }
+          - { Option: ATTR_TOLERACE_POISON,    MinValue: 3, MaxValue: 8, Chance: 1250 }
+          - { Option: ATTR_TOLERACE_DARKNESS,  MinValue: 3, MaxValue: 8, Chance: 1250 }
+          - { Option: ATTR_TOLERACE_UNDEAD,    MinValue: 3, MaxValue: 8, Chance: 1250 }
+
+  # Reservado para drops de MVP e elite: mesmos temas, faixas maiores.
+  # Ainda nao esta atribuido a nenhum mob — para usar, basta trocar
+  # RandomOptionGroup: Group_1 por Group_2 nos drops desejados.
   - Id: 2
     Group: Group_2
     Slots:
       - Slot: 1
         Options:
-          - Option: VAR_STRAMOUNT
-            MinValue: 1
-            MaxValue: 5
-            Chance: 1000
-          - Option: VAR_AGIAMOUNT
-            MinValue: 1
-            MaxValue: 5
-            Chance: 1000
-          - Option: VAR_VITAMOUNT
-            MinValue: 1
-            MaxValue: 5
-            Chance: 1000
-          - Option: VAR_INTAMOUNT
-            MinValue: 1
-            MaxValue: 5
-            Chance: 1000
-          - Option: VAR_DEXAMOUNT
-            MinValue: 1
-            MaxValue: 5
-            Chance: 1000
-          - Option: VAR_LUKAMOUNT
-            MinValue: 1
-            MaxValue: 5
-            Chance: 1000
-          - Option: VAR_MAXHPAMOUNT
-            MinValue: 100
-            MaxValue: 500
-            Chance: 1000
-          - Option: VAR_MAXSPAMOUNT
-            MinValue: 20
-            MaxValue: 100
-            Chance: 1000
-          - Option: VAR_ITEMDEFPOWER
-            MinValue: 1
-            MaxValue: 5
-            Chance: 1000
-          - Option: VAR_AVOIDSUCCESSVALUE
-            MinValue: 1
-            MaxValue: 10
-            Chance: 1000
-          - Option: ATTR_TOLERACE_FIRE
-            MinValue: 3
-            MaxValue: 10
-            Chance: 500
-          - Option: ATTR_TOLERACE_WATER
-            MinValue: 3
-            MaxValue: 10
-            Chance: 500
-          - Option: ATTR_TOLERACE_WIND
-            MinValue: 3
-            MaxValue: 10
-            Chance: 500
-          - Option: ATTR_TOLERACE_GROUND
-            MinValue: 3
-            MaxValue: 10
-            Chance: 500
-          - Option: ATTR_TOLERACE_POISON
-            MinValue: 3
-            MaxValue: 10
-            Chance: 500
-          - Option: ATTR_TOLERACE_SAINT
-            MinValue: 3
-            MaxValue: 10
-            Chance: 500
-          - Option: ATTR_TOLERACE_DARKNESS
-            MinValue: 3
-            MaxValue: 10
-            Chance: 500
-          - Option: ATTR_TOLERACE_UNDEAD
-            MinValue: 3
-            MaxValue: 10
-            Chance: 500
+          - { Option: VAR_STRAMOUNT, MinValue: 3, MaxValue: 10, Chance: 1666 }
+          - { Option: VAR_AGIAMOUNT, MinValue: 3, MaxValue: 10, Chance: 1666 }
+          - { Option: VAR_VITAMOUNT, MinValue: 3, MaxValue: 10, Chance: 1667 }
+          - { Option: VAR_INTAMOUNT, MinValue: 3, MaxValue: 10, Chance: 1667 }
+          - { Option: VAR_DEXAMOUNT, MinValue: 3, MaxValue: 10, Chance: 1667 }
+          - { Option: VAR_LUKAMOUNT, MinValue: 3, MaxValue: 10, Chance: 1667 }
+      - Slot: 2
+        Options:
+          - { Option: VAR_MAXHPAMOUNT, MinValue: 200, MaxValue: 700, Chance: 6000 }
+          - { Option: VAR_MAXSPAMOUNT, MinValue: 50,  MaxValue: 150, Chance: 4000 }
+      - Slot: 3
+        Options:
+          - { Option: VAR_ATTPOWER,              MinValue: 8,  MaxValue: 25, Chance: 4000 }
+          - { Option: VAR_HITSUCCESSVALUE,       MinValue: 8,  MaxValue: 25, Chance: 3000 }
+          - { Option: VAR_CRITICALSUCCESSVALUE,  MinValue: 4,  MaxValue: 12, Chance: 3000 }
+      - Slot: 4
+        Options:
+          - { Option: VAR_ITEMDEFPOWER,       MinValue: 4,  MaxValue: 12, Chance: 5000 }
+          - { Option: VAR_AVOIDSUCCESSVALUE,  MinValue: 8,  MaxValue: 25, Chance: 5000 }
+      - Slot: 5
+        Options:
+          - { Option: ATTR_TOLERACE_NOTHING,   MinValue: 8, MaxValue: 15, Chance: 1250 }
+          - { Option: ATTR_TOLERACE_WATER,     MinValue: 8, MaxValue: 15, Chance: 1250 }
+          - { Option: ATTR_TOLERACE_GROUND,    MinValue: 8, MaxValue: 15, Chance: 1250 }
+          - { Option: ATTR_TOLERACE_FIRE,      MinValue: 8, MaxValue: 15, Chance: 1250 }
+          - { Option: ATTR_TOLERACE_WIND,      MinValue: 8, MaxValue: 15, Chance: 1250 }
+          - { Option: ATTR_TOLERACE_POISON,    MinValue: 8, MaxValue: 15, Chance: 1250 }
+          - { Option: ATTR_TOLERACE_DARKNESS,  MinValue: 8, MaxValue: 15, Chance: 1250 }
+          - { Option: ATTR_TOLERACE_UNDEAD,    MinValue: 8, MaxValue: 15, Chance: 1250 }
