@@ -1,0 +1,11 @@
+# Frota de teste — 10 bots. Consumido por start_test10.bat
+HC_Novice01          # base, menor nivel — valida progressao inicial
+HC_Merchant01        # vending/loja — valida o sistema de mercado e trade
+HC_Knight_STR01      # 2a classe corpo a corpo
+HC_Priest_Supp01     # 2a classe suporte — valida party e buffs
+HC_Wizard_INT01      # 2a classe conjurador
+HC_Hunter_DEX01      # 2a classe a distancia
+HC_LK_STR01          # trans corpo a corpo
+HC_HW_INT01          # trans conjurador
+HC_Sniper_Trap01     # trans exotica — dano por DEX+INT, nao ATK
+HC_Creator_FCP01     # trans exotica — slave puro, STR 1 / DEX 99

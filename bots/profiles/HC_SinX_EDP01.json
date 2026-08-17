@@ -1,0 +1,35 @@
+{
+  "name": "HC_SinX_EDP01",
+  "job": 28,
+  "job_name": "SinX",
+  "base_level": 82,
+  "zeny": 500000,
+  "primary_stats": [
+    "STR",
+    "ATK"
+  ],
+  "secondary_stats": [
+    "AGI",
+    "CRIT"
+  ],
+  "current_equips": {
+    "EQI_HEAD_TOP": null,
+    "EQI_HEAD_MID": null,
+    "EQI_HEAD_LOW": null,
+    "EQI_ARMOR": null,
+    "EQI_GARMENT": null,
+    "EQI_SHOES": null,
+    "EQI_HAND_R": null,
+    "EQI_HAND_L": null,
+    "EQI_ACC_L": null,
+    "EQI_ACC_R": null
+  },
+  "slotted_cards": {},
+  "in_combat": false,
+  "current_map": "prontera",
+  "build": "EDP",
+  "job_level": 41,
+  "job_alvo": "SinX",
+  "renasceu": true,
+  "peak_base_level": 99
+}

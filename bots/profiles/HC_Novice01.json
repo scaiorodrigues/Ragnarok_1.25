@@ -1,0 +1,35 @@
+{
+  "name": "HC_Novice01",
+  "job": 0,
+  "job_name": "Novice",
+  "base_level": 10,
+  "zeny": 5000,
+  "primary_stats": [
+    "VIT",
+    "STR"
+  ],
+  "secondary_stats": [
+    "DEF",
+    "MaxHP"
+  ],
+  "current_equips": {
+    "EQI_HEAD_TOP": null,
+    "EQI_HEAD_MID": null,
+    "EQI_HEAD_LOW": null,
+    "EQI_ARMOR": null,
+    "EQI_GARMENT": null,
+    "EQI_SHOES": null,
+    "EQI_HAND_R": null,
+    "EQI_HAND_L": null,
+    "EQI_ACC_L": null,
+    "EQI_ACC_R": null
+  },
+  "slotted_cards": {},
+  "in_combat": false,
+  "current_map": "prontera",
+  "build": "",
+  "job_level": 5,
+  "job_alvo": "LordKnight",
+  "renasceu": false,
+  "peak_base_level": 10
+}

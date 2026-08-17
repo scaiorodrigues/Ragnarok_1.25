@@ -4649,6 +4649,101 @@ bool RandomOptionGroupDatabase::add_option(const ryml::NodeRef& node, std::share
 	return true;
 }
 
+/**
+ * [Hardcore] Descobre de qual pool tematico o equipamento sorteia.
+ *
+ * Arma decide pelo subtipo; armadura, pelo slot que ocupa. Assim uma espada
+ * nunca recebe encantamento de cajado, e cada familia tem sua identidade.
+ *
+ * Itens fora das familias conhecidas (municao, montaria, fantasia) caem no
+ * grupo generico.
+ *
+ * @param id dados do item
+ * @return Id do grupo em db/item_randomopt_group_fix.yml
+ */
+uint16 itemdb_hardcore_enchant_group( const item_data& id ){
+	if( id.type == IT_WEAPON ){
+		switch( id.subtype ){
+			case W_1HSWORD: case W_2HSWORD:
+				return RDMOPTG_HC_LAMINA;
+			case W_DAGGER: case W_KATAR:
+				return RDMOPTG_HC_PRECISAO;
+			case W_BOW:
+				return RDMOPTG_HC_PONTARIA;
+			case W_STAFF: case W_2HSTAFF: case W_BOOK:
+				return RDMOPTG_HC_ARCANO;
+			case W_MACE: case W_2HMACE: case W_KNUCKLE:
+				return RDMOPTG_HC_IMPACTO;
+			case W_1HSPEAR: case W_2HSPEAR: case W_1HAXE: case W_2HAXE:
+				return RDMOPTG_HC_PESO;
+			case W_MUSICAL: case W_WHIP:
+				return RDMOPTG_HC_HARMONIA;
+			default:
+				return RDMOPTG_HARDCORE_DEFAULT;
+		}
+	}
+
+	if( id.type == IT_ARMOR ){
+		// A ordem importa: um item pode declarar mais de um local, e o
+		// primeiro que casar define o tema. Nao existem constantes
+		// combinadas para escudo e chapeu, entao os bits vao explicitos.
+		if( id.equip & EQP_ARMOR )   return RDMOPTG_HC_COURASA;
+		if( id.equip & EQP_HAND_L )  return RDMOPTG_HC_GUARDA;
+		if( id.equip & EQP_GARMENT ) return RDMOPTG_HC_MANTO;
+		if( id.equip & EQP_SHOES )   return RDMOPTG_HC_PASSO;
+		if( id.equip & EQP_ACC_RL )  return RDMOPTG_HC_TALISMA;
+		if( id.equip & ( EQP_HEAD_TOP | EQP_HEAD_MID | EQP_HEAD_LOW ) )
+			return RDMOPTG_HC_ELMO;
+	}
+
+	return RDMOPTG_HARDCORE_DEFAULT;
+}
+
+/**
+ * [Hardcore] Sorteia uma unica posicao de opcao aleatoria.
+ *
+ * Diferente de apply(), que zera as 5 posicoes e preenche todas: aqui o
+ * equipamento nasce com 1 encantamento (slot 0) e as posicoes seguintes vao
+ * sendo abertas pelo refino feito por um ferreiro.
+ *
+ * @param item item a modificar
+ * @param slot indice 0..MAX_ITEM_RDM_OPT-1
+ * @return true se a posicao foi preenchida
+ */
+bool s_random_opt_group::apply_slot( struct item& item, uint16 slot ){
+	if( slot >= MAX_ITEM_RDM_OPT ){
+		return false;
+	}
+
+	auto it = this->slots.find( slot );
+
+	// grupo nao define pool para essa posicao
+	if( it == this->slots.end() || it->second.empty() ){
+		return false;
+	}
+
+	// mesma logica do apply(): tenta respeitando a chance e, se nada sair,
+	// aplica uma entrada qualquer para a posicao nunca ficar vazia
+	for( size_t j = 0, max = it->second.size() * 3; j < max; j++ ){
+		std::shared_ptr<s_random_opt_group_entry> option = util::vector_random( it->second );
+
+		if( rnd_chance<uint16>( option->chance, 10000 ) ){
+			item.option[slot].id = option->id;
+			item.option[slot].value = rnd_value( option->min_value, option->max_value );
+			item.option[slot].param = option->param;
+			return true;
+		}
+	}
+
+	std::shared_ptr<s_random_opt_group_entry> option = util::vector_random( it->second );
+
+	item.option[slot].id = option->id;
+	item.option[slot].value = rnd_value( option->min_value, option->max_value );
+	item.option[slot].param = option->param;
+
+	return true;
+}
+
 void s_random_opt_group::apply( struct item& item ){
 	auto apply_sub = []( s_item_randomoption& item_option, const std::shared_ptr<s_random_opt_group_entry>& option ){
 		item_option.id = option->id;

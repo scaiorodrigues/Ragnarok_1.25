@@ -1,0 +1,35 @@
+{
+  "name": "HC_Champ_Tiger01",
+  "job": 31,
+  "job_name": "Champion",
+  "base_level": 82,
+  "zeny": 490000,
+  "primary_stats": [
+    "STR",
+    "AGI"
+  ],
+  "secondary_stats": [
+    "ATK",
+    "FLEE"
+  ],
+  "current_equips": {
+    "EQI_HEAD_TOP": null,
+    "EQI_HEAD_MID": null,
+    "EQI_HEAD_LOW": null,
+    "EQI_ARMOR": null,
+    "EQI_GARMENT": null,
+    "EQI_SHOES": null,
+    "EQI_HAND_R": null,
+    "EQI_HAND_L": null,
+    "EQI_ACC_L": null,
+    "EQI_ACC_R": null
+  },
+  "slotted_cards": {},
+  "in_combat": false,
+  "current_map": "prontera",
+  "build": "Tiger",
+  "job_level": 41,
+  "job_alvo": "Champion",
+  "renasceu": true,
+  "peak_base_level": 99
+}

@@ -1,0 +1,43 @@
+# OpenKore config — HC_LK_VIT01 | LordKnight [VIT] Lv87
+
+# Conexão
+master Ragnarok Hardcore
+char HC_LK_VIT01
+
+# Sem teleporte (servidor Hardcore)
+teleportAuto 0
+attackAuto 2
+attackAuto_inLockMap 2
+
+# Mapa de farm principal
+lockMap gl_knt02
+
+# Stats target
+statsAddStr 80
+statsAddAgi 1
+statsAddVit 99
+statsAddInt 1
+statsAddDex 60
+statsAddLuk 1
+
+# Comportamento
+sitAuto_hp 30
+sitAuto_sp 20
+itemsGatherAuto 2
+itemsTakeAuto 2
+itemsTakeAuto_start 1
+
+# Compras automáticas (reabastecimento)
+buyAuto White_Potion 50
+buyAuto Blue_Potion 50
+buyAuto Awakening_Potion 50
+buyAuto Concentration_Potion 50
+buyAuto Fly_Wing 50
+buyAuto Butterfly_Wing 50
+
+# Cards prioritários: Thara_Frog_Card, Raydric_Card, Tao_Gunka_Card, Ghostring_Card
+
+# Plugins
+loadPlugin MarketScanner
+loadPlugin TradeHandler
+loadPlugin PartyManager

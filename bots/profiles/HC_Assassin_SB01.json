@@ -1,0 +1,35 @@
+{
+  "name": "HC_Assassin_SB01",
+  "job": 12,
+  "job_name": "Assassin",
+  "base_level": 67,
+  "zeny": 160000,
+  "primary_stats": [
+    "STR",
+    "AGI"
+  ],
+  "secondary_stats": [
+    "ATK",
+    "CRIT"
+  ],
+  "current_equips": {
+    "EQI_HEAD_TOP": null,
+    "EQI_HEAD_MID": null,
+    "EQI_HEAD_LOW": null,
+    "EQI_ARMOR": null,
+    "EQI_GARMENT": null,
+    "EQI_SHOES": null,
+    "EQI_HAND_R": null,
+    "EQI_HAND_L": null,
+    "EQI_ACC_L": null,
+    "EQI_ACC_R": null
+  },
+  "slotted_cards": {},
+  "in_combat": false,
+  "current_map": "prontera",
+  "build": "SB",
+  "job_level": 33,
+  "job_alvo": "SinX",
+  "renasceu": false,
+  "peak_base_level": 67
+}

@@ -1,0 +1,35 @@
+{
+  "name": "HC_Alch_INT01",
+  "job": 18,
+  "job_name": "Alchemist",
+  "base_level": 62,
+  "zeny": 180000,
+  "primary_stats": [
+    "INT",
+    "VIT"
+  ],
+  "secondary_stats": [
+    "DEX",
+    "STR"
+  ],
+  "current_equips": {
+    "EQI_HEAD_TOP": null,
+    "EQI_HEAD_MID": null,
+    "EQI_HEAD_LOW": null,
+    "EQI_ARMOR": null,
+    "EQI_GARMENT": null,
+    "EQI_SHOES": null,
+    "EQI_HAND_R": null,
+    "EQI_HAND_L": null,
+    "EQI_ACC_L": null,
+    "EQI_ACC_R": null
+  },
+  "slotted_cards": {},
+  "in_combat": false,
+  "current_map": "prontera",
+  "build": "INT",
+  "job_level": 31,
+  "job_alvo": "Creator",
+  "renasceu": false,
+  "peak_base_level": 62
+}

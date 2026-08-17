@@ -1,0 +1,35 @@
+{
+  "name": "HC_Priest_Supp01",
+  "job": 8,
+  "job_name": "Priest",
+  "base_level": 72,
+  "zeny": 150000,
+  "primary_stats": [
+    "INT",
+    "VIT"
+  ],
+  "secondary_stats": [
+    "MDEF",
+    "MaxSP"
+  ],
+  "current_equips": {
+    "EQI_HEAD_TOP": null,
+    "EQI_HEAD_MID": null,
+    "EQI_HEAD_LOW": null,
+    "EQI_ARMOR": null,
+    "EQI_GARMENT": null,
+    "EQI_SHOES": null,
+    "EQI_HAND_R": null,
+    "EQI_HAND_L": null,
+    "EQI_ACC_L": null,
+    "EQI_ACC_R": null
+  },
+  "slotted_cards": {},
+  "in_combat": false,
+  "current_map": "prontera",
+  "build": "Support",
+  "job_level": 36,
+  "job_alvo": "HighPriest",
+  "renasceu": false,
+  "peak_base_level": 72
+}

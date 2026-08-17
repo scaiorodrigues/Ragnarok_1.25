@@ -1,0 +1,35 @@
+{
+  "name": "HC_Knight_AGI01",
+  "job": 7,
+  "job_name": "Knight",
+  "base_level": 68,
+  "zeny": 180000,
+  "primary_stats": [
+    "AGI",
+    "FLEE"
+  ],
+  "secondary_stats": [
+    "STR",
+    "CRIT"
+  ],
+  "current_equips": {
+    "EQI_HEAD_TOP": null,
+    "EQI_HEAD_MID": null,
+    "EQI_HEAD_LOW": null,
+    "EQI_ARMOR": null,
+    "EQI_GARMENT": null,
+    "EQI_SHOES": null,
+    "EQI_HAND_R": null,
+    "EQI_HAND_L": null,
+    "EQI_ACC_L": null,
+    "EQI_ACC_R": null
+  },
+  "slotted_cards": {},
+  "in_combat": false,
+  "current_map": "prontera",
+  "build": "AGI",
+  "job_level": 34,
+  "job_alvo": "LordKnight",
+  "renasceu": false,
+  "peak_base_level": 68
+}

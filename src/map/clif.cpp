@@ -7283,12 +7283,33 @@ void clif_item_refine_list( map_session_data& sd ){
 	refine_item[4] = -1;
 #endif
 
+	// [Hardcore] Armadura tambem entra na lista. Sem isso ela nunca passaria
+	// de um encantamento, ja que WS_WEAPONREFINE e a unica skill de refino do
+	// jogo e so aceitava arma. Armadura usa Elunium.
+	int32 refine_armor = pc_search_inventory( &sd, ITEMID_ELUNIUM );
+
 	int32 count = 0;
 	for( int32 i = 0; i < MAX_INVENTORY; i++ ){
-		if( sd.inventory.u.items_inventory[i].nameid > 0 && sd.inventory.u.items_inventory[i].refine < skill_lv &&
-			sd.inventory_data[i] != nullptr && sd.inventory_data[i]->type == IT_WEAPON &&
-			sd.inventory.u.items_inventory[i].identify && sd.inventory_data[i]->weapon_level >= 1 &&
-			refine_item[sd.inventory_data[i]->weapon_level - 1] != -1 && !( sd.inventory.u.items_inventory[i].equip & EQP_ARMS ) ){
+		item_data* idata = sd.inventory_data[i];
+		item* itm = &sd.inventory.u.items_inventory[i];
+
+		if( itm->nameid == 0 || idata == nullptr || !itm->identify || itm->refine >= skill_lv ){
+			continue;
+		}
+
+		bool refinavel;
+
+		if( idata->type == IT_WEAPON ){
+			refinavel = idata->weapon_level >= 1
+				&& refine_item[idata->weapon_level - 1] != -1
+				&& !( itm->equip & EQP_ARMS );
+		}else if( idata->type == IT_ARMOR ){
+			refinavel = refine_armor != -1 && !( itm->equip );
+		}else{
+			continue;
+		}
+
+		if( refinavel ){
 
 			p->items[count].index = client_index( i );
 			p->items[count].itemId = client_nameid( sd.inventory.u.items_inventory[i].nameid );

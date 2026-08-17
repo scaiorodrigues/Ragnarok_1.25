@@ -1,0 +1,15 @@
+# Caches gerados a partir dos DBs do rAthena — reconstruidos por
+# item_parser.py / mob_parser.py, nao precisam de versionamento
+market/item_cache.json
+market/card_cache.json
+market/drop_cache.json
+market/mob_traits.json
+
+# Estado de execucao dos bots
+*/macros/dynamic.txt
+*/route_target.txt
+logs/
+*.log
+
+__pycache__/
+*.pyc

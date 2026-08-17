@@ -1,0 +1,43 @@
+# OpenKore config — HC_Sniper_Falcon01 | Sniper [Falcon] Lv83
+
+# Conexão
+master Ragnarok Hardcore
+char HC_Sniper_Falcon01
+
+# Sem teleporte (servidor Hardcore)
+teleportAuto 0
+attackAuto 2
+attackAuto_inLockMap 2
+
+# Mapa de farm principal
+lockMap lhz_dun02
+
+# Stats target
+statsAddStr 1
+statsAddAgi 99
+statsAddVit 20
+statsAddInt 30
+statsAddDex 40
+statsAddLuk 80
+
+# Comportamento
+sitAuto_hp 30
+sitAuto_sp 20
+itemsGatherAuto 2
+itemsTakeAuto 2
+itemsTakeAuto_start 1
+
+# Compras automáticas (reabastecimento)
+buyAuto White_Potion 50
+buyAuto Blue_Potion 50
+buyAuto Awakening_Potion 50
+buyAuto Concentration_Potion 50
+buyAuto Fly_Wing 50
+buyAuto Butterfly_Wing 50
+
+# Cards prioritários: Phreeoni_Card, Kobold_Card
+
+# Plugins
+loadPlugin MarketScanner
+loadPlugin TradeHandler
+loadPlugin PartyManager

@@ -1,0 +1,13 @@
+# Bots reconhecidos: convidam uns aos outros para party e aceitam
+# trades entre si automaticamente. Usado por PartyManager e TradeHandler.
+# --- ambiente de teste: 10 bots ---
+HC_Novice01
+HC_Merchant01
+HC_Knight_STR01
+HC_Priest_Supp01
+HC_Wizard_INT01
+HC_Hunter_DEX01
+HC_LK_STR01
+HC_HW_INT01
+HC_Sniper_Trap01
+HC_Creator_FCP01

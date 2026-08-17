@@ -1,0 +1,35 @@
+{
+  "name": "HC_WS_MaxPow01",
+  "job": 27,
+  "job_name": "Whitesmith",
+  "base_level": 82,
+  "zeny": 620000,
+  "primary_stats": [
+    "VIT",
+    "STR"
+  ],
+  "secondary_stats": [
+    "MaxHP",
+    "DEF"
+  ],
+  "current_equips": {
+    "EQI_HEAD_TOP": null,
+    "EQI_HEAD_MID": null,
+    "EQI_HEAD_LOW": null,
+    "EQI_ARMOR": null,
+    "EQI_GARMENT": null,
+    "EQI_SHOES": null,
+    "EQI_HAND_R": null,
+    "EQI_HAND_L": null,
+    "EQI_ACC_L": null,
+    "EQI_ACC_R": null
+  },
+  "slotted_cards": {},
+  "in_combat": false,
+  "current_map": "prontera",
+  "build": "MaxPow",
+  "job_level": 41,
+  "job_alvo": "Whitesmith",
+  "renasceu": true,
+  "peak_base_level": 99
+}

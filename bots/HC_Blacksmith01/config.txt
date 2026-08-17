@@ -1,0 +1,35 @@
+# OpenKore config gerado automaticamente
+# Bot: HC_Blacksmith01 | Job: Blacksmith (ID 10)
+
+# Conexao
+master Ragnarok Hardcore
+char HC_Blacksmith01
+
+# Sem teleporte (servidor Hardcore)
+teleportAuto 0
+attackAuto 2
+attackAuto_inLockMap 2
+
+# Stats target
+statsAddStr 80
+statsAddAgi 20
+statsAddVit 40
+statsAddInt 1
+statsAddDex 60
+statsAddLuk 1
+
+# Comportamento
+sitAuto_hp 0
+sitAuto_sp 0
+itemsGatherAuto 2
+itemsTakeAuto 2
+itemsTakeAuto_start 1
+
+# Merchant: abrir vending shop no ponto de comercio
+vendOn 1
+vendTitle Shop [Blacksmith] items
+
+# Plugins
+loadPlugin MarketScanner
+loadPlugin TradeHandler
+loadPlugin PartyManager

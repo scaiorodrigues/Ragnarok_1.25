@@ -1,0 +1,43 @@
+# OpenKore config — HC_Sage_DEX01 | Sage [DEX] Lv62
+
+# Conexão
+master Ragnarok Hardcore
+char HC_Sage_DEX01
+
+# Sem teleporte (servidor Hardcore)
+teleportAuto 0
+attackAuto 2
+attackAuto_inLockMap 2
+
+# Mapa de farm principal
+lockMap gef_fild14
+
+# Stats target
+statsAddStr 60
+statsAddAgi 80
+statsAddVit 30
+statsAddInt 85
+statsAddDex 45
+statsAddLuk 1
+
+# Comportamento
+sitAuto_hp 30
+sitAuto_sp 20
+itemsGatherAuto 2
+itemsTakeAuto 2
+itemsTakeAuto_start 1
+
+# Compras automáticas (reabastecimento)
+buyAuto White_Potion 50
+buyAuto Blue_Potion 50
+buyAuto Awakening_Potion 50
+buyAuto Concentration_Potion 50
+buyAuto Fly_Wing 50
+buyAuto Butterfly_Wing 50
+
+# Cards prioritários: Drops_Card, Skel_Worker_Card
+
+# Plugins
+loadPlugin MarketScanner
+loadPlugin TradeHandler
+loadPlugin PartyManager

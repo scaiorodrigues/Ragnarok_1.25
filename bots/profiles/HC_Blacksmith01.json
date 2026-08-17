@@ -1,0 +1,33 @@
+{
+  "name": "HC_Blacksmith01",
+  "job": 10,
+  "job_name": "Blacksmith",
+  "base_level": 60,
+  "zeny": 300000,
+  "primary_stats": [
+    "STR",
+    "DEX"
+  ],
+  "secondary_stats": [
+    "VIT",
+    "ATK"
+  ],
+  "current_equips": {
+    "EQI_HEAD_TOP": null,
+    "EQI_ARMOR": null,
+    "EQI_HAND_R": null,
+    "EQI_HAND_L": null,
+    "EQI_GARMENT": null,
+    "EQI_SHOES": null,
+    "EQI_ACC_L": null,
+    "EQI_ACC_R": null,
+    "EQI_HEAD_MID": null,
+    "EQI_HEAD_LOW": null
+  },
+  "in_combat": false,
+  "current_map": "prontera",
+  "job_level": 30,
+  "job_alvo": "Whitesmith",
+  "renasceu": false,
+  "peak_base_level": 60
+}

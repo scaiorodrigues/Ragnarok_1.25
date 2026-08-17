@@ -10606,8 +10606,13 @@ void skill_weaponrefine( map_session_data& sd, int32 idx ){
 		struct item_data *ditem = sd.inventory_data[idx];
 		struct item* item = &sd.inventory.u.items_inventory[idx];
 
-		if(item->nameid > 0 && ditem->type == IT_WEAPON) {
-			if( ditem->flag.no_refine || ditem->weapon_level < 1 ) { 	// if the item isn't refinable
+		// [Hardcore] Armadura tambem e refinavel por esta skill — e a unica
+		// fonte de encantamento alem do primeiro slot, entao deixar armadura
+		// de fora travaria metade do equipamento em 1 encantamento.
+		if(item->nameid > 0 && ( ditem->type == IT_WEAPON || ditem->type == IT_ARMOR )) {
+			bool e_arma = ( ditem->type == IT_WEAPON );
+
+			if( ditem->flag.no_refine || ( e_arma && ditem->weapon_level < 1 ) ) { // if the item isn't refinable
 				clif_skill_fail( sd, sd.menuskill_id );
 				return;
 			}
@@ -10616,10 +10621,15 @@ void skill_weaponrefine( map_session_data& sd, int32 idx ){
 				return;
 			}
 
-			int32 i = pc_search_inventory( &sd, material[ditem->weapon_level - 1] );
+			// Arma escolhe o minerio pelo nivel da arma; armadura usa Elunium.
+			// Indexar material[] com weapon_level de armadura (que e 0) leria
+			// fora do array.
+			t_itemid mat = e_arma ? material[ditem->weapon_level - 1] : ITEMID_ELUNIUM;
+
+			int32 i = pc_search_inventory( &sd, mat );
 
 			if( i < 0 ) {
-				clif_upgrademessage( &sd, 3, material[ditem->weapon_level - 1] );
+				clif_upgrademessage( &sd, 3, mat );
 				return;
 			}
 
@@ -10637,8 +10647,8 @@ void skill_weaponrefine( map_session_data& sd, int32 idx ){
 				return;
 			}
 
-			if( cost->nameid != material[ditem->weapon_level - 1] ){
-				ShowDebug( "skill_weaponrefine: The hardcoded refine requirement %d for weapon level %d does not match %d from the refine database.\n", material[ditem->weapon_level - 1], ditem->weapon_level, cost->nameid );
+			if( cost->nameid != mat ){
+				ShowDebug( "skill_weaponrefine: The hardcoded refine requirement %u for item %u does not match %u from the refine database.\n", mat, ditem->nameid, cost->nameid );
 				clif_skill_fail( sd, sd.menuskill_id );
 				return;
 			}
@@ -10654,6 +10664,45 @@ void skill_weaponrefine( map_session_data& sd, int32 idx ){
 				int32 ep=0;
 				log_pick_pc(&sd, LOG_TYPE_OTHER, -1, item);
 				item->refine++;
+
+				// [Hardcore] O refino do ferreiro destrava encantamento.
+				//
+				// Equipamento nasce com 1 encantamento, venha de drop, quest
+				// ou loja. As outras 4 posicoes so abrem aqui — e esta e a
+				// unica skill de refino do jogo, exclusiva do Whitesmith.
+				// Isso da a linha do ferreiro um papel economico real: sem um
+				// deles, ninguem passa de um encantamento.
+				//
+				// Cada marco abre UMA posicao, uma unica vez. Reforjar de +3
+				// para +4 de novo nao sorteia outra opcao, porque a posicao
+				// ja esta preenchida.
+				{
+					// Uma posicao nova a cada 2 niveis de refino: +2 abre a
+					// segunda, +4 a terceira, +6 a quarta e +8 a quinta.
+					static const uint8 marcos[MAX_ITEM_RDM_OPT] = { 0, 2, 4, 6, 8 };
+
+					for( uint16 s = 1; s < MAX_ITEM_RDM_OPT; s++ ){
+						if( item->refine != marcos[s] || item->option[s].id != 0 ){
+							continue;
+						}
+
+						std::shared_ptr<s_random_opt_group> group =
+							random_option_group.find(
+								itemdb_hardcore_enchant_group( *ditem ) );
+
+						if( group != nullptr && group->apply_slot( *item, s ) ){
+							char aviso[CHAT_SIZE_MAX];
+
+							safesnprintf( aviso, sizeof( aviso ),
+								"O refino despertou um novo encantamento! (%u de %u)",
+								s + 1, MAX_ITEM_RDM_OPT );
+							clif_displaymessage( sd.fd, aviso );
+							clif_misceffect( sd, NOTIFYEFFECT_BASE_LEVEL_UP );
+						}
+						break;
+					}
+				}
+
 				log_pick_pc(&sd, LOG_TYPE_OTHER,  1, item);
 				if(item->equip) {
 					ep = item->equip;

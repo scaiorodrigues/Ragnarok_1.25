@@ -1,0 +1,31 @@
+# OpenKore config gerado automaticamente
+# Bot: HC_Knight01 | Job: Knight (ID 7)
+
+# Conexao
+master Ragnarok Hardcore
+char HC_Knight01
+
+# Sem teleporte (servidor Hardcore)
+teleportAuto 0
+attackAuto 2
+attackAuto_inLockMap 2
+
+# Stats target
+statsAddStr 80
+statsAddAgi 30
+statsAddVit 60
+statsAddInt 1
+statsAddDex 30
+statsAddLuk 1
+
+# Comportamento
+sitAuto_hp 0
+sitAuto_sp 0
+itemsGatherAuto 2
+itemsTakeAuto 2
+itemsTakeAuto_start 1
+
+# Plugins
+loadPlugin MarketScanner
+loadPlugin TradeHandler
+loadPlugin PartyManager

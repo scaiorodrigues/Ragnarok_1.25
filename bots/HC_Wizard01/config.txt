@@ -1,0 +1,31 @@
+# OpenKore config gerado automaticamente
+# Bot: HC_Wizard01 | Job: Wizard (ID 9)
+
+# Conexao
+master Ragnarok Hardcore
+char HC_Wizard01
+
+# Sem teleporte (servidor Hardcore)
+teleportAuto 0
+attackAuto 2
+attackAuto_inLockMap 2
+
+# Stats target
+statsAddStr 1
+statsAddAgi 20
+statsAddVit 20
+statsAddInt 99
+statsAddDex 70
+statsAddLuk 1
+
+# Comportamento
+sitAuto_hp 0
+sitAuto_sp 0
+itemsGatherAuto 2
+itemsTakeAuto 2
+itemsTakeAuto_start 1
+
+# Plugins
+loadPlugin MarketScanner
+loadPlugin TradeHandler
+loadPlugin PartyManager

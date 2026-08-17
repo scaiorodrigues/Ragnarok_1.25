@@ -1,0 +1,35 @@
+{
+  "name": "HC_LK_Mura01",
+  "job": 23,
+  "job_name": "LordKnight",
+  "base_level": 65,
+  "zeny": 320000,
+  "primary_stats": [
+    "AGI",
+    "STR"
+  ],
+  "secondary_stats": [
+    "CRIT",
+    "ATK"
+  ],
+  "current_equips": {
+    "EQI_HEAD_TOP": null,
+    "EQI_HEAD_MID": null,
+    "EQI_HEAD_LOW": null,
+    "EQI_ARMOR": null,
+    "EQI_GARMENT": null,
+    "EQI_SHOES": null,
+    "EQI_HAND_R": null,
+    "EQI_HAND_L": null,
+    "EQI_ACC_L": null,
+    "EQI_ACC_R": null
+  },
+  "slotted_cards": {},
+  "in_combat": false,
+  "current_map": "prontera",
+  "build": "Muramasa",
+  "job_level": 32,
+  "job_alvo": "LordKnight",
+  "renasceu": true,
+  "peak_base_level": 99
+}

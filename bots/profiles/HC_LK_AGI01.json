@@ -1,0 +1,35 @@
+{
+  "name": "HC_LK_AGI01",
+  "job": 23,
+  "job_name": "LordKnight",
+  "base_level": 83,
+  "zeny": 480000,
+  "primary_stats": [
+    "AGI",
+    "FLEE"
+  ],
+  "secondary_stats": [
+    "STR",
+    "CRIT"
+  ],
+  "current_equips": {
+    "EQI_HEAD_TOP": null,
+    "EQI_HEAD_MID": null,
+    "EQI_HEAD_LOW": null,
+    "EQI_ARMOR": null,
+    "EQI_GARMENT": null,
+    "EQI_SHOES": null,
+    "EQI_HAND_R": null,
+    "EQI_HAND_L": null,
+    "EQI_ACC_L": null,
+    "EQI_ACC_R": null
+  },
+  "slotted_cards": {},
+  "in_combat": false,
+  "current_map": "prontera",
+  "build": "AGI",
+  "job_level": 41,
+  "job_alvo": "LordKnight",
+  "renasceu": true,
+  "peak_base_level": 99
+}

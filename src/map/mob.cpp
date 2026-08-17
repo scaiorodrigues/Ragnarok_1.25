@@ -2485,7 +2485,23 @@ void mob_setdropitem_option( item& item, const std::shared_ptr<s_mob_drop>& mobd
 	std::shared_ptr<s_random_opt_group> group = random_option_group.find( mobdrop->randomopt_group );
 
 	if (group != nullptr) {
-		group->apply( item );
+		// [Hardcore] O grupo declarado no mob_db serve apenas de gatilho
+		// ("este drop vem encantado"). O pool de verdade vem da familia do
+		// equipamento, para uma espada nunca sortear opcao de cajado.
+		std::shared_ptr<item_data> id = item_db.find( item.nameid );
+
+		if( id != nullptr ){
+			std::shared_ptr<s_random_opt_group> tema =
+				random_option_group.find( itemdb_hardcore_enchant_group( *id ) );
+
+			if( tema != nullptr ){
+				group = tema;
+			}
+		}
+
+		// So o PRIMEIRO encantamento. As outras quatro posicoes sao
+		// destravadas pelo refino do ferreiro (skill_weaponrefine).
+		group->apply_slot( item, 0 );
 	}
 }
 

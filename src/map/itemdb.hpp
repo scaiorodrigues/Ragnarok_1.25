@@ -63,6 +63,7 @@ enum item_itemid : t_itemid
 	ITEMID_ORIDECON_STONE				= 756,
 	ITEMID_ALCOHOL						= 970,
 	ITEMID_ORIDECON						= 984,
+	ITEMID_ELUNIUM						= 985,
 	ITEMID_ANVIL						= 986,
 	ITEMID_ORIDECON_ANVIL				= 987,
 	ITEMID_GOLDEN_ANVIL					= 988,
@@ -3357,6 +3358,32 @@ struct s_random_opt_data
 };
 
 /// Struct for random option group entry
+/// [Hardcore] Grupo de encantamento usado quando o item nao se encaixa em
+/// nenhum tema (Group_1, generico).
+#define RDMOPTG_HARDCORE_DEFAULT 1
+
+/// [Hardcore] Grupos tematicos — ver db/item_randomopt_group_fix.yml.
+/// Uma espada nunca recebe encantamento de cajado: o pool vem da familia
+/// do equipamento, resolvida por itemdb_hardcore_enchant_group().
+enum e_hardcore_enchant_group : uint16 {
+	RDMOPTG_HC_LAMINA   = 10,   ///< 1hSword, 2hSword
+	RDMOPTG_HC_PRECISAO = 11,   ///< Dagger, Katar
+	RDMOPTG_HC_PONTARIA = 12,   ///< Bow
+	RDMOPTG_HC_ARCANO   = 13,   ///< Staff, 2hStaff, Book
+	RDMOPTG_HC_IMPACTO  = 14,   ///< Mace, Knuckle
+	RDMOPTG_HC_PESO     = 15,   ///< 1hSpear, 2hSpear, 1hAxe, 2hAxe
+	RDMOPTG_HC_HARMONIA = 16,   ///< Musical, Whip
+	RDMOPTG_HC_COURASA  = 20,   ///< armadura
+	RDMOPTG_HC_GUARDA   = 21,   ///< escudo
+	RDMOPTG_HC_MANTO    = 22,   ///< capa
+	RDMOPTG_HC_PASSO    = 23,   ///< sapatos
+	RDMOPTG_HC_TALISMA  = 24,   ///< acessorios
+	RDMOPTG_HC_ELMO     = 25,   ///< chapeus
+};
+
+/// [Hardcore] Resolve o grupo de encantamento tematico de um equipamento.
+uint16 itemdb_hardcore_enchant_group( const item_data& id );
+
 struct s_random_opt_group_entry {
 	uint16 id;
 	int16 min_value, max_value;
@@ -3374,6 +3401,10 @@ struct s_random_opt_group {
 
 public:
 	void apply( struct item& item );
+	/// [Hardcore] Sorteia SO o slot indicado, preservando os demais.
+	/// apply() reinicializa as 5 opcoes; aqui o item nasce com 1 encantamento
+	/// e os outros 4 sao abertos um a um pelo refino do ferreiro.
+	bool apply_slot( struct item& item, uint16 slot );
 };
 
 class RandomOptionDatabase : public TypesafeYamlDatabase<uint16, s_random_opt_data> {

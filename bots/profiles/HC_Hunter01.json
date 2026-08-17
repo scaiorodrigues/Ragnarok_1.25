@@ -1,0 +1,33 @@
+{
+  "name": "HC_Hunter01",
+  "job": 11,
+  "job_name": "Hunter",
+  "base_level": 74,
+  "zeny": 180000,
+  "primary_stats": [
+    "AGI",
+    "DEX"
+  ],
+  "secondary_stats": [
+    "HIT",
+    "FLEE"
+  ],
+  "current_equips": {
+    "EQI_HEAD_TOP": null,
+    "EQI_ARMOR": null,
+    "EQI_HAND_R": null,
+    "EQI_HAND_L": null,
+    "EQI_GARMENT": null,
+    "EQI_SHOES": null,
+    "EQI_ACC_L": null,
+    "EQI_ACC_R": null,
+    "EQI_HEAD_MID": null,
+    "EQI_HEAD_LOW": null
+  },
+  "in_combat": false,
+  "current_map": "prontera",
+  "job_level": 37,
+  "job_alvo": "Sniper",
+  "renasceu": false,
+  "peak_base_level": 74
+}

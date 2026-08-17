@@ -1,0 +1,35 @@
+{
+  "name": "HC_HP_TU01",
+  "job": 24,
+  "job_name": "HighPriest",
+  "base_level": 85,
+  "zeny": 470000,
+  "primary_stats": [
+    "INT",
+    "LUK"
+  ],
+  "secondary_stats": [
+    "VIT",
+    "MDEF"
+  ],
+  "current_equips": {
+    "EQI_HEAD_TOP": null,
+    "EQI_HEAD_MID": null,
+    "EQI_HEAD_LOW": null,
+    "EQI_ARMOR": null,
+    "EQI_GARMENT": null,
+    "EQI_SHOES": null,
+    "EQI_HAND_R": null,
+    "EQI_HAND_L": null,
+    "EQI_ACC_L": null,
+    "EQI_ACC_R": null
+  },
+  "slotted_cards": {},
+  "in_combat": false,
+  "current_map": "prontera",
+  "build": "TU",
+  "job_level": 42,
+  "job_alvo": "HighPriest",
+  "renasceu": true,
+  "peak_base_level": 99
+}

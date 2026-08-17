@@ -1,0 +1,7 @@
+{
+  "prontera": {"map": "prontera", "x": 156, "y": 183, "radius": 20, "priority": 1},
+  "payon":    {"map": "payon",    "x": 177, "y": 108, "radius": 15, "priority": 2},
+  "geffen":   {"map": "geffen",   "x": 120, "y":  72, "radius": 15, "priority": 3},
+  "morocc":   {"map": "morocc",   "x": 157, "y": 103, "radius": 15, "priority": 4},
+  "alberta":  {"map": "alberta",  "x": 119, "y":  60, "radius": 10, "priority": 5}
+}

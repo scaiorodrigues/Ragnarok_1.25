@@ -1,0 +1,35 @@
+{
+  "name": "HC_Paladin_Dev01",
+  "job": 30,
+  "job_name": "Paladin",
+  "base_level": 85,
+  "zeny": 460000,
+  "primary_stats": [
+    "VIT",
+    "DEF"
+  ],
+  "secondary_stats": [
+    "DEX",
+    "MaxHP"
+  ],
+  "current_equips": {
+    "EQI_HEAD_TOP": null,
+    "EQI_HEAD_MID": null,
+    "EQI_HEAD_LOW": null,
+    "EQI_ARMOR": null,
+    "EQI_GARMENT": null,
+    "EQI_SHOES": null,
+    "EQI_HAND_R": null,
+    "EQI_HAND_L": null,
+    "EQI_ACC_L": null,
+    "EQI_ACC_R": null
+  },
+  "slotted_cards": {},
+  "in_combat": false,
+  "current_map": "prontera",
+  "build": "Devotion",
+  "job_level": 42,
+  "job_alvo": "Paladin",
+  "renasceu": true,
+  "peak_base_level": 99
+}

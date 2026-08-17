@@ -1,0 +1,35 @@
+{
+  "name": "HC_Stalker_Snatch01",
+  "job": 33,
+  "job_name": "Stalker",
+  "base_level": 79,
+  "zeny": 420000,
+  "primary_stats": [
+    "AGI",
+    "LUK"
+  ],
+  "secondary_stats": [
+    "STR",
+    "FLEE"
+  ],
+  "current_equips": {
+    "EQI_HEAD_TOP": null,
+    "EQI_HEAD_MID": null,
+    "EQI_HEAD_LOW": null,
+    "EQI_ARMOR": null,
+    "EQI_GARMENT": null,
+    "EQI_SHOES": null,
+    "EQI_HAND_R": null,
+    "EQI_HAND_L": null,
+    "EQI_ACC_L": null,
+    "EQI_ACC_R": null
+  },
+  "slotted_cards": {},
+  "in_combat": false,
+  "current_map": "prontera",
+  "build": "Snatcher",
+  "job_level": 39,
+  "job_alvo": "Stalker",
+  "renasceu": true,
+  "peak_base_level": 99
+}

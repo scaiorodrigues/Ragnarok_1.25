@@ -1,0 +1,35 @@
+{
+  "name": "HC_Sage_DEX01",
+  "job": 16,
+  "job_name": "Sage",
+  "base_level": 62,
+  "zeny": 140000,
+  "primary_stats": [
+    "DEX",
+    "INT"
+  ],
+  "secondary_stats": [
+    "MATK",
+    "HIT"
+  ],
+  "current_equips": {
+    "EQI_HEAD_TOP": null,
+    "EQI_HEAD_MID": null,
+    "EQI_HEAD_LOW": null,
+    "EQI_ARMOR": null,
+    "EQI_GARMENT": null,
+    "EQI_SHOES": null,
+    "EQI_HAND_R": null,
+    "EQI_HAND_L": null,
+    "EQI_ACC_L": null,
+    "EQI_ACC_R": null
+  },
+  "slotted_cards": {},
+  "in_combat": false,
+  "current_map": "prontera",
+  "build": "DEX",
+  "job_level": 31,
+  "job_alvo": "Professor",
+  "renasceu": false,
+  "peak_base_level": 62
+}

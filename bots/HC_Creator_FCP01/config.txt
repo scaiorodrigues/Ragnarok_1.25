@@ -1,0 +1,53 @@
+# OpenKore config — HC_Creator_FCP01 | Creator [FCP] Lv84
+
+# Conexão
+master Ragnarok Hardcore
+
+# ── Login ────────────────────────────────────────────────────
+# Defina uma senha propria antes de subir o bot. O sufixo _M no
+# usuario faz o rAthena criar a conta sozinho (new_account: yes).
+username HC_Creator_FCP01_M
+password TROQUE_ESTA_SENHA
+char HC_Creator_FCP01
+
+# Sem teleporte (servidor Hardcore)
+teleportAuto 0
+attackAuto 2
+attackAuto_inLockMap 2
+
+# Mapa de farm principal
+lockMap prontera
+
+# Stats target
+statsAddStr 1
+statsAddAgi 1
+statsAddVit 70
+statsAddInt 20
+statsAddDex 99
+statsAddLuk 1
+
+# Comportamento
+sitAuto_hp 30
+sitAuto_sp 20
+itemsGatherAuto 2
+itemsTakeAuto 2
+itemsTakeAuto_start 1
+
+# Compras automáticas (reabastecimento)
+buyAuto White_Potion 50
+buyAuto Blue_Potion 50
+buyAuto Awakening_Potion 50
+buyAuto Concentration_Potion 50
+buyAuto Fly_Wing 50
+buyAuto Butterfly_Wing 50
+
+# Cards prioritários: Smokie_Card, Frog_Card, Tao_Gunka_Card
+
+# Merchant: abrir vending shop no ponto de comércio
+vendOn 1
+vendTitle Shop [Creator] items
+
+# Plugins
+loadPlugin MarketScanner
+loadPlugin TradeHandler
+loadPlugin PartyManager

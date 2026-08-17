@@ -7667,11 +7667,6 @@ BUILDIN_FUNC(checkweight2)
  *	3 - Party Bound
  *	4 - Character Bound
  *------------------------------------------*/
-/// [Hardcore] Grupo de opcoes aleatorias aplicado a equipamento criado por
-/// script. Precisa existir em db/item_randomopt_group.yml — hoje e o
-/// Group_1 (Id 1), o mesmo usado nos 1.246 drops de equipamento do mob_db.
-#define RDMOPTG_HARDCORE_DEFAULT 1
-
 /**
  * [Hardcore] Encantamento automatico de equipamento criado por script.
  *
@@ -7699,10 +7694,13 @@ static void script_hardcore_enchant( struct item& it, const std::shared_ptr<item
 		}
 	}
 
-	std::shared_ptr<s_random_opt_group> group = random_option_group.find( RDMOPTG_HARDCORE_DEFAULT );
+	std::shared_ptr<s_random_opt_group> group =
+		random_option_group.find( itemdb_hardcore_enchant_group( *id ) );
 
 	if( group != nullptr ){
-		group->apply( it );
+		// So a primeira posicao, igual ao drop de mob. As demais sao abertas
+		// pelo refino do ferreiro.
+		group->apply_slot( it, 0 );
 	}
 }
 

@@ -1,0 +1,35 @@
+{
+  "name": "HC_Crusader_VIT01",
+  "job": 14,
+  "job_name": "Crusader",
+  "base_level": 65,
+  "zeny": 150000,
+  "primary_stats": [
+    "VIT",
+    "DEF"
+  ],
+  "secondary_stats": [
+    "STR",
+    "MDEF"
+  ],
+  "current_equips": {
+    "EQI_HEAD_TOP": null,
+    "EQI_HEAD_MID": null,
+    "EQI_HEAD_LOW": null,
+    "EQI_ARMOR": null,
+    "EQI_GARMENT": null,
+    "EQI_SHOES": null,
+    "EQI_HAND_R": null,
+    "EQI_HAND_L": null,
+    "EQI_ACC_L": null,
+    "EQI_ACC_R": null
+  },
+  "slotted_cards": {},
+  "in_combat": false,
+  "current_map": "prontera",
+  "build": "VIT",
+  "job_level": 32,
+  "job_alvo": "Paladin",
+  "renasceu": false,
+  "peak_base_level": 65
+}

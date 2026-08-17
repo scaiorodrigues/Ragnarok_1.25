@@ -1,0 +1,35 @@
+{
+  "name": "HC_Wizard_INT01",
+  "job": 9,
+  "job_name": "Wizard",
+  "base_level": 68,
+  "zeny": 180000,
+  "primary_stats": [
+    "INT",
+    "MATK"
+  ],
+  "secondary_stats": [
+    "MDEF",
+    "MaxSP"
+  ],
+  "current_equips": {
+    "EQI_HEAD_TOP": null,
+    "EQI_HEAD_MID": null,
+    "EQI_HEAD_LOW": null,
+    "EQI_ARMOR": null,
+    "EQI_GARMENT": null,
+    "EQI_SHOES": null,
+    "EQI_HAND_R": null,
+    "EQI_HAND_L": null,
+    "EQI_ACC_L": null,
+    "EQI_ACC_R": null
+  },
+  "slotted_cards": {},
+  "in_combat": false,
+  "current_map": "prontera",
+  "build": "INT",
+  "job_level": 34,
+  "job_alvo": "HighWizard",
+  "renasceu": false,
+  "peak_base_level": 68
+}

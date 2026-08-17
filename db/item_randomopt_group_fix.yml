@@ -1,19 +1,17 @@
 ###########################################################################
-# Random Option Group — [Hardcore]
+# Random Option Group — [Hardcore] Encantamento tematico
 ###########################################################################
 #
-# Todo equipamento que dropa de mob vem encantado. MAX_ITEM_RDM_OPT e 5,
-# entao os grupos preenchem os 5 slots — o "maximo de encantamento possivel".
+# Cada familia de equipamento sorteia de um pool proprio, entao uma
+# espada nunca recebe encantamento de cajado. O tema e resolvido em
+# C++ pelo subtipo da arma ou pelo slot da armadura — ver
+# itemdb_hardcore_enchant_group() em itemdb.cpp.
 #
-# Cada slot tem um tema proprio em vez de repetir o mesmo pool cinco vezes.
-# Isso evita sair cinco vezes o mesmo bonus e faz cada drop parecer composto:
-#   1. atributo base    2. vitalidade    3. ofensivo
-#   4. defensivo        5. resistencia elemental
+# A posicao 1 vem no drop, craft ou quest. As posicoes 2 a 5 sao
+# abertas pelo refino do ferreiro, uma a cada 2 niveis (+2/+4/+6/+8).
 #
-# As chances dentro de um slot somam 10000, entao o slot SEMPRE e preenchido.
-#
-# Group_1  drop comum   — usado nos 1.246 drops de equipamento do mob_db
-# Group_2  MVP/elite    — mesmos temas, faixas maiores
+# As chances somam 10000 por posicao, entao a posicao sempre e
+# preenchida quando destravada.
 ###########################################################################
 
 Header:
@@ -21,6 +19,359 @@ Header:
   Version: 1
 
 Body:
+  # Espadas de uma e duas maos — 1hSword, 2hSword
+  - Id: 10
+    Group: Ench_Lamina
+    Slots:
+      - Slot: 1
+        Options:
+          - { Option: VAR_STRAMOUNT, MinValue: 2, MaxValue: 6, Chance: 3334 }
+          - { Option: VAR_DEXAMOUNT, MinValue: 1, MaxValue: 4, Chance: 3333 }
+          - { Option: VAR_VITAMOUNT, MinValue: 1, MaxValue: 4, Chance: 3333 }
+      - Slot: 2
+        Options:
+          - { Option: VAR_ATTPOWER, MinValue: 3, MaxValue: 12, Chance: 5000 }
+          - { Option: VAR_HITSUCCESSVALUE, MinValue: 3, MaxValue: 12, Chance: 5000 }
+      - Slot: 3
+        Options:
+          - { Option: VAR_CRITICALSUCCESSVALUE, MinValue: 2, MaxValue: 7, Chance: 5000 }
+          - { Option: VAR_ATTPOWER, MinValue: 3, MaxValue: 10, Chance: 5000 }
+      - Slot: 4
+        Options:
+          - { Option: VAR_MAXHPAMOUNT, MinValue: 80, MaxValue: 250, Chance: 5000 }
+          - { Option: VAR_ITEMDEFPOWER, MinValue: 1, MaxValue: 5, Chance: 5000 }
+      - Slot: 5
+        Options:
+          - { Option: ATTR_TOLERACE_NOTHING, MinValue: 3, MaxValue: 8, Chance: 3334 }
+          - { Option: ATTR_TOLERACE_FIRE, MinValue: 3, MaxValue: 8, Chance: 3333 }
+          - { Option: ATTR_TOLERACE_WIND, MinValue: 3, MaxValue: 8, Chance: 3333 }
+
+  # Adagas e katares — Dagger, Katar
+  - Id: 11
+    Group: Ench_Precisao
+    Slots:
+      - Slot: 1
+        Options:
+          - { Option: VAR_AGIAMOUNT, MinValue: 2, MaxValue: 6, Chance: 3334 }
+          - { Option: VAR_LUKAMOUNT, MinValue: 1, MaxValue: 4, Chance: 3333 }
+          - { Option: VAR_STRAMOUNT, MinValue: 1, MaxValue: 4, Chance: 3333 }
+      - Slot: 2
+        Options:
+          - { Option: VAR_CRITICALSUCCESSVALUE, MinValue: 3, MaxValue: 9, Chance: 5000 }
+          - { Option: VAR_ATTPOWER, MinValue: 2, MaxValue: 9, Chance: 5000 }
+      - Slot: 3
+        Options:
+          - { Option: VAR_AVOIDSUCCESSVALUE, MinValue: 3, MaxValue: 12, Chance: 5000 }
+          - { Option: VAR_HITSUCCESSVALUE, MinValue: 2, MaxValue: 8, Chance: 5000 }
+      - Slot: 4
+        Options:
+          - { Option: VAR_MAXSPAMOUNT, MinValue: 20, MaxValue: 70, Chance: 5000 }
+          - { Option: VAR_MAXHPAMOUNT, MinValue: 50, MaxValue: 180, Chance: 5000 }
+      - Slot: 5
+        Options:
+          - { Option: ATTR_TOLERACE_POISON, MinValue: 3, MaxValue: 10, Chance: 3334 }
+          - { Option: ATTR_TOLERACE_DARKNESS, MinValue: 3, MaxValue: 8, Chance: 3333 }
+          - { Option: ATTR_TOLERACE_NOTHING, MinValue: 3, MaxValue: 8, Chance: 3333 }
+
+  # Arcos — Bow
+  - Id: 12
+    Group: Ench_Pontaria
+    Slots:
+      - Slot: 1
+        Options:
+          - { Option: VAR_DEXAMOUNT, MinValue: 2, MaxValue: 6, Chance: 5000 }
+          - { Option: VAR_AGIAMOUNT, MinValue: 1, MaxValue: 4, Chance: 5000 }
+      - Slot: 2
+        Options:
+          - { Option: VAR_HITSUCCESSVALUE, MinValue: 4, MaxValue: 14, Chance: 5000 }
+          - { Option: VAR_ATTPOWER, MinValue: 3, MaxValue: 10, Chance: 5000 }
+      - Slot: 3
+        Options:
+          - { Option: VAR_CRITICALSUCCESSVALUE, MinValue: 2, MaxValue: 7, Chance: 5000 }
+          - { Option: VAR_HITSUCCESSVALUE, MinValue: 3, MaxValue: 10, Chance: 5000 }
+      - Slot: 4
+        Options:
+          - { Option: VAR_AVOIDSUCCESSVALUE, MinValue: 3, MaxValue: 10, Chance: 5000 }
+          - { Option: VAR_MAXHPAMOUNT, MinValue: 50, MaxValue: 180, Chance: 5000 }
+      - Slot: 5
+        Options:
+          - { Option: ATTR_TOLERACE_WIND, MinValue: 3, MaxValue: 10, Chance: 3334 }
+          - { Option: ATTR_TOLERACE_GROUND, MinValue: 3, MaxValue: 8, Chance: 3333 }
+          - { Option: ATTR_TOLERACE_NOTHING, MinValue: 3, MaxValue: 8, Chance: 3333 }
+
+  # Cajados e livros — Staff, 2hStaff, Book
+  - Id: 13
+    Group: Ench_Arcano
+    Slots:
+      - Slot: 1
+        Options:
+          - { Option: VAR_INTAMOUNT, MinValue: 2, MaxValue: 6, Chance: 5000 }
+          - { Option: VAR_DEXAMOUNT, MinValue: 1, MaxValue: 4, Chance: 5000 }
+      - Slot: 2
+        Options:
+          - { Option: VAR_MAXSPAMOUNT, MinValue: 40, MaxValue: 120, Chance: 5000 }
+          - { Option: VAR_MAXHPAMOUNT, MinValue: 50, MaxValue: 150, Chance: 5000 }
+      - Slot: 3
+        Options:
+          - { Option: VAR_INTAMOUNT, MinValue: 1, MaxValue: 4, Chance: 5000 }
+          - { Option: VAR_MAXSPAMOUNT, MinValue: 30, MaxValue: 90, Chance: 5000 }
+      - Slot: 4
+        Options:
+          - { Option: VAR_ITEMDEFPOWER, MinValue: 1, MaxValue: 4, Chance: 5000 }
+          - { Option: VAR_AVOIDSUCCESSVALUE, MinValue: 2, MaxValue: 8, Chance: 5000 }
+      - Slot: 5
+        Options:
+          - { Option: ATTR_TOLERACE_SAINT, MinValue: 3, MaxValue: 10, Chance: 3334 }
+          - { Option: ATTR_TOLERACE_DARKNESS, MinValue: 3, MaxValue: 10, Chance: 3333 }
+          - { Option: ATTR_TOLERACE_UNDEAD, MinValue: 3, MaxValue: 8, Chance: 3333 }
+
+  # Maças e manoplas — Mace, Knuckle
+  - Id: 14
+    Group: Ench_Impacto
+    Slots:
+      - Slot: 1
+        Options:
+          - { Option: VAR_STRAMOUNT, MinValue: 2, MaxValue: 6, Chance: 3334 }
+          - { Option: VAR_VITAMOUNT, MinValue: 1, MaxValue: 5, Chance: 3333 }
+          - { Option: VAR_INTAMOUNT, MinValue: 1, MaxValue: 4, Chance: 3333 }
+      - Slot: 2
+        Options:
+          - { Option: VAR_ATTPOWER, MinValue: 3, MaxValue: 12, Chance: 5000 }
+          - { Option: VAR_HITSUCCESSVALUE, MinValue: 3, MaxValue: 10, Chance: 5000 }
+      - Slot: 3
+        Options:
+          - { Option: VAR_MAXHPAMOUNT, MinValue: 80, MaxValue: 280, Chance: 5000 }
+          - { Option: VAR_MAXSPAMOUNT, MinValue: 25, MaxValue: 80, Chance: 5000 }
+      - Slot: 4
+        Options:
+          - { Option: VAR_ITEMDEFPOWER, MinValue: 1, MaxValue: 5, Chance: 5000 }
+          - { Option: VAR_AVOIDSUCCESSVALUE, MinValue: 2, MaxValue: 8, Chance: 5000 }
+      - Slot: 5
+        Options:
+          - { Option: ATTR_TOLERACE_UNDEAD, MinValue: 3, MaxValue: 10, Chance: 3334 }
+          - { Option: ATTR_TOLERACE_SAINT, MinValue: 3, MaxValue: 8, Chance: 3333 }
+          - { Option: ATTR_TOLERACE_NOTHING, MinValue: 3, MaxValue: 8, Chance: 3333 }
+
+  # Lancas e machados — 1hSpear, 2hSpear, 1hAxe, 2hAxe
+  - Id: 15
+    Group: Ench_Peso
+    Slots:
+      - Slot: 1
+        Options:
+          - { Option: VAR_STRAMOUNT, MinValue: 2, MaxValue: 7, Chance: 5000 }
+          - { Option: VAR_VITAMOUNT, MinValue: 2, MaxValue: 6, Chance: 5000 }
+      - Slot: 2
+        Options:
+          - { Option: VAR_ATTPOWER, MinValue: 4, MaxValue: 15, Chance: 5000 }
+          - { Option: VAR_HITSUCCESSVALUE, MinValue: 2, MaxValue: 9, Chance: 5000 }
+      - Slot: 3
+        Options:
+          - { Option: VAR_MAXHPAMOUNT, MinValue: 100, MaxValue: 320, Chance: 5000 }
+          - { Option: VAR_ITEMDEFPOWER, MinValue: 2, MaxValue: 6, Chance: 5000 }
+      - Slot: 4
+        Options:
+          - { Option: VAR_CRITICALSUCCESSVALUE, MinValue: 1, MaxValue: 5, Chance: 5000 }
+          - { Option: VAR_ATTPOWER, MinValue: 2, MaxValue: 8, Chance: 5000 }
+      - Slot: 5
+        Options:
+          - { Option: ATTR_TOLERACE_GROUND, MinValue: 3, MaxValue: 10, Chance: 3334 }
+          - { Option: ATTR_TOLERACE_FIRE, MinValue: 3, MaxValue: 8, Chance: 3333 }
+          - { Option: ATTR_TOLERACE_NOTHING, MinValue: 3, MaxValue: 8, Chance: 3333 }
+
+  # Instrumentos e chicotes — Musical, Whip
+  - Id: 16
+    Group: Ench_Harmonia
+    Slots:
+      - Slot: 1
+        Options:
+          - { Option: VAR_DEXAMOUNT, MinValue: 2, MaxValue: 6, Chance: 3334 }
+          - { Option: VAR_AGIAMOUNT, MinValue: 1, MaxValue: 5, Chance: 3333 }
+          - { Option: VAR_INTAMOUNT, MinValue: 1, MaxValue: 4, Chance: 3333 }
+      - Slot: 2
+        Options:
+          - { Option: VAR_MAXSPAMOUNT, MinValue: 30, MaxValue: 100, Chance: 5000 }
+          - { Option: VAR_MAXHPAMOUNT, MinValue: 60, MaxValue: 200, Chance: 5000 }
+      - Slot: 3
+        Options:
+          - { Option: VAR_HITSUCCESSVALUE, MinValue: 2, MaxValue: 9, Chance: 5000 }
+          - { Option: VAR_ATTPOWER, MinValue: 2, MaxValue: 8, Chance: 5000 }
+      - Slot: 4
+        Options:
+          - { Option: VAR_AVOIDSUCCESSVALUE, MinValue: 3, MaxValue: 10, Chance: 5000 }
+          - { Option: VAR_LUKAMOUNT, MinValue: 1, MaxValue: 5, Chance: 5000 }
+      - Slot: 5
+        Options:
+          - { Option: ATTR_TOLERACE_WIND, MinValue: 3, MaxValue: 8, Chance: 3334 }
+          - { Option: ATTR_TOLERACE_WATER, MinValue: 3, MaxValue: 8, Chance: 3333 }
+          - { Option: ATTR_TOLERACE_NOTHING, MinValue: 3, MaxValue: 8, Chance: 3333 }
+
+  # Armaduras — EQI_ARMOR
+  - Id: 20
+    Group: Ench_Courasa
+    Slots:
+      - Slot: 1
+        Options:
+          - { Option: VAR_VITAMOUNT, MinValue: 2, MaxValue: 6, Chance: 3334 }
+          - { Option: VAR_STRAMOUNT, MinValue: 1, MaxValue: 4, Chance: 3333 }
+          - { Option: VAR_INTAMOUNT, MinValue: 1, MaxValue: 4, Chance: 3333 }
+      - Slot: 2
+        Options:
+          - { Option: VAR_MAXHPAMOUNT, MinValue: 120, MaxValue: 400, Chance: 5000 }
+          - { Option: VAR_MAXSPAMOUNT, MinValue: 30, MaxValue: 90, Chance: 5000 }
+      - Slot: 3
+        Options:
+          - { Option: VAR_ITEMDEFPOWER, MinValue: 2, MaxValue: 7, Chance: 5000 }
+          - { Option: VAR_AVOIDSUCCESSVALUE, MinValue: 2, MaxValue: 8, Chance: 5000 }
+      - Slot: 4
+        Options:
+          - { Option: VAR_MAXHPAMOUNT, MinValue: 80, MaxValue: 250, Chance: 5000 }
+          - { Option: VAR_VITAMOUNT, MinValue: 1, MaxValue: 4, Chance: 5000 }
+      - Slot: 5
+        Options:
+          - { Option: ATTR_TOLERACE_NOTHING, MinValue: 4, MaxValue: 10, Chance: 2000 }
+          - { Option: ATTR_TOLERACE_FIRE, MinValue: 3, MaxValue: 9, Chance: 2000 }
+          - { Option: ATTR_TOLERACE_WATER, MinValue: 3, MaxValue: 9, Chance: 2000 }
+          - { Option: ATTR_TOLERACE_WIND, MinValue: 3, MaxValue: 9, Chance: 2000 }
+          - { Option: ATTR_TOLERACE_GROUND, MinValue: 3, MaxValue: 9, Chance: 2000 }
+
+  # Escudos — EQI_HAND_L
+  - Id: 21
+    Group: Ench_Guarda
+    Slots:
+      - Slot: 1
+        Options:
+          - { Option: VAR_VITAMOUNT, MinValue: 2, MaxValue: 6, Chance: 5000 }
+          - { Option: VAR_LUKAMOUNT, MinValue: 1, MaxValue: 4, Chance: 5000 }
+      - Slot: 2
+        Options:
+          - { Option: VAR_ITEMDEFPOWER, MinValue: 3, MaxValue: 9, Chance: 5000 }
+          - { Option: VAR_MAXHPAMOUNT, MinValue: 100, MaxValue: 320, Chance: 5000 }
+      - Slot: 3
+        Options:
+          - { Option: VAR_AVOIDSUCCESSVALUE, MinValue: 2, MaxValue: 8, Chance: 5000 }
+          - { Option: VAR_ITEMDEFPOWER, MinValue: 2, MaxValue: 6, Chance: 5000 }
+      - Slot: 4
+        Options:
+          - { Option: VAR_MAXSPAMOUNT, MinValue: 20, MaxValue: 70, Chance: 5000 }
+          - { Option: VAR_MAXHPAMOUNT, MinValue: 80, MaxValue: 240, Chance: 5000 }
+      - Slot: 5
+        Options:
+          - { Option: ATTR_TOLERACE_NOTHING, MinValue: 4, MaxValue: 12, Chance: 2500 }
+          - { Option: ATTR_TOLERACE_DARKNESS, MinValue: 4, MaxValue: 10, Chance: 2500 }
+          - { Option: ATTR_TOLERACE_UNDEAD, MinValue: 4, MaxValue: 10, Chance: 2500 }
+          - { Option: ATTR_TOLERACE_POISON, MinValue: 4, MaxValue: 10, Chance: 2500 }
+
+  # Capas — EQI_GARMENT
+  - Id: 22
+    Group: Ench_Manto
+    Slots:
+      - Slot: 1
+        Options:
+          - { Option: VAR_AGIAMOUNT, MinValue: 2, MaxValue: 6, Chance: 5000 }
+          - { Option: VAR_LUKAMOUNT, MinValue: 1, MaxValue: 5, Chance: 5000 }
+      - Slot: 2
+        Options:
+          - { Option: VAR_AVOIDSUCCESSVALUE, MinValue: 4, MaxValue: 14, Chance: 5000 }
+          - { Option: VAR_MAXHPAMOUNT, MinValue: 60, MaxValue: 200, Chance: 5000 }
+      - Slot: 3
+        Options:
+          - { Option: VAR_ITEMDEFPOWER, MinValue: 1, MaxValue: 5, Chance: 5000 }
+          - { Option: VAR_AVOIDSUCCESSVALUE, MinValue: 3, MaxValue: 10, Chance: 5000 }
+      - Slot: 4
+        Options:
+          - { Option: VAR_MAXSPAMOUNT, MinValue: 20, MaxValue: 70, Chance: 5000 }
+          - { Option: VAR_AGIAMOUNT, MinValue: 1, MaxValue: 4, Chance: 5000 }
+      - Slot: 5
+        Options:
+          - { Option: ATTR_TOLERACE_NOTHING, MinValue: 4, MaxValue: 12, Chance: 2500 }
+          - { Option: ATTR_TOLERACE_WIND, MinValue: 3, MaxValue: 9, Chance: 2500 }
+          - { Option: ATTR_TOLERACE_WATER, MinValue: 3, MaxValue: 9, Chance: 2500 }
+          - { Option: ATTR_TOLERACE_FIRE, MinValue: 3, MaxValue: 9, Chance: 2500 }
+
+  # Sapatos — EQI_SHOES
+  - Id: 23
+    Group: Ench_Passo
+    Slots:
+      - Slot: 1
+        Options:
+          - { Option: VAR_AGIAMOUNT, MinValue: 2, MaxValue: 6, Chance: 5000 }
+          - { Option: VAR_VITAMOUNT, MinValue: 1, MaxValue: 5, Chance: 5000 }
+      - Slot: 2
+        Options:
+          - { Option: VAR_MAXHPAMOUNT, MinValue: 100, MaxValue: 350, Chance: 5000 }
+          - { Option: VAR_MAXSPAMOUNT, MinValue: 30, MaxValue: 100, Chance: 5000 }
+      - Slot: 3
+        Options:
+          - { Option: VAR_AVOIDSUCCESSVALUE, MinValue: 3, MaxValue: 10, Chance: 5000 }
+          - { Option: VAR_ITEMDEFPOWER, MinValue: 1, MaxValue: 5, Chance: 5000 }
+      - Slot: 4
+        Options:
+          - { Option: VAR_MAXHPAMOUNT, MinValue: 80, MaxValue: 240, Chance: 5000 }
+          - { Option: VAR_MAXSPAMOUNT, MinValue: 25, MaxValue: 80, Chance: 5000 }
+      - Slot: 5
+        Options:
+          - { Option: ATTR_TOLERACE_GROUND, MinValue: 3, MaxValue: 10, Chance: 3334 }
+          - { Option: ATTR_TOLERACE_NOTHING, MinValue: 3, MaxValue: 9, Chance: 3333 }
+          - { Option: ATTR_TOLERACE_POISON, MinValue: 3, MaxValue: 9, Chance: 3333 }
+
+  # Acessorios — EQI_ACC_L, EQI_ACC_R
+  - Id: 24
+    Group: Ench_Talisma
+    Slots:
+      - Slot: 1
+        Options:
+          - { Option: VAR_STRAMOUNT, MinValue: 1, MaxValue: 5, Chance: 1670 }
+          - { Option: VAR_AGIAMOUNT, MinValue: 1, MaxValue: 5, Chance: 1666 }
+          - { Option: VAR_VITAMOUNT, MinValue: 1, MaxValue: 5, Chance: 1666 }
+          - { Option: VAR_INTAMOUNT, MinValue: 1, MaxValue: 5, Chance: 1666 }
+          - { Option: VAR_DEXAMOUNT, MinValue: 1, MaxValue: 5, Chance: 1666 }
+          - { Option: VAR_LUKAMOUNT, MinValue: 2, MaxValue: 7, Chance: 1666 }
+      - Slot: 2
+        Options:
+          - { Option: VAR_MAXSPAMOUNT, MinValue: 30, MaxValue: 100, Chance: 5000 }
+          - { Option: VAR_MAXHPAMOUNT, MinValue: 60, MaxValue: 220, Chance: 5000 }
+      - Slot: 3
+        Options:
+          - { Option: VAR_ATTPOWER, MinValue: 2, MaxValue: 8, Chance: 3334 }
+          - { Option: VAR_HITSUCCESSVALUE, MinValue: 2, MaxValue: 8, Chance: 3333 }
+          - { Option: VAR_CRITICALSUCCESSVALUE, MinValue: 1, MaxValue: 5, Chance: 3333 }
+      - Slot: 4
+        Options:
+          - { Option: VAR_AVOIDSUCCESSVALUE, MinValue: 2, MaxValue: 8, Chance: 5000 }
+          - { Option: VAR_ITEMDEFPOWER, MinValue: 1, MaxValue: 4, Chance: 5000 }
+      - Slot: 5
+        Options:
+          - { Option: ATTR_TOLERACE_SAINT, MinValue: 3, MaxValue: 9, Chance: 2500 }
+          - { Option: ATTR_TOLERACE_DARKNESS, MinValue: 3, MaxValue: 9, Chance: 2500 }
+          - { Option: ATTR_TOLERACE_UNDEAD, MinValue: 3, MaxValue: 9, Chance: 2500 }
+          - { Option: ATTR_TOLERACE_TELEKINESIS, MinValue: 3, MaxValue: 9, Chance: 2500 }
+
+  # Chapeus e capacetes — EQI_HEAD_TOP, EQI_HEAD_MID, EQI_HEAD_LOW
+  - Id: 25
+    Group: Ench_Elmo
+    Slots:
+      - Slot: 1
+        Options:
+          - { Option: VAR_INTAMOUNT, MinValue: 1, MaxValue: 5, Chance: 3334 }
+          - { Option: VAR_VITAMOUNT, MinValue: 1, MaxValue: 5, Chance: 3333 }
+          - { Option: VAR_DEXAMOUNT, MinValue: 1, MaxValue: 5, Chance: 3333 }
+      - Slot: 2
+        Options:
+          - { Option: VAR_MAXSPAMOUNT, MinValue: 30, MaxValue: 100, Chance: 5000 }
+          - { Option: VAR_MAXHPAMOUNT, MinValue: 80, MaxValue: 260, Chance: 5000 }
+      - Slot: 3
+        Options:
+          - { Option: VAR_ITEMDEFPOWER, MinValue: 1, MaxValue: 6, Chance: 5000 }
+          - { Option: VAR_HITSUCCESSVALUE, MinValue: 2, MaxValue: 8, Chance: 5000 }
+      - Slot: 4
+        Options:
+          - { Option: VAR_AVOIDSUCCESSVALUE, MinValue: 2, MaxValue: 8, Chance: 5000 }
+          - { Option: VAR_CRITICALSUCCESSVALUE, MinValue: 1, MaxValue: 4, Chance: 5000 }
+      - Slot: 5
+        Options:
+          - { Option: ATTR_TOLERACE_NOTHING, MinValue: 3, MaxValue: 9, Chance: 3334 }
+          - { Option: ATTR_TOLERACE_SAINT, MinValue: 3, MaxValue: 9, Chance: 3333 }
+          - { Option: ATTR_TOLERACE_DARKNESS, MinValue: 3, MaxValue: 9, Chance: 3333 }
   - Id: 1
     Group: Group_1
     Slots:
