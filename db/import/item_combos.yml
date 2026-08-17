@@ -39,92 +39,194 @@ Body:
   # --- Conjunto 1: Sombras da Noite (Trevas + Esqueleto) ---
   # Bathory_Card + Soldier_Skeleton_Card
   # Bonus: Dark resist +10%, Undead resist +10%, MaxHP +500
-  - Combo:
-      - Bathory_Card
-      - Soldier_Skeleton_Card
-    Script: |
-      bonus2 bSubEle,Ele_Dark,10;
-      bonus2 bSubEle,Ele_Undead,10;
-      bonus bMaxHP,500;
+  - Combos:
+      - Combo:
+          - Bathory_Card
+          - Soldier_Skeleton_Card
+        Script: |
+          bonus2 bSubEle,Ele_Dark,10;
+          bonus2 bSubEle,Ele_Undead,10;
+          bonus bMaxHP,500;
 
   # --- Conjunto 2: Cla Orc (Guerreiro + Heroi) ---
   # Orc_Warrior_Card + Orc_Hero_Card
   # Bonus: ATK +15, VIT +5, DEF +10
-  - Combo:
-      - Orc_Warrior_Card
-      - Orc_Hero_Card
-    Script: |
-      bonus bAtk,15;
-      bonus bVit,5;
-      bonus bDef,10;
+  - Combos:
+      - Combo:
+          - Orc_Warrior_Card
+          - Orc_Hero_Card
+        Script: |
+          bonus bAtk,15;
+          bonus bVit,5;
+          bonus bDef,10;
 
   # --- Conjunto 3: Trindade Inseto (3 cartas) ---
   # Mantis_Card + Rocker_Card + Metaller_Card
   # Bonus: STR +5, CRIT +5, ATK +10
-  - Combo:
-      - Mantis_Card
-      - Rocker_Card
-      - Metaller_Card
-    Script: |
-      bonus bStr,5;
-      bonus bCritical,5;
-      bonus bAtk,10;
+  - Combos:
+      - Combo:
+          - Mantis_Card
+          - Rocker_Card
+          - Metaller_Card
+        Script: |
+          bonus bStr,5;
+          bonus bCritical,5;
+          bonus bAtk,10;
 
   # --- Conjunto 4: Senhores do Oceano (3 cartas) ---
   # Marc_Card + Vadon_Card + Marin_Card
   # Bonus: Water resist +20%, MaxHP +800, DEF +5
-  - Combo:
-      - Marc_Card
-      - Vadon_Card
-      - Marin_Card
-    Script: |
-      bonus2 bSubEle,Ele_Water,20;
-      bonus bMaxHP,800;
-      bonus bDef,5;
+  - Combos:
+      - Combo:
+          - Marc_Card
+          - Vadon_Card
+          - Marin_Card
+        Script: |
+          bonus2 bSubEle,Ele_Water,20;
+          bonus bMaxHP,800;
+          bonus bDef,5;
 
   # --- Conjunto 5: Cacadores Implacaveis ---
   # Hydra_Card + Phreeoni_Card
   # Bonus: ATK +20 vs Demi-Human, HIT +15
-  - Combo:
-      - Hydra_Card
-      - Phreeoni_Card
-    Script: |
-      bonus2 bAtkEle,Ele_Neutral,20;
-      bonus bHit,15;
+  - Combos:
+      - Combo:
+          - Hydra_Card
+          - Phreeoni_Card
+        Script: |
+          bonus2 bAtkEle,Ele_Neutral,20;
+          bonus bHit,15;
 
   # --- Conjunto 6: Mente e Espirito (Magico) ---
   # Horong_Card + Marduk_Card + Pasana_Card
   # Bonus: INT +5, MaxSP +100, Ghost resist +10%, Fire resist +5%
-  - Combo:
-      - Horong_Card
-      - Marduk_Card
-      - Pasana_Card
-    Script: |
-      bonus bInt,5;
-      bonus bMaxSP,100;
-      bonus2 bSubEle,Ele_Ghost,10;
-      bonus2 bSubEle,Ele_Fire,5;
+  - Combos:
+      - Combo:
+          - Horong_Card
+          - Marduk_Card
+          - Pasana_Card
+        Script: |
+          bonus bInt,5;
+          bonus bMaxSP,100;
+          bonus2 bSubEle,Ele_Ghost,10;
+          bonus2 bSubEle,Ele_Fire,5;
 
   # --- Conjunto 7: Veneno e Fuga ---
   # Poporing_Card + Magnolia_Card
   # Bonus: Poison resist +20%, Flee +10, AGI +3
-  - Combo:
-      - Poporing_Card
-      - Magnolia_Card
-    Script: |
-      bonus2 bSubEle,Ele_Poison,20;
-      bonus bFlee,10;
-      bonus bAgi,3;
+  - Combos:
+      - Combo:
+          - Poporing_Card
+          - Magnolia_Card
+        Script: |
+          bonus2 bSubEle,Ele_Poison,20;
+          bonus bFlee,10;
+          bonus bAgi,3;
 
   # --- Conjunto 8: Familia Poring (3 cartas) ---
   # Poring_Card + Drops_Card + Poporing_Card
   # Bonus: MaxHP +500, MaxSP +100, LUK +5, item drop rate +5%
-  - Combo:
-      - Poring_Card
-      - Drops_Card
-      - Poporing_Card
-    Script: |
-      bonus bMaxHP,500;
-      bonus bMaxSP,100;
-      bonus bLuk,5;
-      bonus bItemDropRatio,5;
+  - Combos:
+      - Combo:
+          - Poring_Card
+          - Drops_Card
+          - Poporing_Card
+        Script: |
+          bonus bMaxHP,500;
+          bonus bMaxSP,100;
+          bonus bLuk,5;
+          bonus bItemDropRatio,5;
+
+###########################################################################
+# [Hardcore] Conjuntos tematicos por classe — so equipamento de NPC
+###########################################################################
+  # Aprendiz — Novice
+  # Conjunto Novico completo. Os 5 tem slot, entao o combo premia quem
+  # mantem o kit inteiro em vez de trocar peca por peca.
+  - Combos:
+      - Combo: [Novice_Shield, Novice_Breast, Novice_Manteau, Novice_Shoes, Novice_Armlet]
+        Script: |
+          bonus bMaxHP,300;
+          bonus bMaxSP,60;
+          bonus bAllStats,2;
+          bonus bHPrecovRate,20;
+          bonus bSPrecovRate,20;
+
+  # Linha de Frente — Swordman
+  # Tudo que a linha Swordman compra de mais pesado. DEF e HP para
+  # aguentar a frente.
+  - Combos:
+      - Combo: [Plate_Armor, Shield, Helm, Manteau, Boots]
+        Script: |
+          bonus bDef,8;
+          bonus bMaxHPrate,8;
+          bonus bVit,3;
+          bonus2 bSubEle,Ele_Neutral,5;
+
+  # Erudicao — Mage
+  # MDEF e SP para conjurador. Rosary e o unico acessorio de NPC com MDEF
+  # e entra como fecho.
+  - Combos:
+      - Combo: [Silk_Robe, Circlet, Muffler, Shoes, Rosary]
+        Script: |
+          bonus bInt,4;
+          bonus bMaxSP,150;
+          bonus bMdef,5;
+          bonus bUseSPrate,-5;
+
+  # Prece — Acolyte
+  # Conjunto cleric classico. Bonus contra Mortos-vivos porque e o que
+  # Acolyte enfrenta cedo.
+  - Combos:
+      - Combo: [Saint_Robe, Biretta, Muffler, Shoes, Rosary]
+        Script: |
+          bonus bInt,3;
+          bonus bMdef,8;
+          bonus bHealPower,5;
+          bonus2 bSubRace,RC_UNDEAD,10;
+
+  # Precisao — Archer
+  # Tights e a armadura de DEX de NPC. Belt tem slot e serve de acessorio
+  # para arqueiro.
+  - Combos:
+      - Combo: [Tights, Hat, Muffler, Shoes, Belt]
+        Script: |
+          bonus bDex,4;
+          bonus bHit,10;
+          bonus bLongAtkRate,5;
+          bonus bAgi,2;
+
+  # Contrabando — Merchant
+  # Conjunto barato de comerciante. Concede Desconto nv.1 mesmo sem a
+  # skill aprendida.
+  - Combos:
+      - Combo: [Adventure_Suit, Turban, Hood, Shoes, Belt]
+        Script: |
+          bonus bStr,2;
+          bonus bDex,2;
+          bonus bMaxHP,200;
+          skill "MC_DISCOUNT",1;
+
+  # Sombra — Thief
+  # Thief_Clothes ja da AGI+1; o combo dobra a aposta em esquiva e
+  # critico.
+  - Combos:
+      - Combo: [Thief_Clothes, Bandana, Muffler, Shoes, Belt]
+        Script: |
+          bonus bAgi,4;
+          bonus bFlee,12;
+          bonus bCritical,5;
+          bonus bFlee2,3;
+
+  # Vigilia — Swordman
+  # Alternativa anti-magia a Linha de Frente: troca DEF fisica por MDEF e
+  # resistencia elemental. Serve tambem a Crusader.
+  - Combos:
+      - Combo: [Mirror_Shield, Gemmed_Sallet, Silk_Robe, Manteau, Boots]
+        Script: |
+          bonus bMdef,10;
+          bonus2 bSubEle,Ele_Fire,10;
+          bonus2 bSubEle,Ele_Water,10;
+          bonus2 bSubEle,Ele_Wind,10;
+          bonus2 bSubEle,Ele_Earth,10;
+

@@ -7667,6 +7667,45 @@ BUILDIN_FUNC(checkweight2)
  *	3 - Party Bound
  *	4 - Character Bound
  *------------------------------------------*/
+/// [Hardcore] Grupo de opcoes aleatorias aplicado a equipamento criado por
+/// script. Precisa existir em db/item_randomopt_group.yml — hoje e o
+/// Group_1 (Id 1), o mesmo usado nos 1.246 drops de equipamento do mob_db.
+#define RDMOPTG_HARDCORE_DEFAULT 1
+
+/**
+ * [Hardcore] Encantamento automatico de equipamento criado por script.
+ *
+ * Todo equipamento que dropa de mob ja vem com opcoes aleatorias, porque o
+ * mob_db define RandomOptionGroup no drop. Mas equipamento entregue por
+ * quest usa getitem, que nao passa por esse caminho — sairiam pelados.
+ *
+ * Sao 496 chamadas de getitem entregando equipamento, espalhadas por 65
+ * arquivos de script. Corrigir uma a uma seria inviavel e criaria um diff
+ * gigante contra o upstream, entao a garantia e feita aqui: um ponto so,
+ * cobrindo quest, evento, recompensa de NPC e qualquer script futuro.
+ *
+ * So aplica quando o item e arma ou armadura E ainda nao tem opcao nenhuma
+ * — assim um getitem2/getitem3 que define opcoes de proposito nao e tocado.
+ */
+static void script_hardcore_enchant( struct item& it, const std::shared_ptr<item_data>& id ){
+	if( id == nullptr || ( id->type != IT_WEAPON && id->type != IT_ARMOR ) ){
+		return;
+	}
+
+	// respeita opcoes ja definidas pelo chamador
+	for( int32 i = 0; i < MAX_ITEM_RDM_OPT; i++ ){
+		if( it.option[i].id != 0 ){
+			return;
+		}
+	}
+
+	std::shared_ptr<s_random_opt_group> group = random_option_group.find( RDMOPTG_HARDCORE_DEFAULT );
+
+	if( group != nullptr ){
+		group->apply( it );
+	}
+}
+
 BUILDIN_FUNC(getitem)
 {
 	int32 get_count, i;
@@ -7734,6 +7773,10 @@ BUILDIN_FUNC(getitem)
 		// if not pet egg
 		if (!pet_create_egg(sd, nameid))
 		{
+			// [Hardcore] cada copia rola o proprio encantamento — dois
+			// Mysteltainn de quest nao saem identicos
+			script_hardcore_enchant( it, id );
+
 			e_additem_result flag = pc_additem( sd, &it, get_count, LOG_TYPE_SCRIPT );
 
 			if( flag != ADDITEM_SUCCESS ){
@@ -7902,6 +7945,11 @@ BUILDIN_FUNC(getitem2)
 			// if not pet egg
 			if (!pet_create_egg(sd, nameid))
 			{
+				// [Hardcore] getitem3/getitem4 sao alias deste buildin. A
+				// funcao ignora o item se o chamador ja definiu opcoes, entao
+				// quem passa opcoes de proposito nao e afetado.
+				script_hardcore_enchant( item_tmp, item_data );
+
 				e_additem_result flag = pc_additem( sd, &item_tmp, get_count, LOG_TYPE_SCRIPT );
 
 				if( flag != ADDITEM_SUCCESS ){
