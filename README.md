@@ -1,9 +1,7 @@
 # Ragnarok 1.25 — Servidor Hardcore Pre-Renewal
 
-> Servidor de Ragnarok Online **Pre-Renewal com morte permanente**, construído
-> sobre o [rAthena](https://github.com/rathena/rathena). Acompanha um motor de
-bots que simulam jogadores, para que um servidor pequeno tenha economia,
-mercado e movimento.
+> Servidor de Ragnarok Online **Pre-Renewal com morte permanente**, construído sobre o [rAthena](https://github.com/rathena/rathena).
+Acompanha um motor de bots que simulam jogadores, para que um servidor pequeno tenha economia, mercado e movimento.
 
 > Fork do rAthena, distribuído sob **GPLv3** — a mesma licença do original.
 > A documentação do upstream continua em [`README_UPSTREAM.md`](README_UPSTREAM.md).
