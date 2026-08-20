@@ -1,0 +1,293 @@
+<title>Manual de Testes</title>
+<style>
+  :root{
+    --bg:#f1f3f9; --surface:#fff; --raised:#f6f8fd; --border:#dbe0ec;
+    --text:#171b28; --muted:#6b748f; --accent:#9a6d1c;
+    --ok:#2e7d52; --warn:#b07818; --stop:#c0392b; --info:#2b6ca3;
+    --mono:ui-monospace,'Cascadia Code','SF Mono',Menlo,monospace;
+    --sans:system-ui,-apple-system,'Segoe UI',sans-serif;
+  }
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+    --bg:#0f1218; --surface:#171b24; --raised:#1e232f; --border:#2a3040;
+    --text:#dde2ed; --muted:#7c859f; --accent:#d4a04a;
+    --ok:#4caf7d; --warn:#d99a2b; --stop:#e06a5e; --info:#5fa3d8;}}
+  :root[data-theme="dark"]{--bg:#0f1218;--surface:#171b24;--raised:#1e232f;--border:#2a3040;--text:#dde2ed;--muted:#7c859f;--accent:#d4a04a;--ok:#4caf7d;--warn:#d99a2b;--stop:#e06a5e;--info:#5fa3d8;}
+  :root[data-theme="light"]{--bg:#f1f3f9;--surface:#fff;--raised:#f6f8fd;--border:#dbe0ec;--text:#171b28;--muted:#6b748f;--accent:#9a6d1c;--ok:#2e7d52;--warn:#b07818;--stop:#c0392b;--info:#2b6ca3;}
+
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);
+       font-size:16px;line-height:1.6;-webkit-text-size-adjust:100%}
+  .wrap{max-width:920px;margin:0 auto;padding:26px 18px 70px;
+        display:flex;flex-direction:column;gap:30px}
+
+  header{display:flex;flex-direction:column;gap:6px}
+  h1{font-size:1.55rem;font-weight:650;letter-spacing:-.015em}
+  .sub{color:var(--muted);font-size:.9rem}
+
+  h2{font-size:.76rem;font-weight:650;text-transform:uppercase;letter-spacing:.11em;
+     color:var(--muted);display:flex;align-items:center;gap:9px;margin-bottom:-2px}
+  h2::after{content:"";flex:1;height:1px;background:var(--border)}
+  section{display:flex;flex-direction:column;gap:13px}
+
+  .step{background:var(--surface);border:1px solid var(--border);border-radius:11px;
+        padding:15px 17px;display:flex;flex-direction:column;gap:9px}
+  .sh{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .n{font-family:var(--mono);font-size:.72rem;font-weight:700;color:var(--accent);flex:none}
+  .st{font-weight:625;font-size:1rem;flex:1;min-width:150px}
+  .tag{font-family:var(--mono);font-size:.62rem;font-weight:700;letter-spacing:.06em;
+       padding:3px 7px;border-radius:5px;white-space:nowrap}
+  .tag.once{background:color-mix(in srgb,var(--info) 15%,transparent);color:var(--info)}
+  .tag.every{background:color-mix(in srgb,var(--ok) 15%,transparent);color:var(--ok)}
+  .tag.gm{background:color-mix(in srgb,var(--warn) 16%,transparent);color:var(--warn)}
+
+  p{font-size:.93rem;color:var(--muted)}
+  p b{color:var(--text);font-weight:600}
+  code{font-family:var(--mono);font-size:.85em;background:var(--raised);
+       border:1px solid var(--border);border-radius:4px;padding:1px 5px}
+  pre{background:var(--raised);border:1px solid var(--border);border-radius:8px;
+      padding:11px 13px;overflow-x:auto;font-family:var(--mono);font-size:.8rem;
+      line-height:1.65}
+  pre .c{color:var(--muted)}
+  pre .k{color:var(--accent);font-weight:600}
+
+  table{width:100%;border-collapse:collapse;font-size:.88rem}
+  th{text-align:left;font-family:var(--mono);font-size:.66rem;text-transform:uppercase;
+     letter-spacing:.07em;color:var(--muted);font-weight:650;
+     padding:0 10px 7px 0;border-bottom:1px solid var(--border)}
+  td{padding:7px 10px 7px 0;border-bottom:1px solid var(--border);vertical-align:top}
+  td:first-child{white-space:nowrap}
+  tr:last-child td{border-bottom:none}
+  .tbl-wrap{overflow-x:auto}
+
+  .nota{border-left:2px solid var(--warn);padding-left:11px;font-size:.89rem;color:var(--muted)}
+  .nota b{color:var(--text)}
+  .perigo{border-left-color:var(--stop)}
+
+  footer{color:var(--muted);font-size:.79rem;border-top:1px solid var(--border);
+         padding-top:16px;line-height:1.7}
+  @media(max-width:560px){
+    body{font-size:15px}
+    .wrap{padding:20px 14px 50px;gap:24px}
+    pre{font-size:.74rem}
+  }
+</style>
+
+<div class="wrap">
+
+<header>
+  <h1>Manual de Testes</h1>
+  <div class="sub">Subir o servidor, os 10 bots e verificar cada sistema — Ragnarok 1.25</div>
+</header>
+
+<section>
+  <h2>Antes de tudo</h2>
+
+  <div class="step">
+    <div class="sh"><span class="n">01</span><span class="st">Colunas hardcore no banco</span><span class="tag once">UMA VEZ</span></div>
+    <p>Sem isso a Folha de Yggdrasil não funciona — o script depende de <code>hardcore_dead</code>.</p>
+<pre>mysql -u root -p &lt; sql-files/hardcore_columns.sql</pre>
+    <p>O script já imprime as colunas criadas ao final. Se aparecerem as três, está pronto.</p>
+  </div>
+
+  <div class="step">
+    <div class="sh"><span class="n">02</span><span class="st">Sua conta como Admin</span><span class="tag once">UMA VEZ</span></div>
+    <p>Os comandos <code>@</code> deste manual exigem grupo 99. Troque <code>SEU_USUARIO</code> pelo login que você usa:</p>
+<pre>UPDATE `login` SET `group_id` = 99 WHERE `userid` = 'SEU_USUARIO';</pre>
+    <p>Precisa relogar para valer.</p>
+  </div>
+
+  <div class="step">
+    <div class="sh"><span class="n">03</span><span class="st">Firewall da LAN</span><span class="tag once">UMA VEZ</span></div>
+    <p>Botão direito em <code>firewall_lan.bat</code> → <b>Executar como administrador</b>. Libera 6900/6121/5121 só para a rede local.</p>
+  </div>
+
+  <div class="step">
+    <div class="sh"><span class="n">04</span><span class="st">Os 10 personagens</span><span class="tag once">UMA VEZ</span></div>
+    <p>O OpenKore cria a <b>conta</b> sozinho (sufixo <code>_M</code>), mas não o personagem. Entre com o client em cada conta e crie o char com o nome exato:</p>
+<pre>HC_Novice01      HC_Merchant01     HC_Knight_STR01
+HC_Priest_Supp01 HC_Wizard_INT01   HC_Hunter_DEX01
+HC_LK_STR01      HC_HW_INT01       HC_Sniper_Trap01
+HC_Creator_FCP01</pre>
+    <p>A senha está no <code>config.txt</code> de cada bot, em <code>bots/&lt;nome&gt;/</code>.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Subir</h2>
+
+  <div class="step">
+    <div class="sh"><span class="n">05</span><span class="st">Servidor</span><span class="tag every">SEMPRE</span></div>
+<pre>runserver.bat</pre>
+    <p>Sobe login, char e map. O <b>web-server não é mais necessário</b> — o <code>use_web_auth_token</code> foi desligado.</p>
+    <div class="nota"><b>Confira no console do map-server:</b> as linhas de carga dos bancos. Se algum YAML novo tiver erro, ele reclama ali e não no jogo.</div>
+  </div>
+
+  <div class="step">
+    <div class="sh"><span class="n">06</span><span class="st">Os bots</span><span class="tag every">SEMPRE</span></div>
+<pre>cd bots
+start_test10.bat</pre>
+    <p>Uma janela por bot, 4 s entre cada. Para encerrar todas de uma vez: <code>stop_bots.bat</code>.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Ver os bots funcionando</h2>
+
+  <div class="step">
+    <div class="sh"><span class="st">Quem está online</span><span class="tag gm">@</span></div>
+    <div class="tbl-wrap"><table>
+      <tr><th>Comando</th><th>O que faz</th></tr>
+      <tr><td><code>@who</code></td><td>Lista todos conectados, com nível e classe</td></tr>
+      <tr><td><code>@whomap</code></td><td>Só quem está no seu mapa</td></tr>
+      <tr><td><code>@users</code></td><td>Contagem por mapa — bom para ver se a frota espalhou</td></tr>
+    </table></div>
+  </div>
+
+  <div class="step">
+    <div class="sh"><span class="st">Chegar até eles</span><span class="tag gm">@</span></div>
+    <div class="tbl-wrap"><table>
+      <tr><th>Comando</th><th>O que faz</th></tr>
+      <tr><td><code>@jumpto HC_LK_STR01</code></td><td>Teleporta você até o bot</td></tr>
+      <tr><td><code>@recall HC_Novice01</code></td><td>Traz o bot até você</td></tr>
+      <tr><td><code>@warp orc_dun02</code> <span style="opacity:.6">(apelido de @mapmove)</span></td><td>Vai para o mapa de farm do LordKnight</td></tr>
+      <tr><td><code>@go 0</code></td><td>Volta para Prontera</td></tr>
+    </table></div>
+    <p>Os mapas de farm de cada build estão em <code>bots/engine/build_knowledge.py</code>, campo <code>farm_maps</code>.</p>
+  </div>
+
+  <div class="step">
+    <div class="sh"><span class="st">Observar sem interferir</span><span class="tag gm">@</span></div>
+    <div class="tbl-wrap"><table>
+      <tr><th>Comando</th><th>O que faz</th></tr>
+      <tr><td><code>@hide</code></td><td>Fica invisível — os monstros ignoram você</td></tr>
+      <tr><td><code>@speed 20</code></td><td>Move rápido para acompanhar o bot</td></tr>
+      <tr><td><code>@speed 150</code></td><td>Volta ao normal</td></tr>
+      <tr><td><code>@mobinfo ORK_WARRIOR</code></td><td>Stats do monstro que ele está caçando</td></tr>
+    </table></div>
+    <div class="nota"><b>@hide é o modo de observação.</b> Sem ele você entra na conta de agressão e muda o comportamento do que está tentando medir.</div>
+  </div>
+
+  <div class="step">
+    <div class="sh"><span class="st">A janela do próprio bot</span></div>
+    <p>Cada janela do OpenKore aceita comandos direto. Os mais úteis:</p>
+    <div class="tbl-wrap"><table>
+      <tr><th>Comando</th><th>O que faz</th></tr>
+      <tr><td><code>s</code></td><td>Status: HP, SP, peso, zeny, localização</td></tr>
+      <tr><td><code>i</code></td><td>Inventário completo</td></tr>
+      <tr><td><code>eq</code></td><td>O que está equipado</td></tr>
+      <tr><td><code>st</code></td><td>Atributos e bônus</td></tr>
+      <tr><td><code>skills</code></td><td>Habilidades e níveis</td></tr>
+      <tr><td><code>ml</code></td><td>Monstros visíveis agora</td></tr>
+      <tr><td><code>pl</code></td><td>Jogadores por perto</td></tr>
+      <tr><td><code>ai off</code></td><td>Pausa a IA — o bot congela</td></tr>
+      <tr><td><code>ai on</code></td><td>Retoma</td></tr>
+    </table></div>
+    <p>Os logs ficam em <code>bots/logs/&lt;nome do bot&gt;/</code>.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Testar cada sistema</h2>
+
+  <div class="step">
+    <div class="sh"><span class="st">Telegraphs de solo</span><span class="tag gm">@</span></div>
+    <p>Três skills ganharam marcação visível. Invoque um monstro que as usa e observe o chão durante o cast:</p>
+<pre><span class="c"># Chuva de Meteoros — campo de fogo, 1,3 s de aviso</span>
+@monster B_KATRINN      <span class="c">// High Wizard Kathryne, MVP</span>
+
+<span class="c"># Tempestade de Raios — campo de vento, 1,5 s</span>
+@monster PHARAOH        <span class="c">// Pharaoh, MVP</span>
+
+<span class="c"># Escuridão Sagrada — área escura, 1,1 s</span>
+@monster LORD_OF_DEATH  <span class="c">// Lord of the Dead, MVP</span></pre>
+    <div class="nota"><b>O que confirmar:</b> a área aparece no chão <b>antes</b> do dano, e some quando ele acontece. O tempo de aviso é o próprio cast — nada foi adicionado, só ficou visível.</div>
+  </div>
+
+  <div class="step">
+    <div class="sh"><span class="st">Encantamento no drop</span><span class="tag gm">@</span></div>
+<pre><span class="c"># mate o monstro e veja o item que cai</span>
+@monster ORK_WARRIOR 5
+
+<span class="c"># ou pegue direto e confira as opções</span>
+@item Executioner_ 1</pre>
+    <p>Todo equipamento deve vir com <b>exatamente um</b> encantamento. Clique com o botão direito no item para ver as opções.</p>
+    <div class="nota">O <code>@item</code> passa por <code>getitem</code>, então também é encantado — é o mesmo caminho das quests.</div>
+  </div>
+
+  <div class="step">
+    <div class="sh"><span class="st">Refino do ferreiro abrindo posições</span><span class="tag gm">@</span></div>
+<pre>@jobchange Whitesmith
+@allskill
+@item Oridecon 50
+@item Elunium 50
+@item Executioner_ 1</pre>
+    <p>Use <b>Refinar Arma</b> e acompanhe: a cada 2 níveis (+2, +4, +6, +8) aparece a mensagem <i>"O refino despertou um novo encantamento!"</i> e uma opção nova no item.</p>
+    <div class="nota"><b>Confirme também que a falha não destrói.</b> Refine além do seguro várias vezes: o item deve perder um nível, nunca sumir.</div>
+  </div>
+
+  <div class="step">
+    <div class="sh"><span class="st">Maestria por raça</span><span class="tag gm">@</span></div>
+<pre><span class="c"># o contador sobe a cada morte; 10.000 por tier</span>
+@monster PORING 100
+
+<span class="c"># consultar progresso</span>
+@warp prontera 155 183</pre>
+    <p>Fale com o <b>Mestre das Crônicas</b>. Para testar sem farmar 10 mil, ajuste o marco em <code>npc/custom/hardcore_titulos.txt</code> (<code>.marco = 10000</code>) e recarregue com <code>@reloadscript</code>.</p>
+  </div>
+
+  <div class="step">
+    <div class="sh"><span class="st">Folha de Yggdrasil</span><span class="tag gm">@</span></div>
+    <p>Precisa de um personagem morto na conta. O caminho rápido:</p>
+<pre><span class="c"># 1. marque um char da sua conta como morto</span>
+UPDATE `char` SET `hardcore_dead` = 1
+WHERE `name` = 'NOME_DO_CHAR';
+
+<span class="c"># 2. com outro char da MESMA conta</span>
+@item Leaf_Of_Yggdrasil 1</pre>
+    <p>Use a folha. Deve abrir a lista dos mortos da conta. Confirme os dois lados:</p>
+    <div class="nota"><b>Cancelar não consome.</b> Escolha "Guardar a folha" e verifique que ela continua no inventário. Depois reviva de verdade e veja o char voltar a aparecer na seleção.</div>
+  </div>
+
+  <div class="step">
+    <div class="sh"><span class="st">Combos de equipamento</span><span class="tag gm">@</span></div>
+<pre><span class="c"># conjunto Sombra — Thief</span>
+@item Thief_Clothes 1
+@item Bandana 1
+@item Muffler 1
+@item Shoes 1
+@item Belt 1</pre>
+    <p>Equipe as cinco peças e confira em <code>@stats</code> que AGI, esquiva e crítico subiram. Tire uma peça: o bônus some.</p>
+  </div>
+
+  <div class="step">
+    <div class="sh"><span class="st">Morte permanente</span><span class="tag gm">@</span></div>
+    <div class="nota perigo"><b>Use um personagem descartável.</b> A morte é definitiva — é esse o teste.</div>
+<pre>@monster BAPHOMET</pre>
+    <p>Ao morrer, o personagem deve ser bloqueado na seleção. Com a Carta Osiris equipada, ele entra em Limbo de 24 h em vez da morte definitiva.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Recarregar sem derrubar</h2>
+  <div class="step">
+    <p>Depois de editar arquivos, nem sempre é preciso reiniciar:</p>
+    <div class="tbl-wrap"><table>
+      <tr><th>Comando</th><th>Recarrega</th></tr>
+      <tr><td><code>@reloadscript</code></td><td>NPCs e scripts — o mais usado</td></tr>
+      <tr><td><code>@reloaditemdb</code></td><td>Itens, cartas, encantamentos</td></tr>
+      <tr><td><code>@reloadmobdb</code></td><td>Monstros e drops</td></tr>
+      <tr><td><code>@reloadskilldb</code></td><td>Skills e telegraphs</td></tr>
+      <tr><td><code>@reloadbattleconf</code></td><td>Configurações de batalha</td></tr>
+    </table></div>
+    <div class="nota"><b>Alteração em <code>src/</code> exige recompilar e reiniciar.</b> Nenhum reload cobre C++.</div>
+  </div>
+</section>
+
+<footer>
+  Comandos disponíveis para o grupo 99 (Admin). A lista completa está em
+  <code>conf/atcommands.yml</code>. O símbolo é <code>@</code> para comandos
+  sobre si e <code>#</code> para aplicar em outro jogador — por exemplo
+  <code>#item HC_LK_STR01 Executioner_ 1</code>.
+</footer>
+
+</div>
