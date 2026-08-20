@@ -262,6 +262,19 @@ struct s_skill_copyable { // [Cydh]
 };
 
 /// Database skills
+/// [Hardcore] Onde a marcacao de telegraph e plantada.
+enum e_telegraph_origin : uint8 {
+	TG_ORIGIN_NONE = 0,
+	TG_ORIGIN_SELF,		///< nos pes de quem conjura (AoE centrada)
+	TG_ORIGIN_TARGET,	///< em cima do alvo
+	TG_ORIGIN_GROUND,	///< na celula escolhida (skill de solo)
+};
+
+/// [Hardcore] Skill custom, puramente visual, usada para desenhar o
+/// telegraph. Definida em db/import/skill_db.yml; o nivel usado na
+/// conjuracao define o raio pelo Layout.
+#define HC_SKILL_TELEGRAPH 10100
+
 struct s_skill_db {
 	uint16 nameid;								///< Skill ID
 	char name[SKILL_NAME_LENGTH];				///< AEGIS_Name
@@ -318,6 +331,17 @@ struct s_skill_db {
 	int32 abra_probability[MAX_SKILL_LEVEL];
 	uint16 improvisedsong_rate;
 	sc_type sc;									///< Default SC for skill
+
+	// ── [Hardcore] Telegraph de solo ─────────────────────────────────────
+	// Marcacao no chao avisando onde a skill vai cair, plantada no INICIO
+	// do cast e removida quando ele termina. A janela de aviso e o proprio
+	// cast time — nada de tempo novo e adicionado.
+	//
+	// Fica dentro do skill_db em vez de um banco separado para o dado
+	// morar junto da skill que descreve, e para nao exigir uma classe de
+	// database nova so por causa de duas colunas.
+	uint16 telegraph_size;						///< Raio em celulas. 0 = sem telegraph
+	e_telegraph_origin telegraph_origin;		///< Onde a marcacao aparece
 
 	std::unique_ptr<const SkillImpl> impl;
 };
@@ -593,6 +617,8 @@ int32 skill_strip_equip(block_list *src,block_list *bl, uint16 where, int32 rate
 // Skills unit
 std::shared_ptr<s_skill_unit_group> skill_id2group(int32 group_id);
 std::shared_ptr<s_skill_unit_group> skill_unitsetting(block_list* src, uint16 skill_id, uint16 skill_lv, int16 x, int16 y, int32 flag);
+/// [Hardcore] Planta a marcacao de solo no inicio do cast
+void skill_telegraph_show(block_list* src, uint16 skill_id, block_list* target, int16 x, int16 y, int32 casttime);
 skill_unit* skill_initunit(std::shared_ptr<s_skill_unit_group> group, int32 idx, int32 x, int32 y, int32 val1, int32 val2, bool hidden, int32 range, t_tick limit);
 int32 skill_delunit(skill_unit *unit);
 std::shared_ptr<s_skill_unit_group> skill_initunitgroup(block_list* src, int32 count, uint16 skill_id, uint16 skill_lv, int32 unit_id, t_tick limit, int32 interval);

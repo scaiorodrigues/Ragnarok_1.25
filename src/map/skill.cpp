@@ -5746,6 +5746,67 @@ static bool skill_dance_switch(skill_unit* unit, bool revert)
  *		xx_METEOR: flag &1 contains if the unit can cause curse, flag is also the duration of the unit in milliseconds
  * @return s_skill_unit_group
  */
+/**
+ * [Hardcore] Planta a marcacao de solo avisando onde a skill vai cair.
+ *
+ * Chamada no INICIO do cast, de unit_skilluse_id2 e unit_skilluse_pos2. A
+ * marcacao dura exatamente o cast time, entao ela some no instante em que o
+ * dano acontece — o aviso nunca mente sobre o tempo disponivel.
+ *
+ * Usa uma skill custom puramente visual (HC_SKILL_TELEGRAPH). O raio
+ * configurado vira o nivel dessa skill, que resolve o tamanho pelo Layout.
+ * Assim qualquer skill fica telegrafavel so por dado, mesmo as que nao tem
+ * unidade de solo propria — que sao justamente as dos monstros de nivel
+ * baixo, onde o truque de trocar Unit.Id nao alcanca.
+ *
+ * @param src quem conjura
+ * @param skill_id skill sendo conjurada
+ * @param target alvo, quando houver
+ * @param x,y celula de destino, para skill de solo
+ * @param casttime duracao do aviso em ms
+ */
+void skill_telegraph_show( block_list* src, uint16 skill_id, block_list* target, int16 x, int16 y, int32 casttime ) {
+	if( src == nullptr || casttime <= 0 ){
+		return;
+	}
+
+	std::shared_ptr<s_skill_db> skill = skill_db.find( skill_id );
+
+	if( skill == nullptr || skill->telegraph_size == 0 || skill->telegraph_origin == TG_ORIGIN_NONE ){
+		return;
+	}
+
+	int16 tx, ty;
+
+	switch( skill->telegraph_origin ){
+		case TG_ORIGIN_TARGET:
+			if( target == nullptr ){
+				return;
+			}
+			tx = target->x;
+			ty = target->y;
+			break;
+		case TG_ORIGIN_GROUND:
+			tx = x;
+			ty = y;
+			break;
+		case TG_ORIGIN_SELF:
+		default:
+			tx = src->x;
+			ty = src->y;
+			break;
+	}
+
+	std::shared_ptr<s_skill_unit_group> group =
+		skill_unitsetting( src, HC_SKILL_TELEGRAPH, skill->telegraph_size, tx, ty, 0 );
+
+	if( group != nullptr ){
+		// A duracao vem do cast, nao do skill_db da marcacao: skills
+		// diferentes avisam por tempos diferentes.
+		group->limit = casttime;
+	}
+}
+
 std::shared_ptr<s_skill_unit_group> skill_unitsetting(block_list *src, uint16 skill_id, uint16 skill_lv, int16 x, int16 y, int32 flag)
 {
 	std::shared_ptr<s_skill_unit_group> group;
@@ -15792,6 +15853,61 @@ uint64 SkillDatabase::parseBodyNode(const ryml::NodeRef& node) {
 	} else {
 		if (!exists)
 			skill->sc = SC_NONE;
+	}
+
+	// ── [Hardcore] Telegraph de solo ──────────────────────────────────────
+	//   Telegraph:
+	//     Size: 4          # raio em celulas
+	//     Origin: Self     # Self | Target | Ground
+	//
+	// Declarar o bloco liga o aviso; omitir mantem a skill como esta.
+	if (this->nodeExists(node, "Telegraph")) {
+		const auto& tgNode = node["Telegraph"];
+
+		if (this->nodeExists(tgNode, "Size")) {
+			uint16 size;
+
+			if (!this->asUInt16(tgNode, "Size", size))
+				return 0;
+
+			// O raio vira nivel da skill de telegraph, que resolve o
+			// tamanho pelo Layout. MAX_SKILL_LEVEL limita o teto.
+			if (size >= MAX_SKILL_LEVEL) {
+				this->invalidWarning(tgNode["Size"], "Telegraph Size %hu is too big, capping to %d.\n", size, MAX_SKILL_LEVEL - 1);
+				size = MAX_SKILL_LEVEL - 1;
+			}
+
+			skill->telegraph_size = size;
+		} else {
+			if (!exists)
+				skill->telegraph_size = 0;
+		}
+
+		if (this->nodeExists(tgNode, "Origin")) {
+			std::string origin;
+
+			if (!this->asString(tgNode, "Origin", origin))
+				return 0;
+
+			if (origin == "Self")
+				skill->telegraph_origin = TG_ORIGIN_SELF;
+			else if (origin == "Target")
+				skill->telegraph_origin = TG_ORIGIN_TARGET;
+			else if (origin == "Ground")
+				skill->telegraph_origin = TG_ORIGIN_GROUND;
+			else {
+				this->invalidWarning(tgNode["Origin"], "Telegraph Origin %s is invalid, must be Self, Target or Ground.\n", origin.c_str());
+				return 0;
+			}
+		} else {
+			if (!exists)
+				skill->telegraph_origin = TG_ORIGIN_SELF;
+		}
+	} else {
+		if (!exists) {
+			skill->telegraph_size = 0;
+			skill->telegraph_origin = TG_ORIGIN_NONE;
+		}
 	}
 
 	if (!exists) {

@@ -69,3 +69,103 @@ Body:
     Name: WZ_HEAVENDRIVE
     Unit:
       Id: Deluge
+
+###########################################################################
+# TELEGRAPH GENERICO
+###########################################################################
+#
+# A troca de Unit.Id acima so funciona em skill que JA cria unidade de solo.
+# Os monstros da rota de up nao usam nenhuma dessas — eles usam NPC_*ATTACK,
+# golpes instantaneos sem componente de chao. Para alcancar esses, existe a
+# skill visual abaixo e o bloco `Telegraph` (ver s_skill_db em skill.hpp).
+#
+# HC_TELEGRAPH nao causa dano, nao aplica status e nao tem intervalo: e so
+# um desenho no chao. O RAIO configurado em Telegraph.Size vira o NIVEL desta
+# skill, e o Layout resolve o tamanho da area.
+###########################################################################
+
+  - Id: 10100
+    Name: HC_TELEGRAPH
+    Description: Aviso de Solo
+    MaxLevel: 9
+    Type: Magic
+    TargetType: Ground
+    Range: 14
+    Hit: Single
+    Flags:
+      IsNpc: true
+    Unit:
+      Id: Warmer
+      Layout:
+        - Level: 1
+          Size: 0
+        - Level: 2
+          Size: 1
+        - Level: 3
+          Size: 1
+        - Level: 4
+          Size: 2
+        - Level: 5
+          Size: 2
+        - Level: 6
+          Size: 3
+        - Level: 7
+          Size: 3
+        - Level: 8
+          Size: 4
+        - Level: 9
+          Size: 4
+      Interval: -1
+      Target: All
+
+###########################################################################
+# ROTA DE UP — skills de monstro fraco que passam a avisar
+#
+# So skills com cast > 0: a janela ja existe, so estava invisivel.
+# Nenhum tempo novo foi adicionado ao jogo.
+###########################################################################
+
+  # Autodestruicao — 1.842 ms, a maior janela em nivel baixo.
+  # Marine Sphere (28), Bomb Poring (28), Rotar Zairo (25).
+  # O caso didatico do sistema: quem nao sai, morre.
+  - Id: 173
+    Name: NPC_SELFDESTRUCTION
+    Telegraph:
+      Size: 5
+      Origin: Self
+
+  # Atordoar — 1.500 ms. Vadon (19), Golem (25), Bigfoot (25).
+  # Atordoamento em nivel baixo costuma virar corrente de morte.
+  - Id: 179
+    Name: NPC_STUNATTACK
+    Telegraph:
+      Size: 2
+      Origin: Target
+
+  # Mergulho Gelido — 827 ms. Marin (15), Goblin de Natal (25).
+  - Id: 15
+    Name: MG_FROSTDIVER
+    Telegraph:
+      Size: 2
+      Origin: Target
+
+  # Raio de Fogo — 1.416 ms. Elder Willow (20), Marduk (40).
+  - Id: 19
+    Name: MG_FIREBOLT
+    Telegraph:
+      Size: 2
+      Origin: Target
+
+  # Esfera d'Agua — 1.416 ms. Sword Fish (30), Karakasa (30), Kapha (41).
+  - Id: 86
+    Name: WZ_WATERBALL
+    Telegraph:
+      Size: 3
+      Origin: Target
+
+  # Impacto Magnum — 500 ms. Steam Goblin (35), Magmaring (40).
+  - Id: 7
+    Name: SM_MAGNUM
+    Telegraph:
+      Size: 3
+      Origin: Self

@@ -2560,6 +2560,9 @@ int32 unit_skilluse_id2(block_list *src, int32 target_id, uint16 skill_id, uint1
 
 
 	if( casttime > 0 ) {
+		// [Hardcore] marcacao no chao avisando onde vai cair, dura o cast
+		skill_telegraph_show( src, skill_id, target, src->x, src->y, casttime );
+
 		ud->skilltimer = add_timer( tick+casttime, skill_castend_id, src->id, 0 );
 
 		if( sd && (pc_checkskill(sd,SA_FREECAST) > 0 || skill_id == LG_EXEEDBREAK) )
@@ -2758,6 +2761,9 @@ int32 unit_skilluse_pos2( block_list *src, int16 skill_x, int16 skill_y, uint16 
 	clif_skillcasting(*src, nullptr, skill_x, skill_y, skill_id, skill_lv, static_cast<e_element>(skill_get_ele(skill_id, skill_lv)), casttime);
 
 	if( casttime > 0 ) {
+		// [Hardcore] skill de solo: a marcacao vai na celula escolhida
+		skill_telegraph_show( src, skill_id, nullptr, skill_x, skill_y, casttime );
+
 		ud->skilltimer = add_timer( tick+casttime, skill_castend_pos, src->id, 0 );
 
 		if( (sd && pc_checkskill(sd,SA_FREECAST) > 0) || skill_id == LG_EXEEDBREAK)
