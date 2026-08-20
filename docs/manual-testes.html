@@ -90,10 +90,16 @@
   </div>
 
   <div class="step">
-    <div class="sh"><span class="n">02</span><span class="st">Sua conta como Admin</span><span class="tag once">UMA VEZ</span></div>
-    <p>Os comandos <code>@</code> deste manual exigem grupo 99. Troque <code>SEU_USUARIO</code> pelo login que você usa:</p>
+    <div class="sh"><span class="n">02</span><span class="st">Conta com poder de GM</span><span class="tag once">UMA VEZ</span></div>
+    <p>Os comandos <code>@</code> deste manual exigem <code>group_id = 99</code>. Para ver quais contas existem e quem já é admin:</p>
+<pre>SELECT account_id, userid, group_id FROM login;</pre>
+    <p>Se nenhuma tiver grupo 99, promova a sua:</p>
 <pre>UPDATE `login` SET `group_id` = 99 WHERE `userid` = 'SEU_USUARIO';</pre>
-    <p>Precisa relogar para valer.</p>
+    <p>Não tem conta ainda? O servidor cria sozinha: basta logar com um usuário terminado em <code>_M</code> (ou <code>_F</code>) e uma senha qualquer — <code>new_account</code> está ligado.</p>
+    <div class="nota"><b>As senhas ficam em texto puro no banco</b>, porque <code>use_MD5_passwords</code> está desligado. Se esquecer a sua, dá para consultar ou trocar direto:
+<pre>SELECT userid, user_pass FROM login WHERE userid = 'SEU_USUARIO';
+UPDATE login SET user_pass = 'nova_senha' WHERE userid = 'SEU_USUARIO';</pre>
+    Precisa relogar para a mudança de grupo valer.</div>
   </div>
 
   <div class="step">
@@ -116,10 +122,21 @@ HC_Creator_FCP01</pre>
   <h2>Subir</h2>
 
   <div class="step">
-    <div class="sh"><span class="n">05</span><span class="st">Servidor</span><span class="tag every">SEMPRE</span></div>
-<pre>runserver.bat</pre>
+    <div class="sh"><span class="n">05</span><span class="st">Sequência completa, do zero</span><span class="tag every">SEMPRE</span></div>
+    <p>Depois de compilar, esta é a ordem inteira até estar dentro do jogo:</p>
+<pre><span class="c"># 1. compilar (só quando houver mudança em src/)</span>
+<span class="c">#    Visual Studio: abrir rAthena.sln, compilar em Debug x64</span>
+
+<span class="c"># 2. subir os servidores</span>
+runserver.bat
+
+<span class="c"># 3. entrar com o client apontando para 127.0.0.1</span>
+<span class="c">#    login: sua conta com group_id = 99 (ver passo 02)</span>
+
+<span class="c"># 4. já no jogo, virar invisível para observar sem interferir</span>
+@hide</pre>
     <p>Sobe login, char e map. O <b>web-server não é mais necessário</b> — o <code>use_web_auth_token</code> foi desligado.</p>
-    <div class="nota"><b>Confira no console do map-server:</b> as linhas de carga dos bancos. Se algum YAML novo tiver erro, ele reclama ali e não no jogo.</div>
+    <div class="nota"><b>Confira no console do map-server</b> as linhas de carga dos bancos. Erros de YAML aparecem ali, não no jogo. Alguns avisos são normais e vêm do rAthena original — itens de Renewal referenciados por skills que o Pre-RE não usa (<code>Heartbroken_Tears</code>, <code>Special_Alloy_Trap</code>) e uma linha do <code>produce_db.txt</code>. Podem ser ignorados.</div>
   </div>
 
   <div class="step">
@@ -190,17 +207,46 @@ start_test10.bat</pre>
   <h2>Testar cada sistema</h2>
 
   <div class="step">
-    <div class="sh"><span class="st">Telegraphs de solo</span><span class="tag gm">@</span></div>
-    <p>Três skills ganharam marcação visível. Invoque um monstro que as usa e observe o chão durante o cast:</p>
-<pre><span class="c"># Chuva de Meteoros — campo de fogo, 1,3 s de aviso</span>
-@monster B_KATRINN      <span class="c">// High Wizard Kathryne, MVP</span>
+    <div class="sh"><span class="st">Telegraphs — rota de up</span><span class="tag gm">@</span></div>
+    <p>Comece por aqui: monstros de nível baixo, onde a marcação é mais fácil de ler. Fique <b>perto o suficiente para ele atacar</b> e observe o chão durante o cast.</p>
+<pre><span class="c"># Autodestruição — 1,8 s, a maior janela do jogo em nível baixo</span>
+@monster MARINE_SPHERE  <span class="c">// nv 28 — o melhor caso para ver o sistema</span>
 
-<span class="c"># Tempestade de Raios — campo de vento, 1,5 s</span>
-@monster PHARAOH        <span class="c">// Pharaoh, MVP</span>
+<span class="c"># Atordoar — 1,5 s</span>
+@monster VADON          <span class="c">// nv 19</span>
+@monster GOLEM          <span class="c">// nv 25</span>
 
-<span class="c"># Escuridão Sagrada — área escura, 1,1 s</span>
-@monster LORD_OF_DEATH  <span class="c">// Lord of the Dead, MVP</span></pre>
-    <div class="nota"><b>O que confirmar:</b> a área aparece no chão <b>antes</b> do dano, e some quando ele acontece. O tempo de aviso é o próprio cast — nada foi adicionado, só ficou visível.</div>
+<span class="c"># Raio de Fogo — 1,4 s</span>
+@monster ELDER_WILOW    <span class="c">// nv 20 (grafia do banco, com um L)</span>
+
+<span class="c"># Esfera d'Água — 1,4 s</span>
+@monster SWORD_FISH     <span class="c">// nv 30</span>
+
+<span class="c"># Mergulho Gélido — 0,8 s</span>
+@monster MARIN          <span class="c">// nv 15</span></pre>
+    <div class="nota"><b>O que confirmar:</b> a área aparece no chão <b>antes</b> do dano e some quando ele acontece. O tempo de aviso é o próprio cast — nada de novo foi adicionado ao jogo, só ficou visível.</div>
+    <div class="nota perigo"><b>Marine Sphere é o teste decisivo.</b> São quase 2 segundos de aviso. Se você conseguir sair da área a tempo, o conceito inteiro está provado — e aí escalar para outras skills vira trabalho de dados.</div>
+  </div>
+
+  <div class="step">
+    <div class="sh"><span class="st">Telegraphs — nível alto</span><span class="tag gm">@</span></div>
+    <p>Quatro skills de MVP também avisam, cada uma com um gráfico próprio:</p>
+<pre>@monster B_KATRINN      <span class="c">// Chuva de Meteoros — campo de fogo, 1,5 s</span>
+@monster PHARAOH        <span class="c">// Tempestade de Raios — campo de vento, 1,5 s</span>
+@monster LORD_OF_DEATH  <span class="c">// Escuridão Sagrada — área sagrada, 1,1 s</span>
+@monster MINOROUS       <span class="c">// Impacto Terrestre — campo d'água, 1,2 s</span></pre>
+    <div class="nota">Cada gráfico significa uma coisa só: conferi que nenhum deles é usado por outra skill de monstro. Marcação ambígua mente tanto quanto marcação ausente.</div>
+  </div>
+
+  <div class="step">
+    <div class="sh"><span class="st">Adicionar telegraph a outra skill</span></div>
+    <p>Qualquer skill com cast pode avisar. Basta um bloco em <code>db/import/skill_db.yml</code> e <code>@reloadskilldb</code>:</p>
+<pre>  - Id: 88
+    Name: WZ_FROSTNOVA
+    Telegraph:
+      Size: 3          <span class="c"># raio em células, 0 a 9</span>
+      Origin: Self     <span class="c"># Self | Target | Ground</span></pre>
+    <p><code>Self</code> marca os pés de quem conjura, <code>Target</code> marca o alvo, <code>Ground</code> marca a célula escolhida. Skill sem cast não aparece — a janela de aviso <i>é</i> o cast.</p>
   </div>
 
   <div class="step">
