@@ -157,3 +157,6 @@ Thumbs.db
 
 # generated files
 generated
+
+# [Hardcore] Manual de testes: arquivo pessoal, fora do versionamento
+/docs/manual-testes.html
