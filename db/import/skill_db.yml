@@ -52,9 +52,20 @@ Body:
       Id: Violentgale
 
   # ── Escuridao Sagrada ────────────────────────────────────────────────
-  # 1.100 ms de cast, explosao centrada no conjurador. Area escura avisa
-  # o raio do estouro. Dummyskill -> Evilland.
+  # 1.100 ms de cast, explosao centrada no conjurador.
+  # Evilland NAO serve aqui: NPC_EVILLAND ja usa esse grafico (Banshee,
+  # Beelzebub, Entweihen). Dois campos escuros diferentes fariam o jogador
+  # ler a mesma imagem como duas coisas — telegraph ambiguo mente.
+  # Dummyskill -> Magnus (area sagrada, alto contraste, sem uso por mob).
   - Id: 339
     Name: NPC_GRANDDARKNESS
     Unit:
-      Id: Evilland
+      Id: Magnus
+
+  # ── Impacto Terrestre ────────────────────────────────────────────────
+  # 1.200 ms de cast, area no chao. Usada por 22 monstros da rota de up
+  # media: Minorous (52), Joker (57). Dummyskill -> Deluge.
+  - Id: 91
+    Name: WZ_HEAVENDRIVE
+    Unit:
+      Id: Deluge
