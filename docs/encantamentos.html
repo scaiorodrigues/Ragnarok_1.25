@@ -1,0 +1,165 @@
+<title>Encantamentos</title>
+<style>
+  :root{
+    --bg:#f1f3f9; --surface:#ffffff; --raised:#f6f8fd; --border:#dbe0ec;
+    --text:#171b28; --muted:#6b748f0; --muted:#6b748f; --accent:#9a6d1c;
+    --atr:#8a5cb8; --vit:#2e7d52; --ofe:#c0392b; --def:#2b6ca3; --ele:#b07818;
+    --mono:ui-monospace,'Cascadia Code','SF Mono',Menlo,monospace;
+    --sans:system-ui,-apple-system,'Segoe UI',sans-serif;
+  }
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+    --bg:#0f1218; --surface:#171b24; --raised:#1e232f; --border:#2a3040;
+    --text:#dde2ed; --muted:#7c859f; --accent:#d4a04a;
+    --atr:#b58ce0; --vit:#4caf7d; --ofe:#e06a5e; --def:#5fa3d8; --ele:#d99a2b;}}
+  :root[data-theme="dark"]{--bg:#0f1218;--surface:#171b24;--raised:#1e232f;--border:#2a3040;--text:#dde2ed;--muted:#7c859f;--accent:#d4a04a;--atr:#b58ce0;--vit:#4caf7d;--ofe:#e06a5e;--def:#5fa3d8;--ele:#d99a2b;}
+  :root[data-theme="light"]{--bg:#f1f3f9;--surface:#fff;--raised:#f6f8fd;--border:#dbe0ec;--text:#171b28;--muted:#6b748f;--accent:#9a6d1c;--atr:#8a5cb8;--vit:#2e7d52;--ofe:#c0392b;--def:#2b6ca3;--ele:#b07818;}
+
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);
+       font-size:16px;line-height:1.55;-webkit-text-size-adjust:100%}
+  .wrap{max-width:1000px;margin:0 auto;padding:26px 18px 70px;
+        display:flex;flex-direction:column;gap:26px}
+
+  header{display:flex;flex-direction:column;gap:7px}
+  h1{font-size:1.55rem;font-weight:650;letter-spacing:-.015em}
+  .sub{color:var(--muted);font-size:.9rem}
+
+  .regra{background:var(--raised);border:1px solid var(--border);
+         border-left:3px solid var(--accent);border-radius:10px;padding:16px 18px;
+         display:flex;flex-direction:column;gap:11px}
+  .regra p{font-size:.93rem;color:var(--muted)}
+  .regra b{color:var(--text);font-weight:600}
+  .passos{display:flex;gap:8px;flex-wrap:wrap;margin-top:2px}
+  .passo{background:var(--surface);border:1px solid var(--border);border-radius:7px;
+         padding:7px 11px;font-family:var(--mono);font-size:.74rem;
+         display:flex;align-items:center;gap:7px;white-space:nowrap}
+  .passo .k{color:var(--accent);font-weight:700}
+
+  .busca{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  #q{background:var(--surface);border:1px solid var(--border);color:var(--text);
+     font-family:var(--mono);font-size:.82rem;padding:8px 13px;border-radius:7px;
+     outline:none;width:280px;max-width:100%}
+  #q:focus{border-color:var(--accent)}
+  #cnt{color:var(--muted);font-family:var(--mono);font-size:.74rem;margin-left:auto}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(430px,1fr));gap:14px}
+  .tema{background:var(--surface);border:1px solid var(--border);border-radius:12px;
+        padding:16px 17px;display:flex;flex-direction:column;gap:12px}
+  .tema.off{display:none}
+  .th{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
+  .th h2{font-size:1.06rem;font-weight:640}
+  .th .fam{color:var(--muted);font-size:.83rem;flex:1;min-width:120px}
+  .th .qtd{font-family:var(--mono);font-size:.7rem;color:var(--muted);
+           background:var(--raised);border:1px solid var(--border);
+           border-radius:20px;padding:3px 9px;white-space:nowrap}
+
+  .ex{font-size:.78rem;color:var(--muted);font-style:italic}
+
+  .pos{border-top:1px solid var(--border);padding-top:10px;
+       display:flex;flex-direction:column;gap:6px}
+  .ph{display:flex;align-items:center;gap:8px}
+  .pn{width:19px;height:19px;border-radius:5px;flex:none;
+      font-family:var(--mono);font-size:.65rem;font-weight:700;
+      display:grid;place-items:center;color:#fff}
+  .p1 .pn{background:var(--atr)} .p2 .pn{background:var(--vit)}
+  .p3 .pn{background:var(--ofe)} .p4 .pn{background:var(--def)}
+  .p5 .pn{background:var(--ele)}
+  .pt{font-size:.76rem;font-weight:650;letter-spacing:.05em;text-transform:uppercase}
+  .p1 .pt{color:var(--atr)} .p2 .pt{color:var(--vit)}
+  .p3 .pt{color:var(--ofe)} .p4 .pt{color:var(--def)}
+  .p5 .pt{color:var(--ele)}
+  .lock{font-family:var(--mono);font-size:.66rem;color:var(--muted);margin-left:auto;
+        white-space:nowrap}
+
+  .ops{display:flex;flex-direction:column;gap:3px;padding-left:27px}
+  .op{display:flex;align-items:baseline;gap:9px;font-size:.85rem}
+  .op .nm{flex:1;min-width:0}
+  .op .fx{font-family:var(--mono);font-size:.79rem;font-weight:600;white-space:nowrap}
+  .op .ch{font-family:var(--mono);font-size:.7rem;color:var(--muted);
+          width:46px;text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+
+  footer{color:var(--muted);font-size:.78rem;border-top:1px solid var(--border);
+         padding-top:16px;line-height:1.7}
+  @media(max-width:560px){
+    body{font-size:15px}
+    .wrap{padding:20px 14px 50px;gap:22px}
+    .grid{grid-template-columns:1fr}
+    #cnt{margin-left:0;width:100%}
+  }
+</style>
+
+<div class="wrap">
+
+<header>
+  <h1>Encantamentos</h1>
+  <div class="sub">Referência dos bônus aleatórios por família de equipamento — Ragnarok 1.25</div>
+</header>
+
+<div class="regra">
+  <p><b>Todo equipamento nasce com um encantamento.</b> Não importa se veio de drop, quest, loja ou craft: a primeira posição é sorteada na hora, e as outras quatro ficam fechadas.</p>
+  <p><b>Só o ferreiro abre o resto.</b> Refinando com Refinar Arma, uma posição nova a cada 2 níveis. Como essa é a única habilidade de refino do jogo, ninguém passa de um encantamento sem um Blacksmith ou Whitesmith.</p>
+  <div class="passos">
+    <div class="passo"><span class="k">drop</span> posição 1</div>
+    <div class="passo"><span class="k">+2</span> posição 2</div>
+    <div class="passo"><span class="k">+4</span> posição 3</div>
+    <div class="passo"><span class="k">+6</span> posição 4</div>
+    <div class="passo"><span class="k">+8</span> posição 5</div>
+  </div>
+  <p>O sorteio nunca sai vazio: quando uma posição é destravada, ela sempre recebe algo. E o pool não é global — <b>cada família tem o seu</b>, então uma espada nunca recebe encantamento de cajado.</p>
+</div>
+
+<div class="busca">
+  <input id="q" type="search" placeholder="Buscar tema, arma ou bônus..." autocomplete="off">
+  <span id="cnt"></span>
+</div>
+
+<div class="grid" id="grid"></div>
+
+<footer>
+  Gerado a partir de <code>db/item_randomopt_group_fix.yml</code>. Os temas são
+  resolvidos em <code>itemdb_hardcore_enchant_group()</code> pelo subtipo da arma
+  ou pelo slot da armadura.
+</footer>
+
+</div>
+
+<script>
+const T = [{"id": 10, "t": "Lâmina", "s": "Espadas de uma e duas mãos", "n": 112, "ex": ["Sword", "Sword", "Falchion", "Falchion"], "sl": [{"t": "Atributo", "o": [{"n": "STR", "f": "+2 a +6", "c": 33.3}, {"n": "DEX", "f": "+1 a +4", "c": 33.3}, {"n": "VIT", "f": "+1 a +4", "c": 33.3}]}, {"t": "Vitalidade", "o": [{"n": "ATK", "f": "+3 a +12", "c": 50.0}, {"n": "HIT", "f": "+3 a +12", "c": 50.0}]}, {"t": "Ofensivo", "o": [{"n": "Crítico", "f": "+2 a +7", "c": 50.0}, {"n": "ATK", "f": "+3 a +10", "c": 50.0}]}, {"t": "Defensivo", "o": [{"n": "HP máx.", "f": "+80 a +250", "c": 50.0}, {"n": "DEF", "f": "+1 a +5", "c": 50.0}]}, {"t": "Elemental", "o": [{"n": "resist. Neutro", "f": "+3 a +8%", "c": 33.3}, {"n": "resist. Fogo", "f": "+3 a +8%", "c": 33.3}, {"n": "resist. Vento", "f": "+3 a +8%", "c": 33.3}]}]}, {"id": 11, "t": "Precisão", "s": "Adagas e katares", "n": 135, "ex": ["Knife", "Knife", "Cutter", "Cutter"], "sl": [{"t": "Atributo", "o": [{"n": "AGI", "f": "+2 a +6", "c": 33.3}, {"n": "LUK", "f": "+1 a +4", "c": 33.3}, {"n": "STR", "f": "+1 a +4", "c": 33.3}]}, {"t": "Vitalidade", "o": [{"n": "Crítico", "f": "+3 a +9", "c": 50.0}, {"n": "ATK", "f": "+2 a +9", "c": 50.0}]}, {"t": "Ofensivo", "o": [{"n": "Esquiva", "f": "+3 a +12", "c": 50.0}, {"n": "HIT", "f": "+2 a +8", "c": 50.0}]}, {"t": "Defensivo", "o": [{"n": "SP máx.", "f": "+20 a +70", "c": 50.0}, {"n": "HP máx.", "f": "+50 a +180", "c": 50.0}]}, {"t": "Elemental", "o": [{"n": "resist. Veneno", "f": "+3 a +10%", "c": 33.3}, {"n": "resist. Sombrio", "f": "+3 a +8%", "c": 33.3}, {"n": "resist. Neutro", "f": "+3 a +8%", "c": 33.3}]}]}, {"id": 12, "t": "Pontaria", "s": "Arcos", "n": 47, "ex": ["Bow", "Bow", "Composite Bow", "Composite Bow"], "sl": [{"t": "Atributo", "o": [{"n": "DEX", "f": "+2 a +6", "c": 50.0}, {"n": "AGI", "f": "+1 a +4", "c": 50.0}]}, {"t": "Vitalidade", "o": [{"n": "HIT", "f": "+4 a +14", "c": 50.0}, {"n": "ATK", "f": "+3 a +10", "c": 50.0}]}, {"t": "Ofensivo", "o": [{"n": "Crítico", "f": "+2 a +7", "c": 50.0}, {"n": "HIT", "f": "+3 a +10", "c": 50.0}]}, {"t": "Defensivo", "o": [{"n": "Esquiva", "f": "+3 a +10", "c": 50.0}, {"n": "HP máx.", "f": "+50 a +180", "c": 50.0}]}, {"t": "Elemental", "o": [{"n": "resist. Vento", "f": "+3 a +10%", "c": 33.3}, {"n": "resist. Terra", "f": "+3 a +8%", "c": 33.3}, {"n": "resist. Neutro", "f": "+3 a +8%", "c": 33.3}]}]}, {"id": 13, "t": "Arcano", "s": "Cajados e livros", "n": 89, "ex": ["Book", "Bible", "Tablet", "Girl's Diary"], "sl": [{"t": "Atributo", "o": [{"n": "INT", "f": "+2 a +6", "c": 50.0}, {"n": "DEX", "f": "+1 a +4", "c": 50.0}]}, {"t": "Vitalidade", "o": [{"n": "SP máx.", "f": "+40 a +120", "c": 50.0}, {"n": "HP máx.", "f": "+50 a +150", "c": 50.0}]}, {"t": "Ofensivo", "o": [{"n": "INT", "f": "+1 a +4", "c": 50.0}, {"n": "SP máx.", "f": "+30 a +90", "c": 50.0}]}, {"t": "Defensivo", "o": [{"n": "DEF", "f": "+1 a +4", "c": 50.0}, {"n": "Esquiva", "f": "+2 a +8", "c": 50.0}]}, {"t": "Elemental", "o": [{"n": "resist. Sagrado", "f": "+3 a +10%", "c": 33.3}, {"n": "resist. Sombrio", "f": "+3 a +10%", "c": 33.3}, {"n": "resist. Morto-vivo", "f": "+3 a +8%", "c": 33.3}]}]}, {"id": 14, "t": "Impacto", "s": "Maças e manoplas", "n": 85, "ex": ["Club", "Club", "Mace", "Mace"], "sl": [{"t": "Atributo", "o": [{"n": "STR", "f": "+2 a +6", "c": 33.3}, {"n": "VIT", "f": "+1 a +5", "c": 33.3}, {"n": "INT", "f": "+1 a +4", "c": 33.3}]}, {"t": "Vitalidade", "o": [{"n": "ATK", "f": "+3 a +12", "c": 50.0}, {"n": "HIT", "f": "+3 a +10", "c": 50.0}]}, {"t": "Ofensivo", "o": [{"n": "HP máx.", "f": "+80 a +280", "c": 50.0}, {"n": "SP máx.", "f": "+25 a +80", "c": 50.0}]}, {"t": "Defensivo", "o": [{"n": "DEF", "f": "+1 a +5", "c": 50.0}, {"n": "Esquiva", "f": "+2 a +8", "c": 50.0}]}, {"t": "Elemental", "o": [{"n": "resist. Morto-vivo", "f": "+3 a +10%", "c": 33.3}, {"n": "resist. Sagrado", "f": "+3 a +8%", "c": 33.3}, {"n": "resist. Neutro", "f": "+3 a +8%", "c": 33.3}]}]}, {"id": 15, "t": "Peso", "s": "Lanças e machados", "n": 123, "ex": ["Axe", "Axe", "War Axe", "Orcish Axe"], "sl": [{"t": "Atributo", "o": [{"n": "STR", "f": "+2 a +7", "c": 50.0}, {"n": "VIT", "f": "+2 a +6", "c": 50.0}]}, {"t": "Vitalidade", "o": [{"n": "ATK", "f": "+4 a +15", "c": 50.0}, {"n": "HIT", "f": "+2 a +9", "c": 50.0}]}, {"t": "Ofensivo", "o": [{"n": "HP máx.", "f": "+100 a +320", "c": 50.0}, {"n": "DEF", "f": "+2 a +6", "c": 50.0}]}, {"t": "Defensivo", "o": [{"n": "Crítico", "f": "+1 a +5", "c": 50.0}, {"n": "ATK", "f": "+2 a +8", "c": 50.0}]}, {"t": "Elemental", "o": [{"n": "resist. Terra", "f": "+3 a +10%", "c": 33.3}, {"n": "resist. Fogo", "f": "+3 a +8%", "c": 33.3}, {"n": "resist. Neutro", "f": "+3 a +8%", "c": 33.3}]}]}, {"id": 16, "t": "Harmonia", "s": "Instrumentos e chicotes", "n": 63, "ex": ["Violin", "Violin", "Mandolin", "Mandolin"], "sl": [{"t": "Atributo", "o": [{"n": "DEX", "f": "+2 a +6", "c": 33.3}, {"n": "AGI", "f": "+1 a +5", "c": 33.3}, {"n": "INT", "f": "+1 a +4", "c": 33.3}]}, {"t": "Vitalidade", "o": [{"n": "SP máx.", "f": "+30 a +100", "c": 50.0}, {"n": "HP máx.", "f": "+60 a +200", "c": 50.0}]}, {"t": "Ofensivo", "o": [{"n": "HIT", "f": "+2 a +9", "c": 50.0}, {"n": "ATK", "f": "+2 a +8", "c": 50.0}]}, {"t": "Defensivo", "o": [{"n": "Esquiva", "f": "+3 a +10", "c": 50.0}, {"n": "LUK", "f": "+1 a +5", "c": 50.0}]}, {"t": "Elemental", "o": [{"n": "resist. Vento", "f": "+3 a +8%", "c": 33.3}, {"n": "resist. Água", "f": "+3 a +8%", "c": 33.3}, {"n": "resist. Neutro", "f": "+3 a +8%", "c": 33.3}]}]}, {"id": 20, "t": "Couraça", "s": "Armaduras", "n": 98, "ex": ["Cotton Shirt", "Jacket", "Adventurer's Suit", "Mantle"], "sl": [{"t": "Atributo", "o": [{"n": "VIT", "f": "+2 a +6", "c": 33.3}, {"n": "STR", "f": "+1 a +4", "c": 33.3}, {"n": "INT", "f": "+1 a +4", "c": 33.3}]}, {"t": "Vitalidade", "o": [{"n": "HP máx.", "f": "+120 a +400", "c": 50.0}, {"n": "SP máx.", "f": "+30 a +90", "c": 50.0}]}, {"t": "Ofensivo", "o": [{"n": "DEF", "f": "+2 a +7", "c": 50.0}, {"n": "Esquiva", "f": "+2 a +8", "c": 50.0}]}, {"t": "Defensivo", "o": [{"n": "HP máx.", "f": "+80 a +250", "c": 50.0}, {"n": "VIT", "f": "+1 a +4", "c": 50.0}]}, {"t": "Elemental", "o": [{"n": "resist. Neutro", "f": "+4 a +10%", "c": 20.0}, {"n": "resist. Fogo", "f": "+3 a +9%", "c": 20.0}, {"n": "resist. Água", "f": "+3 a +9%", "c": 20.0}, {"n": "resist. Vento", "f": "+3 a +9%", "c": 20.0}, {"n": "resist. Terra", "f": "+3 a +9%", "c": 20.0}]}]}, {"id": 21, "t": "Guarda", "s": "Escudos", "n": 40, "ex": ["Guard", "Buckler", "Shield", "Mirror Shield"], "sl": [{"t": "Atributo", "o": [{"n": "VIT", "f": "+2 a +6", "c": 50.0}, {"n": "LUK", "f": "+1 a +4", "c": 50.0}]}, {"t": "Vitalidade", "o": [{"n": "DEF", "f": "+3 a +9", "c": 50.0}, {"n": "HP máx.", "f": "+100 a +320", "c": 50.0}]}, {"t": "Ofensivo", "o": [{"n": "Esquiva", "f": "+2 a +8", "c": 50.0}, {"n": "DEF", "f": "+2 a +6", "c": 50.0}]}, {"t": "Defensivo", "o": [{"n": "SP máx.", "f": "+20 a +70", "c": 50.0}, {"n": "HP máx.", "f": "+80 a +240", "c": 50.0}]}, {"t": "Elemental", "o": [{"n": "resist. Neutro", "f": "+4 a +12%", "c": 25.0}, {"n": "resist. Sombrio", "f": "+4 a +10%", "c": 25.0}, {"n": "resist. Morto-vivo", "f": "+4 a +10%", "c": 25.0}, {"n": "resist. Veneno", "f": "+4 a +10%", "c": 25.0}]}]}, {"id": 22, "t": "Manto", "s": "Capas", "n": 54, "ex": ["Hood", "Muffler", "Manteau", "Novice Manteau"], "sl": [{"t": "Atributo", "o": [{"n": "AGI", "f": "+2 a +6", "c": 50.0}, {"n": "LUK", "f": "+1 a +5", "c": 50.0}]}, {"t": "Vitalidade", "o": [{"n": "Esquiva", "f": "+4 a +14", "c": 50.0}, {"n": "HP máx.", "f": "+60 a +200", "c": 50.0}]}, {"t": "Ofensivo", "o": [{"n": "DEF", "f": "+1 a +5", "c": 50.0}, {"n": "Esquiva", "f": "+3 a +10", "c": 50.0}]}, {"t": "Defensivo", "o": [{"n": "SP máx.", "f": "+20 a +70", "c": 50.0}, {"n": "AGI", "f": "+1 a +4", "c": 50.0}]}, {"t": "Elemental", "o": [{"n": "resist. Neutro", "f": "+4 a +12%", "c": 25.0}, {"n": "resist. Vento", "f": "+3 a +9%", "c": 25.0}, {"n": "resist. Água", "f": "+3 a +9%", "c": 25.0}, {"n": "resist. Fogo", "f": "+3 a +9%", "c": 25.0}]}]}, {"id": 23, "t": "Passo", "s": "Sapatos", "n": 50, "ex": ["Sandals", "Shoes", "Boots", "Greaves"], "sl": [{"t": "Atributo", "o": [{"n": "AGI", "f": "+2 a +6", "c": 50.0}, {"n": "VIT", "f": "+1 a +5", "c": 50.0}]}, {"t": "Vitalidade", "o": [{"n": "HP máx.", "f": "+100 a +350", "c": 50.0}, {"n": "SP máx.", "f": "+30 a +100", "c": 50.0}]}, {"t": "Ofensivo", "o": [{"n": "Esquiva", "f": "+3 a +10", "c": 50.0}, {"n": "DEF", "f": "+1 a +5", "c": 50.0}]}, {"t": "Defensivo", "o": [{"n": "HP máx.", "f": "+80 a +240", "c": 50.0}, {"n": "SP máx.", "f": "+25 a +80", "c": 50.0}]}, {"t": "Elemental", "o": [{"n": "resist. Terra", "f": "+3 a +10%", "c": 33.3}, {"n": "resist. Neutro", "f": "+3 a +9%", "c": 33.3}, {"n": "resist. Veneno", "f": "+3 a +9%", "c": 33.3}]}]}, {"id": 24, "t": "Talismã", "s": "Acessórios", "n": 210, "ex": ["Clip", "Ring", "Earring", "Necklace"], "sl": [{"t": "Atributo", "o": [{"n": "STR", "f": "+1 a +5", "c": 16.7}, {"n": "AGI", "f": "+1 a +5", "c": 16.7}, {"n": "VIT", "f": "+1 a +5", "c": 16.7}, {"n": "INT", "f": "+1 a +5", "c": 16.7}, {"n": "DEX", "f": "+1 a +5", "c": 16.7}, {"n": "LUK", "f": "+2 a +7", "c": 16.7}]}, {"t": "Vitalidade", "o": [{"n": "SP máx.", "f": "+30 a +100", "c": 50.0}, {"n": "HP máx.", "f": "+60 a +220", "c": 50.0}]}, {"t": "Ofensivo", "o": [{"n": "ATK", "f": "+2 a +8", "c": 33.3}, {"n": "HIT", "f": "+2 a +8", "c": 33.3}, {"n": "Crítico", "f": "+1 a +5", "c": 33.3}]}, {"t": "Defensivo", "o": [{"n": "Esquiva", "f": "+2 a +8", "c": 50.0}, {"n": "DEF", "f": "+1 a +4", "c": 50.0}]}, {"t": "Elemental", "o": [{"n": "resist. Sagrado", "f": "+3 a +9%", "c": 25.0}, {"n": "resist. Sombrio", "f": "+3 a +9%", "c": 25.0}, {"n": "resist. Morto-vivo", "f": "+3 a +9%", "c": 25.0}, {"n": "resist. Fantasma", "f": "+3 a +9%", "c": 25.0}]}]}, {"id": 25, "t": "Elmo", "s": "Chapéus e capacetes", "n": 758, "ex": ["Sunglasses", "Glasses", "Ribbon", "Biretta"], "sl": [{"t": "Atributo", "o": [{"n": "INT", "f": "+1 a +5", "c": 33.3}, {"n": "VIT", "f": "+1 a +5", "c": 33.3}, {"n": "DEX", "f": "+1 a +5", "c": 33.3}]}, {"t": "Vitalidade", "o": [{"n": "SP máx.", "f": "+30 a +100", "c": 50.0}, {"n": "HP máx.", "f": "+80 a +260", "c": 50.0}]}, {"t": "Ofensivo", "o": [{"n": "DEF", "f": "+1 a +6", "c": 50.0}, {"n": "HIT", "f": "+2 a +8", "c": 50.0}]}, {"t": "Defensivo", "o": [{"n": "Esquiva", "f": "+2 a +8", "c": 50.0}, {"n": "Crítico", "f": "+1 a +4", "c": 50.0}]}, {"t": "Elemental", "o": [{"n": "resist. Neutro", "f": "+3 a +9%", "c": 33.3}, {"n": "resist. Sagrado", "f": "+3 a +9%", "c": 33.3}, {"n": "resist. Sombrio", "f": "+3 a +9%", "c": 33.3}]}]}];
+const $ = i => document.getElementById(i);
+
+$('grid').innerHTML = T.map(t => {
+  const pos = t.sl.map((s, i) => {
+    const trava = i === 0 ? 'no drop' : 'refino +' + (i * 2);
+    const ops = s.o.map(o =>
+      '<div class="op"><span class="nm">' + o.n + '</span>' +
+      '<span class="fx">' + o.f + '</span>' +
+      '<span class="ch">' + o.c + '%</span></div>').join('');
+    return '<div class="pos p' + (i + 1) + '">' +
+      '<div class="ph"><span class="pn">' + (i + 1) + '</span>' +
+      '<span class="pt">' + s.t + '</span>' +
+      '<span class="lock">' + trava + '</span></div>' +
+      '<div class="ops">' + ops + '</div></div>';
+  }).join('');
+  const ex = t.ex.length ? '<div class="ex">ex.: ' + t.ex.join(' · ') + '</div>' : '';
+  const busca = (t.t + ' ' + t.s + ' ' + t.ex.join(' ') + ' ' +
+                 t.sl.map(s => s.t + ' ' + s.o.map(o => o.n).join(' ')).join(' ')).toLowerCase();
+  return '<div class="tema" data-q="' + busca.replace(/"/g, '&quot;') + '">' +
+    '<div class="th"><h2>' + t.t + '</h2>' +
+    '<span class="fam">' + t.s + '</span>' +
+    '<span class="qtd">' + t.n + ' itens</span></div>' +
+    ex + pos + '</div>';
+}).join('');
+
+function filtrar(){
+  const q = $('q').value.trim().toLowerCase();
+  let n = 0;
+  document.querySelectorAll('.tema').forEach(el => {
+    const ok = !q || el.dataset.q.includes(q);
+    el.classList.toggle('off', !ok);
+    if (ok) n++;
+  });
+  $('cnt').textContent = n + ' de ' + T.length + ' temas';
+}
+filtrar();
+$('q').addEventListener('input', filtrar);
+</script>
